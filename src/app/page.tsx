@@ -1,7 +1,11 @@
+'use client'
+
+import Forms from "@/components/Forms";
+
 export default function Home() {
   return (
     <main>
-      Hello Nextjs.13
+      <Forms />
     </main>
   )
 }
