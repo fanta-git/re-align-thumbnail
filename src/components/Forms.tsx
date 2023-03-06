@@ -1,6 +1,6 @@
 'use client'
 
-import { fetchListData } from "@/foundations/fetchListData";
+import { useFetchListData } from "@/hooks/useFetchListData";
 import { Box, FormLabel, Input } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -13,12 +13,13 @@ type FormContents = {
 export default function Forms() {
   const { register, watch } = useForm<FormContents>()
   const listUrl = watch("url")
+  const fetchListData = useFetchListData()
 
   useEffect(() => {
     if (listUrl == null) return
 
-    fetchListData(listUrl).then(console.log)
-  }, [listUrl])
+    fetchListData(listUrl)
+  }, [listUrl, fetchListData])
 
   return (
     <Box>
