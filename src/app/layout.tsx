@@ -2,7 +2,7 @@
 
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Container } from '@chakra-ui/react'
-import Header from './header'
+import Header from './Header'
 
 export default function RootLayout({
   children,
