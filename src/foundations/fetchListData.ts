@@ -15,6 +15,5 @@ export async function fetchListData (url: string) {
         { params }
     )
 
-    if (response.data.status === "failed") throw Error(response.data.error.message)
-    return response.data
+    return response
 }
