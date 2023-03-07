@@ -1,8 +1,9 @@
-import { useFetchListData } from "@/hooks/useFetchListData";
+import { playlistIdState } from "@/stores/playlist";
 import { Box, FormLabel, Input } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 
 type FormContents = {
   url: string
@@ -11,13 +12,13 @@ type FormContents = {
 export default function Forms() {
   const { register, watch } = useForm<FormContents>()
   const listUrl = watch("url")
-  const fetchListData = useFetchListData()
+  const setPlaylistId = useSetRecoilState(playlistIdState)
 
   useEffect(() => {
     if (listUrl == null) return
 
-    fetchListData(listUrl)
-  }, [listUrl, fetchListData])
+    setPlaylistId(listUrl)
+  }, [listUrl, setPlaylistId])
 
   return (
     <Box>

@@ -1,7 +1,7 @@
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Container } from '@chakra-ui/react'
 import { RecoilRoot } from 'recoil'
-import Header from './Header'
+import Header from '../components/Header'
 
 export default function RootLayout({
   children,

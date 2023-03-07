@@ -1,14 +1,15 @@
+import Aligned from "@/components/Aligned";
 import Forms from "@/components/Forms";
-import { playlistState } from "@/stores/playlist";
-import { useRecoilValue } from "recoil";
+import { Container } from "@chakra-ui/react";
+import { Suspense } from "react";
 
 export default function Home() {
-  const playlist = useRecoilValue(playlistState)
-
   return (
-    <main>
+    <Container w={'100%'}>
       <Forms />
-      {JSON.stringify(playlist)}
-    </main>
+      <Suspense fallback={<>Loading...</>}>
+        <Aligned />
+      </Suspense>
+    </Container>
   )
 }

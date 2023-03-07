@@ -1,8 +1,19 @@
+import { fetchListData } from "@/foundations/fetchListData";
 import { PlaylistContents } from "@/types/cafeapi";
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { RECOIL_KEYS } from "./recoilKey";
 
-export const playlistState = atom<PlaylistContents | undefined>({
+export const playlistIdState = atom<string>({
+    key: RECOIL_KEYS.PLAYLIST_ID,
+    default: ''
+})
+
+export const playlistState = selector<PlaylistContents | undefined>({
     key: RECOIL_KEYS.PLAYLIST,
-    default: undefined
+    get: async ({ get }) => {
+        const id = get(playlistIdState)
+        if (!id) return
+        const playlist = await fetchListData(id)
+        return playlist
+    }
 })
