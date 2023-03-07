@@ -1,4 +1,4 @@
-import { playlistIdState } from "@/stores/playlist";
+import { currentPlaylistIdState } from "@/stores/playlist";
 import { Box, FormLabel, Input } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -12,7 +12,7 @@ type FormContents = {
 export default function Forms() {
   const { register, watch } = useForm<FormContents>()
   const listUrl = watch("url")
-  const setPlaylistId = useSetRecoilState(playlistIdState)
+  const setPlaylistId = useSetRecoilState(currentPlaylistIdState)
 
   useEffect(() => {
     if (listUrl == null) return

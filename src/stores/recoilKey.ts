@@ -1,4 +1,5 @@
 export const RECOIL_KEYS = {
     PLAYLIST: "playlist",
-    PLAYLIST_ID: "playlistId"
+    CURRENT_ID: "currentId",
+    CURRENT_PLAYLIST: "currentPlaylist"
 } as const
