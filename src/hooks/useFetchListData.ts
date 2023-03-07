@@ -1,7 +1,5 @@
-'use client'
-
-import { FailedPlaylistContents, PlaylistContents } from "@/app/types/cafeapi"
-import { r } from "@/app/util/regExpFromTemplate"
+import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
+import { r } from "@/util/regExpFromTemplate"
 import { playlistState } from "@/stores/playlist"
 import axios from "axios"
 import { useSetRecoilState } from "recoil"

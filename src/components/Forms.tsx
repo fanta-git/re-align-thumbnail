@@ -1,5 +1,3 @@
-'use client'
-
 import { useFetchListData } from "@/hooks/useFetchListData";
 import { Box, FormLabel, Input } from "@chakra-ui/react";
 import { useEffect } from "react";

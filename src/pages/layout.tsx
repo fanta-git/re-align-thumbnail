@@ -1,5 +1,3 @@
-'use client'
-
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Container } from '@chakra-ui/react'
 import { RecoilRoot } from 'recoil'

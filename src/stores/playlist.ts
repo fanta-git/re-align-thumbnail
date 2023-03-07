@@ -1,4 +1,4 @@
-import { PlaylistContents } from "@/app/types/cafeapi";
+import { PlaylistContents } from "@/types/cafeapi";
 import { atom } from "recoil";
 import { RECOIL_KEYS } from "./recoilKey";
 
