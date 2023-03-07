@@ -1,28 +1,30 @@
-import { fetchListData } from "@/foundations/fetchListData";
+import * as fetchListData from "@/foundations/fetchListData";
 import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi";
+import { PlaylistBase } from "@/types/playlist";
 import { atom, selector, selectorFamily } from "recoil";
-import { RECOIL_KEYS } from "./recoilKey";
+import { RECOIL_KEYS } from "../consts/recoilKey";
 
-export const playlistState = selectorFamily<PlaylistContents | FailedPlaylistContents | undefined, string>({
+export const playlistState = selectorFamily<PlaylistContents | FailedPlaylistContents | undefined, PlaylistBase | undefined>({
     key: RECOIL_KEYS.PLAYLIST,
-    get: id => async () => {
-        if (!id) return
-        const response = await fetchListData(id)
+    get: base => async () => {
+        if (base === undefined) return
+        const { type, id } = base
+        const response = await fetchListData[type](id)
         if (response == null) return
         if (response.status < 200 || 300 <= response.status) return
         return response.data
     }
 })
 
-export const currentPlaylistIdState = atom<string>({
+export const currentPlaylistBaseState = atom<PlaylistBase | undefined>({
     key: RECOIL_KEYS.CURRENT_ID,
-    default: ''
+    default: undefined
 })
 
 export const currentPlaylistState = selector<PlaylistContents | FailedPlaylistContents | undefined>({
     key: RECOIL_KEYS.CURRENT_PLAYLIST,
     get: ({ get }) => {
-        const id = get(currentPlaylistIdState)
-        return get(playlistState(id))
+        const base = get(currentPlaylistBaseState)
+        return get(playlistState(base))
     }
 })
