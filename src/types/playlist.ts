@@ -1,12 +1,15 @@
-export type playlistTypes = 'kiite'
+import { TYPES } from "@/consts/playlist"
+import { Values } from "./util"
+
+export type PlaylistTypes = Values<typeof TYPES>
 
 export type PlaylistBase = {
-    type: playlistTypes,
+    type: PlaylistTypes,
     id: string
 }
 
 export type ConstPlaylistUrlTypes = {
-    type: playlistTypes,
+    type: PlaylistTypes,
     regexp: RegExp
 }[]
 
