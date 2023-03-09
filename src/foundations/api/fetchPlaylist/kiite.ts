@@ -1,10 +1,10 @@
 import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
 import fetchThumbnails from "@/foundations/api/fetchThumbnails"
 import { Playlist, Song } from "@/types/playlist"
-import { zipFull } from "@/util/generators"
+import { zip, zipFull } from "@/util/generators"
 import axios from "axios"
 
-export async function kiite (listId: string): Promise<Playlist | undefined> {
+export async function kiite (listId: string): Promise<any | undefined> {
     const params = {
         list_id: listId
     }
@@ -16,38 +16,33 @@ export async function kiite (listId: string): Promise<Playlist | undefined> {
     if (response.data.status === 'failed') return
     const { data } = response;
 
-    const thumbnails = await fetchThumbnails(data.songs.map(v => ({ type: 'nicovideo', id: v.video_id })))
+    const nicoSongs = data.songs.map(v => ({
+        type: 'nicovideo',
+        id: v.video_id,
+        order: v.order_num
+    } as const))
+    const youtSongs = extractYoutSong(data.description)
+    const songsAll = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+    const thumbnails = await fetchThumbnails(songsAll)
 
     return {
         name: data.list_title,
         description: data.description,
-        songs: data.songs.map((song, i) => ({
-            type: 'nicovideo',
-            id: song.video_id,
-            order: song.order_num,
-            thumbnailUrl: thumbnails[i]
+        songs: [...zip(songsAll, thumbnails)].map(([{ id, order }, thumbnailUrl]) => ({
+            id, order, thumbnailUrl
         }))
     }
 }
 
-function insertYoutube (playlist: Playlist) {
-    const ids = playlist.description.match(/(?<=https:\/\/www\.youtube\.com\/watch\?v=)\w+/g) ?? []
-    const orders = playlist.description.match(/(?<=^>>).*$/mg)?.at(-1)?.match(/-?\d+(\.\d+)?/g)?.map(Number) ?? []
+function extractYoutSong (description: string) {
+    const ids = description.match(/(?<=https:\/\/www\.youtube\.com\/watch\?v=)\w+/g) ?? []
+    const orders = description.match(/(?<=^>>).*$/mg)?.at(-1)?.match(/-?\d+(\.\d+)?/g)?.map(Number) ?? []
 
-    for (const ziped of zipFull(ids, orders)) {
-        const lastOrder = playlist.songs.at(-1)?.order ?? 0;
-        const [id, order] = [ziped[0], ziped[1] ?? lastOrder + 1]
-        if (id === undefined) break
-        const index = playlist.songs.findIndex(v => v.order > order);
-        const song: Song = {
+    return [...zipFull(ids, orders)]
+        .filter(([id, order]) => id !== undefined)
+        .map(([id, order]) => ({
             type: 'youtube',
-            id,
+            id: id!,
             order
-        };
-        if (index < 0) {
-            playlist.songs.push(song);
-        } else {
-            playlist.songs.splice(index, 0, song);
-        }
-    }
+        }) as const)
 }
