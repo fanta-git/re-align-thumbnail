@@ -26,5 +26,5 @@ export async function align(urls: string[]) {
         left: x * 160
     })))
 
-    return background.composite(compositer).toFile('output.png')
+    return background.composite(compositer)
 }

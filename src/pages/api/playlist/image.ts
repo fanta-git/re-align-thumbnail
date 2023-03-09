@@ -3,6 +3,7 @@ import fetchPlaylist from "@/foundations/api/fetchPlaylist";
 import fetchThumbnails from "@/foundations/api/fetchThumbnails";
 import { getPlaylistQuery } from "@/foundations/api/getQuery";
 import { NextApiRequest, NextApiResponse } from "next";
+import * as fs from "fs"
 
 export default async function image(req: NextApiRequest, res: NextApiResponse) {
     const query = getPlaylistQuery(req)
@@ -12,12 +13,10 @@ export default async function image(req: NextApiRequest, res: NextApiResponse) {
     const songs = await fetchPlaylist(type, id)
     if (songs === undefined) return res.status(400).send({ error: 'faild fetch playlist' })
     const thumbnails = await fetchThumbnails(songs) as string[]
-    const file = await align(thumbnails)
+    const alignedSharp = await align(thumbnails)
+    const buffer = alignedSharp.jpeg().toBuffer()
 
-    const response = await fetch(thumbnails[0]!)
-    const blob = await response.blob()
-    const contentType = response.headers.get("Content-Type")!
     res.status(200)
-        .setHeader("content-Type", contentType)
-        .send(blob.stream())
+        .setHeader("content-Type", 'image/jpeg')
+        .send(buffer)
 }
