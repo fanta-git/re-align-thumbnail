@@ -1,7 +1,7 @@
-import { TYPES } from "@/consts/playlist"
-import { Values } from "./util"
+import { SONG_TYPES, PLAYLIST_TYPES } from "@/consts/playlist"
+import { Values, ValuesObj } from "./util"
 
-export type PlaylistTypes = Values<typeof TYPES>
+export type PlaylistTypes = Values<typeof PLAYLIST_TYPES>
 
 export type PlaylistBase = {
     type: PlaylistTypes,
@@ -13,18 +13,11 @@ export type ConstPlaylistUrlTypes = {
     regexp: RegExp
 }[]
 
-export type Playlist = {
-    name: string,
-    description: string,
-    songs: Song[]
-}
-
-export type SongType = 'nicovideo' | 'youtube'
+export type SongType = ValuesObj<typeof SONG_TYPES>
 
 export type Song = {
     type: SongType,
-    id: string,
-    order: number
+    id: string
 }
 
 export type SongWithThumbnail = Song & {

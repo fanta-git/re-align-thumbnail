@@ -1,10 +1,10 @@
 import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
-import fetchThumbnails from "@/foundations/api/fetchThumbnails"
-import { Playlist, Song } from "@/types/playlist"
-import { zip, zipFull } from "@/util/generators"
+import { zipFull } from "@/util/generators"
 import axios from "axios"
+import { Song } from "@/types/playlist"
+import { SONG_TYPES } from "@/consts/playlist"
 
-export async function kiite (listId: string): Promise<any | undefined> {
+export async function kiite (listId: string): Promise<Song[] | undefined> {
     const params = {
         list_id: listId
     }
@@ -17,21 +17,14 @@ export async function kiite (listId: string): Promise<any | undefined> {
     const { data } = response;
 
     const nicoSongs = data.songs.map(v => ({
-        type: 'nicovideo',
+        type: SONG_TYPES.NICO_VIDEO,
         id: v.video_id,
         order: v.order_num
     } as const))
     const youtSongs = extractYoutSong(data.description)
     const songsAll = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
-    const thumbnails = await fetchThumbnails(songsAll)
 
-    return {
-        name: data.list_title,
-        description: data.description,
-        songs: [...zip(songsAll, thumbnails)].map(([{ id, order }, thumbnailUrl]) => ({
-            id, order, thumbnailUrl
-        }))
-    }
+    return songsAll
 }
 
 function extractYoutSong (description: string) {
@@ -41,7 +34,7 @@ function extractYoutSong (description: string) {
     return [...zipFull(ids, orders)]
         .filter(([id, order]) => id !== undefined)
         .map(([id, order]) => ({
-            type: 'youtube',
+            type: SONG_TYPES.YOUTUBE,
             id: id!,
             order
         }) as const)
