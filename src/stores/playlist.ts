@@ -1,4 +1,4 @@
-import * as fetchListData from "@/foundations/fetchListData";
+import * as fetchListData from "@/foundations/api/fetchPlaylist";
 import { Playlist, PlaylistBase } from "@/types/playlist";
 import { atom, selector, selectorFamily } from "recoil";
 import { RECOIL_KEYS } from "../consts/recoilKey";

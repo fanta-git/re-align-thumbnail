@@ -1,4 +1,5 @@
 import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
+import fetchThumbnails from "@/foundations/api/fetchThumbnails"
 import { Playlist, Song } from "@/types/playlist"
 import { zipFull } from "@/util/generators"
 import axios from "axios"
@@ -9,25 +10,24 @@ export async function kiite (listId: string): Promise<Playlist | undefined> {
     }
 
     const response = await axios.get<PlaylistContents | FailedPlaylistContents>(
-        '/@cafeapi/playlists/contents/detail',
+        'https://cafeapi.kiite.jp/api/playlists/contents/detail',
         { params }
     )
     if (response.data.status === 'failed') return
     const { data } = response;
 
-    const playlist: Playlist = {
+    const thumbnails = await fetchThumbnails(data.songs.map(v => ({ type: 'nicovideo', id: v.video_id })))
+
+    return {
         name: data.list_title,
         description: data.description,
-        songs: data.songs.map(v => ({
+        songs: data.songs.map((song, i) => ({
             type: 'nicovideo',
-            id: v.video_id,
-            order: v.order_num
+            id: song.video_id,
+            order: song.order_num,
+            thumbnailUrl: thumbnails[i]
         }))
     }
-
-    insertYoutube(playlist)
-
-    return playlist
 }
 
 function insertYoutube (playlist: Playlist) {
