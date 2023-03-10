@@ -1,9 +1,9 @@
 import { getListBase } from "@/foundations/getListBase";
-import { currentPlaylistBaseState } from "@/stores/playlist";
-import { Box, Button, ButtonGroup, FormLabel, HStack, Input, Spacer, VStack } from "@chakra-ui/react";
+import { isImageLoadingState, playlistBaseState } from "@/stores/playlist";
+import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type FormContents = {
   url: string
@@ -11,13 +11,15 @@ type FormContents = {
 
 export default function Forms() {
   const { handleSubmit, register } = useForm<FormContents>()
-  const setPlaylistBase = useSetRecoilState(currentPlaylistBaseState)
+  const setPlaylistBase = useSetRecoilState(playlistBaseState)
+  const isImageLoading = useRecoilValue(isImageLoadingState)
 
   const onSubmit = (data: FormContents) => {
     const { url } = data
     if (url == null) return
 
     const base = getListBase(url)
+    if (base === undefined) return
     setPlaylistBase(base)
   }
 
@@ -28,7 +30,7 @@ export default function Forms() {
           <FormLabel>KiiteプレイリストのURL</FormLabel>
           <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("url")} />
         </Box>
-        <Button type="submit" colorScheme={"cyan"} color={"white"}>生成</Button>
+        <Button type="submit" colorScheme={"cyan"} color={"white"} isLoading={isImageLoading}>生成</Button>
       </VStack>
     </form>
   )
