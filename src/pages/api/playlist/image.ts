@@ -18,11 +18,10 @@ export default async function image(req: NextApiRequest, res: NextApiResponse) {
         res.status(200)
         res.setHeader("content-Type", 'image/jpeg')
         res.send(buffer)
+        return res.end()
     } catch (e) {
         if (e instanceof Error) {
             res.status(400).json({ error: e.message })
         }
-    } finally {
-        res.end()
     }
 }
