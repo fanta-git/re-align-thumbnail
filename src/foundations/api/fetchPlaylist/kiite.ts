@@ -1,8 +1,8 @@
 import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
-import { zipFull } from "@/util/generators"
 import axios from "axios"
 import { Song } from "@/types/playlist"
 import { SONG_TYPES } from "@/consts/playlist"
+import { zipAll } from "@/util/arrays"
 
 export async function kiite (listId: string): Promise<Song[] | undefined> {
     const params = {
@@ -31,7 +31,7 @@ function extractYoutSong (description: string) {
     const ids = description.match(/(?<=https:\/\/www\.youtube\.com\/watch\?v=)\w+/g) ?? []
     const orders = description.match(/(?<=^>>).*$/mg)?.at(-1)?.match(/-?\d+(\.\d+)?/g)?.map(Number) ?? []
 
-    return [...zipFull(ids, orders)]
+    return zipAll(ids, orders)
         .filter(([id, order]) => id !== undefined)
         .map(([id, order]) => ({
             type: SONG_TYPES.YOUTUBE,

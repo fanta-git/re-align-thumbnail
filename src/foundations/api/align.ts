@@ -1,30 +1,35 @@
-import { range, zip } from '@/util/generators'
+import { expansion, range, zip } from '@/util/arrays'
 import axios from 'axios'
 import sharp from 'sharp'
 
 export async function align(urls: string[]) {
-    const buffers = urls.map(url => axios({ url, responseType: "arraybuffer" }).then(v => v.data as Buffer))
-    const images = await Promise.all(buffers.map(async (v) =>
-        sharp(await v).resize({
-            height: 90,
-            width: 160,
-        })
-    ))
+    const buffersPromise = urls.map(url =>
+        axios.get<Buffer>(url, { responseType: "arraybuffer" })
+            .then(v => sharp(v.data)
+                .resize({
+                    height: 90,
+                    width: 160
+                })
+                .toBuffer()
+            )
+    )
+    const buffers = await Promise.all(buffersPromise)
 
-    const coord = [...range(10)].flatMap(y => [...range(10)].map(x => [x, y] as const))
+    const coord = expansion(range(10), range(10))
+    const compositer =
+        zip(coord, buffers)
+            .map(([[y, x], buffer]) => ({
+                input: buffer,
+                top: y * 90,
+                left: x * 160
+            }))
 
-    const background = sharp({ create: {
-        width: 1600,
-        height: 900,
-        channels: 3,
-        background: { r: 255, g: 255, b: 255 }
-    } })
-
-    const compositer = await Promise.all([...zip(coord, images)].map(async ([[x, y], image]) => ({
-        input: await image.toBuffer(),
-        top: y * 90,
-        left: x * 160
-    })))
-
-    return background.composite(compositer)
+    return sharp({
+        create: {
+            width: 1600,
+            height: 900,
+            channels: 3,
+            background: { r: 255, g: 255, b: 255 }
+        }
+    }).composite(compositer)
 }
