@@ -1,13 +1,12 @@
+import { ALIGN_QUERY } from "@/consts/schema";
 import { align } from "@/foundations/api/align";
 import fetchPlaylist from "@/foundations/api/fetchPlaylist";
 import fetchThumbnails from "@/foundations/api/fetchThumbnails";
-import { getPlaylistQuery } from "@/foundations/api/getQuery";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function image(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const query = getPlaylistQuery(req)
-        if (query === undefined) return res.status(400).json({ error: 'invalid query' })
+        const query = ALIGN_QUERY.parse(req.query)
 
         const { type, id } = query
         const songs = await fetchPlaylist(type, id)
