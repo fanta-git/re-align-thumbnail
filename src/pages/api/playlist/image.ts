@@ -12,7 +12,7 @@ export default async function image(req: NextApiRequest, res: NextApiResponse) {
         const songs = await fetchPlaylist(type, id)
         if (songs === undefined) return res.status(400).json({ error: 'faild fetch playlist' })
         const thumbnails = await fetchThumbnails(songs) as string[]
-        const alignedSharp = await align(thumbnails)
+        const alignedSharp = await align(thumbnails, query)
         const buffer = await alignedSharp.jpeg().toBuffer()
         res.status(200)
         res.setHeader("content-Type", 'image/jpeg')
