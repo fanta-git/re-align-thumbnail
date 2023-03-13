@@ -1,9 +1,9 @@
 export type FormContents = {
     url: string,
-    columns: number,
-    rows: number,
-    width: number,
-    height: number,
-    outputWidth: number,
-    outputHeight: number
+    columns: string,
+    rows: string,
+    width: string,
+    height: string,
+    outputWidth: string,
+    outputHeight: string
 }

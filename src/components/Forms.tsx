@@ -1,22 +1,24 @@
-import { getListBase } from "@/foundations/getListBase";
-import { isImageLoadingState, formContentsState } from "@/stores/playlist";
+import { getImageUrl } from "@/foundations/getImageUrl";
+import { imageUrlState, isImageLoadingState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Box, Button, FormLabel, Input, InputGroup, InputRightAddon, Radio, RadioGroup, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function Forms() {
   const { handleSubmit, register } = useForm<FormContents>()
-  const setFormContents = useSetRecoilState(formContentsState)
+  const setImageUrl = useSetRecoilState(imageUrlState)
+  const setIsImageLoading = useSetRecoilState(isImageLoadingState)
   const isImageLoading = useRecoilValue(isImageLoadingState)
 
   const onSubmit = (data: FormContents) => {
     console.log(data);
-    if (data == null) return
+    const url = getImageUrl(data)
+    if (url == null) return
 
-    setFormContents(data)
+    setIsImageLoading(true)
+    setImageUrl(url)
   }
 
   const [value, setValue] = useState('2')
