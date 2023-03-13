@@ -1,34 +1,22 @@
 import { getListBase } from "@/foundations/getListBase";
-import { isImageLoadingState, playlistBaseState } from "@/stores/playlist";
+import { isImageLoadingState, formContentsState } from "@/stores/playlist";
+import { FormContents } from "@/types/form";
 import { Box, Button, FormLabel, Input, InputGroup, InputRightAddon, Radio, RadioGroup, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-type FormContents = {
-  url: string,
-  columns: number,
-  rows: number,
-  width: number,
-  height: number,
-  outputWidth: number,
-  outputHeight: number
-}
-
 export default function Forms() {
   const { handleSubmit, register } = useForm<FormContents>()
-  const setPlaylistBase = useSetRecoilState(playlistBaseState)
+  const setFormContents = useSetRecoilState(formContentsState)
   const isImageLoading = useRecoilValue(isImageLoadingState)
 
   const onSubmit = (data: FormContents) => {
     console.log(data);
-    const { url } = data
-    if (url == null) return
+    if (data == null) return
 
-    const base = getListBase(url)
-    if (base === undefined) return
-    setPlaylistBase(base)
+    setFormContents(data)
   }
 
   const [value, setValue] = useState('2')
@@ -46,8 +34,8 @@ export default function Forms() {
               <Thead>
                 <Tr>
                   <Th>固定</Th>
-                  <Th>縦</Th>
                   <Th>横</Th>
+                  <Th>縦</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -72,13 +60,13 @@ export default function Forms() {
                   <Td><Radio value={'1'}>サムネイル</Radio></Td>
                   <Td>
                     <InputGroup>
-                      <Input type={"number"} defaultValue={90} min={1} {...register("width")} />
+                      <Input type={"number"} defaultValue={160} min={1} {...register("width")} />
                       <InputRightAddon>px</InputRightAddon>
                     </InputGroup>
                   </Td>
                   <Td>
                     <InputGroup>
-                      <Input type={"number"} defaultValue={160} min={1} {...register("height")} />
+                      <Input type={"number"} defaultValue={90} min={1} {...register("height")} />
                       <InputRightAddon>px</InputRightAddon>
                     </InputGroup>
                   </Td>
@@ -89,13 +77,13 @@ export default function Forms() {
                   <Td><Radio value={'2'}>出力画像</Radio></Td>
                   <Td>
                     <InputGroup>
-                      <Input type={"number"} defaultValue={900} min={1} {...register("outputWidth")} />
+                      <Input type={"number"} defaultValue={1600} min={1} {...register("outputWidth")} />
                       <InputRightAddon>px</InputRightAddon>
                     </InputGroup>
                   </Td>
                   <Td>
                     <InputGroup>
-                      <Input type={"number"} defaultValue={1600} min={1} {...register("outputHeight")} />
+                      <Input type={"number"} defaultValue={900} min={1} {...register("outputHeight")} />
                       <InputRightAddon>px</InputRightAddon>
                     </InputGroup>
                   </Td>
