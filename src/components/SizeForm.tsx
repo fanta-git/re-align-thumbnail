@@ -15,7 +15,7 @@ export function SizeForm () {
                         {sizeFormHeads.map((v, i) => (<Th key={i}>{v}</Th>))}
                     </Tr>
                 </Thead>
-                {sizeFormItemData.map((v, i) => <SizeFormItem key={i} data={v} index={i} />)}
+                {sizeFormItemData.map((v, i) => <SizeFormItem key={i} data={v} index={i} disabled={value === String(i)} />)}
             </Table>
             </TableContainer>
         </RadioGroup>

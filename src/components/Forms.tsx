@@ -9,8 +9,8 @@ import { SizeForm } from "./SizeForm";
 export default function Forms() {
   const formMethods = useForm<FormContents>();
   const { handleSubmit, register } = formMethods
-  const setImageUrl = useSetRecoilState(imageUrlState)
   const [isImageLoading, setIsImageLoading] = useRecoilState(isImageLoadingState)
+  const setImageUrl = useSetRecoilState(imageUrlState)
 
   const onSubmit = (data: FormContents) => {
     const url = getImageUrl(data)

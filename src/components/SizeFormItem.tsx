@@ -4,11 +4,12 @@ import { useFormContext } from "react-hook-form";
 
 type Props = {
     data: SizeFormItemData,
-    index: number
+    index: number,
+    disabled: boolean
 }
 
 export function SizeFormItem(props: Props) {
-    const { data, index } = props
+    const { data, index, disabled } = props
     const { register } = useFormContext<FormContents>()
 
     return (
@@ -21,7 +22,7 @@ export function SizeFormItem(props: Props) {
                     data.item.map(v => (
                         <Td key={v.register}>
                             <InputGroup>
-                                <Input {...v.inputProps} {...register(v.register)} />
+                                <Input {...v.inputProps} disabled={disabled} {...register(v.register)} />
                                 <InputRightAddon>{v.prefix}</InputRightAddon>
                             </InputGroup>
                         </Td>
