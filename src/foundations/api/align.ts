@@ -1,6 +1,5 @@
 import { ThumbnailBase } from '@/types/playlist'
 import { expansion, range, zip } from '@/util/arrays'
-import axios from 'axios'
 import sharp from 'sharp'
 import { getBuffer } from './getBuffer'
 
