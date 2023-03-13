@@ -15,7 +15,7 @@ export function SizeFormItem(props: Props) {
     return (
         <Tbody>
             <Tr>
-                <Td>
+                <Td colSpan={data.item.length ? 1 : 3}>
                     <Radio value={String(index)}>{data.label}</Radio>
                 </Td>
                 {

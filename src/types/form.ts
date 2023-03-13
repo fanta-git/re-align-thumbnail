@@ -1,4 +1,6 @@
+import { fieldNames } from "@/consts/form"
 import { InputProps } from "@chakra-ui/react"
+import { Values } from "./util"
 
 export type FormContents = {
     url: string,
@@ -18,3 +20,5 @@ export type SizeFormItemData = {
         inputProps: InputProps,
     }[]
 }
+
+export type SizeFormValues = Record<Values<typeof fieldNames>, number>

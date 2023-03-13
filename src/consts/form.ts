@@ -1,6 +1,6 @@
-import { SizeFormItemData } from "@/types/form"
+import { FormContents, SizeFormItemData } from "@/types/form"
 
-export const sizeFormHeads = ["固定", "横", "縦"]
+export const sizeFormHeads = ["自動入力", "横", "縦"]
 export const sizeFormItemData: SizeFormItemData[] = [{
     label: "グリッド数",
     item: [{
@@ -58,4 +58,9 @@ export const sizeFormItemData: SizeFormItemData[] = [{
             min: 1
         }
     }]
+}, {
+    label: "数値の自動入力を行わない",
+    item: []
 }]
+
+export const fieldNames = ["columns", "rows", "width", "height", "outputWidth", "outputHeight"] as const satisfies readonly (keyof FormContents)[]
