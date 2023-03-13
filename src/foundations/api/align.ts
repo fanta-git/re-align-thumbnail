@@ -1,6 +1,8 @@
+import { ThumbnailBase } from '@/types/playlist'
 import { expansion, range, zip } from '@/util/arrays'
 import axios from 'axios'
 import sharp from 'sharp'
+import { getBuffer } from './getBuffer'
 
 type Options = {
     width: number,
@@ -9,24 +11,16 @@ type Options = {
     rows: number
 }
 
-export async function align(urls: string[], options: Options) {
+export async function align(thumbnailBases: (ThumbnailBase | undefined)[], options: Options) {
     const { width, height, columns, rows } = options
 
-    const buffersPromise = urls.map(url =>
-        axios.get<Buffer>(url, { responseType: "arraybuffer" })
-            .then(v => sharp(v.data)
-                .trim('#101010')
-                .resize({ height, width })
-                .toBuffer()
-            )
-    )
-    const buffers = await Promise.all(buffersPromise)
-
+    const buffers = await Promise.all(thumbnailBases.map(v => getBuffer(v, { width, height })))
     const coord = expansion(range(rows), range(columns))
     const compositer =
         zip(coord, buffers)
+            .filter(([_, buffers]) => buffers)
             .map(([[y, x], buffer]) => ({
-                input: buffer,
+                input: buffer!,
                 top: y * height,
                 left: x * width
             }))

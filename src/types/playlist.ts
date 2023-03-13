@@ -20,6 +20,7 @@ export type Song = {
     id: string
 }
 
-export type SongWithThumbnail = Song & {
-    thumbnailUrl: string
+export type ThumbnailBase = {
+    type: SongType,
+    url: string
 }
