@@ -15,6 +15,7 @@ export function SizeForm () {
     useEffect(() => {
         const sizeFormValues = Object.fromEntries(zip(fieldNames, watchFields.map(Number))) as SizeFormValues
         const fixedFixedValue = setFixedValue[fixed as '0' | '1' | '2' | '3'](sizeFormValues)
+        console.log(fixedFixedValue);
         for (const [target, value] of Object.entries(fixedFixedValue) as [typeof fieldNames[number], number][]) {
             if (sizeFormValues[target] !== value) setValue(target, String(value))
         }
