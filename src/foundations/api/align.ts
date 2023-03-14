@@ -13,21 +13,28 @@ type Options = {
 export async function align(thumbnailBases: (ThumbnailBase | undefined)[], options: Options) {
     const { width, height, columns, rows } = options
 
-    const buffers = await Promise.all(thumbnailBases.map(v => getBuffer(v, { width, height })))
-    const coord = expansion(range(rows), range(columns))
+    const outputWidth = width * columns | 0
+    const outputHeight = height * rows | 0
+
+    const coordColumns = range(columns).map(v => v * width | 0)
+    const coordRows = range(rows).map(v => v * height | 0)
+    const coord = expansion(coordRows, coordColumns)
+
+    const correctedWidths = coordColumns.map((v, i, a) => (a[i + 1] ?? outputWidth) - v)
+    const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? outputHeight) - v)
+    const corrected = expansion(correctedHeights, correctedWidths)
+
+    const buffers = await Promise.all(zip(thumbnailBases, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
+
     const compositer =
-        zip(coord, buffers)
-            .filter(([_, buffers]) => buffers)
-            .map(([[y, x], buffer]) => ({
-                input: buffer!,
-                top: y * height,
-                left: x * width
-            }))
+        zip(buffers, coord)
+            .filter(([buffers]) => buffers)
+            .map(([input, [top, left]]) => ({ input, top, left }))
 
     return sharp({
         create: {
-            width: width * columns,
-            height: height * rows,
+            width: outputWidth,
+            height: outputHeight,
             channels: 3,
             background: { r: 255, g: 255, b: 255 }
         }
