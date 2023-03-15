@@ -1,8 +1,13 @@
-import { FormContents, SizeFormItemData } from "@/types/form"
+import { SizeFormItemData } from "@/types/form"
 
-export const sizeFormHeads = ["自動入力", "横", "縦"]
+export const sizeFormHeads = ["自動入力", "横", "縦"] as const
+export const SIZE_FORM_LABELS = {
+    GRID: "グリッド数",
+    THUMBNAIL: "サムネイル",
+    OUTPUT: "出力画像"
+} as const
 export const sizeFormItemData: SizeFormItemData[] = [{
-    label: "グリッド数",
+    label: SIZE_FORM_LABELS.GRID,
     item: [{
         register: "columns",
         prefix: "列",
@@ -21,7 +26,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         }
     }]
 }, {
-    label: "サムネイル",
+    label: SIZE_FORM_LABELS.THUMBNAIL,
     item: [{
         register: "width",
         prefix: "px",
@@ -40,7 +45,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         }
     }]
 }, {
-    label: "出力画像",
+    label: SIZE_FORM_LABELS.OUTPUT,
     item: [{
         register: "outputWidth",
         prefix: "px",
@@ -58,9 +63,4 @@ export const sizeFormItemData: SizeFormItemData[] = [{
             min: 1
         }
     }]
-}, {
-    label: "数値の自動入力を行わない",
-    item: []
 }]
-
-export const fieldNames = ["columns", "rows", "width", "height", "outputWidth", "outputHeight"] as const satisfies readonly (keyof FormContents)[]

@@ -4,19 +4,18 @@ import { useFormContext } from "react-hook-form";
 
 type Props = {
     data: SizeFormItemData,
-    index: number,
     disabled: boolean
 }
 
 export function SizeFormItem(props: Props) {
-    const { data, index, disabled } = props
+    const { data, disabled } = props
     const { register } = useFormContext<FormContents>()
 
     return (
         <Tbody>
             <Tr>
                 <Td colSpan={data.item.length ? 1 : 3}>
-                    <Radio value={String(index)}>{data.label}</Radio>
+                    <Radio value={data.label}>{data.label}</Radio>
                 </Td>
                 {
                     data.item.map(v => (
