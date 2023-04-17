@@ -52,7 +52,8 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         inputProps: {
             type: "number",
             defaultValue: 160,
-            min: 1
+            min: 1,
+            step: 0.01
         }
     }, {
         register: "height",
@@ -60,7 +61,8 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         inputProps: {
             type: "number",
             defaultValue: 90,
-            min: 1
+            min: 1,
+            step: 0.01
         }
     }]
 }]
