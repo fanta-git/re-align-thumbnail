@@ -30,5 +30,8 @@ export function range(max: number) {
 
 export function expansion<T extends readonly any[]>(...targets:  { [P in keyof T]: readonly T[P][] }) {
     return targets.reduce((p, c) => p.flatMap(v => c.map(w => [...v, w])), [[]]) as T[]
+}
 
+export function createObject<T extends string | number | symbol, U>(keys: readonly T[], values: readonly U[]) {
+    return Object.fromEntries(zip(keys, values)) as Record<T, U>
 }
