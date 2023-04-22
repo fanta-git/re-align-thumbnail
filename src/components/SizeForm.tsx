@@ -1,32 +1,30 @@
 import { sizeFormHeads, sizeFormItemData, sizeFormItems } from "@/consts/form";
 import fixFixedValues from "@/foundations/fixFixedValues";
-import { FormContents, SizeFormLabels } from "@/types/form";
+import { FormContents } from "@/types/form";
 import { createObject } from "@/util/arrays";
 import { Input, InputGroup, InputRightAddon, Radio, RadioGroup, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-const targets = Object.keys(fixFixedValues) as (keyof typeof fixFixedValues)[]
+const targets = sizeFormItems.map(v => v.register)
 
 export function SizeForm () {
-    const [fixed, setFixed] = useState<SizeFormLabels>(sizeFormItemData.at(-1)!.label)
+    const [fixed, setFixed] = useState(sizeFormItemData.length - 1)
     const { register, watch, setValue } = useFormContext<FormContents>()
     const watchFields = watch(targets)
-    const oldField = useRef<string[]>([])
+    const oldField = useRef(watchFields)
 
     useEffect(() => {
-        const changedIndex = watchFields.findIndex((v, i) => v !== oldField.current[i])
-        if (changedIndex === -1) return
+        const currentCell = sizeFormItems.find((_, i) => watchFields[i] !== oldField.current[i])
+        const fixedItem = sizeFormItemData[fixed]
+        if (currentCell === undefined || fixedItem === undefined) return
         oldField.current = [...watchFields]
 
-        const currentCell = sizeFormItems.find(v => v.register === targets[changedIndex])
-        if (currentCell === undefined) return
-
-        const fixedItem = sizeFormItemData.find(v => v.label === fixed)
-        const fixedCell = fixedItem?.item.find(v => v.type === currentCell.type)
-        if (fixedCell === undefined) return
-
-        const targetCell = sizeFormItems.find(v => (v.type === currentCell.type) && ![currentCell, fixedCell].includes(v))
+        const targetCell = sizeFormItems.find(v =>
+            v.type === currentCell.type
+            && v !== currentCell
+            && !fixedItem.item.includes(v)
+        )
         if (targetCell === undefined) return
 
         const targetName = targetCell.register
@@ -36,7 +34,7 @@ export function SizeForm () {
     }, [watchFields, fixed, setValue])
 
     return (
-        <RadioGroup onChange={(v: SizeFormLabels) => setFixed(v)} value={fixed}>
+        <RadioGroup onChange={v => setFixed(Number(v))} value={String(fixed)}>
             <TableContainer>
                 <Table variant='simple'>
                     <Thead>
@@ -48,12 +46,12 @@ export function SizeForm () {
                         <Tbody key={i}>
                             <Tr>
                                 <Td>
-                                    <Radio value={data.label}>{data.label}</Radio>
+                                    <Radio value={String(i)}>{data.label}</Radio>
                                 </Td>
                                 {data.item.map(item => (
                                     <Td key={item.register}>
                                         <InputGroup>
-                                            <Input {...item.inputProps} disabled={fixed === data.label} {...register(item.register)} />
+                                            <Input {...item.inputProps} disabled={fixed === i} {...register(item.register)} />
                                             <InputRightAddon>{item.prefix}</InputRightAddon>
                                         </InputGroup>
                                     </Td>
