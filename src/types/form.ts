@@ -25,6 +25,7 @@ export type SizeFormItemData = {
         type: SizeFormType,
         register: keyof SizeFormContents,
         prefix: string,
+        defaultValue: string,
         inputProps: InputProps,
     }[]
 }

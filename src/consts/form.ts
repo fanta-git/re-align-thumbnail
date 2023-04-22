@@ -16,18 +16,18 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "columns",
         prefix: "列",
         type: SIZE_FORM_TYPE.H,
+        defaultValue: '10',
         inputProps: {
             type: "number",
-            defaultValue: 10,
             min: 1
         }
     }, {
         register: "rows",
         prefix: "行",
         type: SIZE_FORM_TYPE.V,
+        defaultValue: '10',
         inputProps: {
             type: "number",
-            defaultValue: 10,
             min: 1
         }
     }]
@@ -37,18 +37,18 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "outputWidth",
         prefix: "px",
         type: SIZE_FORM_TYPE.H,
+        defaultValue: '1600',
         inputProps: {
             type: "number",
-            defaultValue: 1600,
             min: 1
         }
     }, {
         register: "outputHeight",
         prefix: "px",
         type: SIZE_FORM_TYPE.V,
+        defaultValue: '900',
         inputProps: {
             type: "number",
-            defaultValue: 900,
             min: 1
         }
     }]
@@ -58,9 +58,9 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "width",
         prefix: "px",
         type: SIZE_FORM_TYPE.H,
+        defaultValue: '160',
         inputProps: {
             type: "number",
-            defaultValue: 160,
             min: 1,
             step: 0.01
         }
@@ -68,11 +68,13 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "height",
         prefix: "px",
         type: SIZE_FORM_TYPE.V,
+        defaultValue: '90',
         inputProps: {
             type: "number",
-            defaultValue: 90,
             min: 1,
             step: 0.01
         }
     }]
 }]
+export const sizeFormItems = sizeFormItemData.flatMap(v => v.item);
+

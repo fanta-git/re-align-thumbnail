@@ -1,4 +1,4 @@
-import { sizeFormHeads, sizeFormItemData } from "@/consts/form";
+import { sizeFormHeads, sizeFormItemData, sizeFormItems } from "@/consts/form";
 import fixFixedValues from "@/foundations/fixFixedValues";
 import { FormContents, SizeFormLabels } from "@/types/form";
 import { createObject } from "@/util/arrays";
@@ -6,7 +6,6 @@ import { Input, InputGroup, InputRightAddon, Radio, RadioGroup, Table, TableCont
 import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-const sizeFormItems = sizeFormItemData.flatMap(v => v.item);
 const targets = Object.keys(fixFixedValues) as (keyof typeof fixFixedValues)[]
 
 export function SizeForm () {

@@ -1,13 +1,16 @@
+import { sizeFormItemData, sizeFormItems } from "@/consts/form";
 import { getImageUrl } from "@/foundations/getImageUrl";
 import { imageUrlState, isImageLoadingState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
+import { createObject } from "@/util/arrays";
 import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { SizeForm } from "./SizeForm";
 
 export default function Forms() {
-  const formMethods = useForm<FormContents>();
+  const defaultValues = createObject(sizeFormItems.map(v => v.register), sizeFormItems.map(v => v.defaultValue))
+  const formMethods = useForm<FormContents>({ defaultValues });
   const { handleSubmit, register } = formMethods
   const [isImageLoading, setIsImageLoading] = useRecoilState(isImageLoadingState)
   const setImageUrl = useSetRecoilState(imageUrlState)
