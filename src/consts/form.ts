@@ -1,6 +1,6 @@
 import { SizeFormItemData } from "@/types/form"
 
-export const sizeFormHeads = ["自動入力", "横", "縦"] as const
+export const sizeFormHeads = ["", "横", "縦"] as const
 export const SIZE_FORM_TYPE = {
     V: "vertical",
     H: "horizontal"
@@ -61,8 +61,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         defaultValue: '160',
         inputProps: {
             type: "number",
-            min: 1,
-            step: 0.01
+            isDisabled: true
         }
     }, {
         register: "height",
@@ -71,8 +70,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         defaultValue: '90',
         inputProps: {
             type: "number",
-            min: 1,
-            step: 0.01
+            isDisabled: true
         }
     }]
 }]

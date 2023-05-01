@@ -3,7 +3,8 @@ import { InputProps } from "@chakra-ui/react"
 import { ValuesObj } from "./util"
 
 export type FormContents = {
-    url: string
+    url: string,
+    isFix: boolean
 } & SizeFormContents
 
 export type SizeFormContents = {

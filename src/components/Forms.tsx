@@ -9,8 +9,13 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { SizeForm } from "./SizeForm";
 
 export default function Forms() {
-  const defaultValues = createObject(sizeFormItems.map(v => v.register), sizeFormItems.map(v => v.defaultValue))
-  const formMethods = useForm<FormContents>({ defaultValues });
+  const sizeFormDefault = createObject(sizeFormItems.map(v => v.register), sizeFormItems.map(v => v.defaultValue))
+  const formMethods = useForm<FormContents>({
+    defaultValues: {
+      ...sizeFormDefault,
+      isFix: true
+    }
+  });
   const { handleSubmit, register } = formMethods
   const [isImageLoading, setIsImageLoading] = useRecoilState(isImageLoadingState)
   const setImageUrl = useSetRecoilState(imageUrlState)
