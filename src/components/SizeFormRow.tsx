@@ -1,39 +1,37 @@
 import { SIZE_FORM_LABELS } from "@/consts/form";
 import { FormContents, SizeFormContents, SizeFormItemData } from "@/types/form";
 import { orgRound } from "@/util/number";
-import { Input, InputGroup, InputRightAddon, Tbody, Td, Tr } from "@chakra-ui/react";
+import { InputGroup, InputRightAddon, NumberInput, NumberInputField, Tbody, Td, Tr } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 type Props = {
     data: SizeFormItemData
 }
 
-const autoCompleteTargets = [SIZE_FORM_LABELS.GRID, SIZE_FORM_LABELS.OUTPUT]
-
 export function SizeFormRow (props: Props) {
     const { data } = props
-    const { register, getValues, setValue } = useFormContext<FormContents>()
+    const { control, getValues, setValue } = useFormContext<FormContents>()
     const name = data.item.map(v => v.register)
     const fields = useWatch<SizeFormContents>({ name })
 
     useEffect(() => {
         const values = getValues()
-        if (values.isFix) {
+        if (values.isFixed) {
             if (data.label === SIZE_FORM_LABELS.GRID) {
-                const outputWidth = String(orgRound(+values.width * +values.columns, 2))
-                const outputHeight = String(orgRound(+values.height * +values.rows, 2))
+                const outputWidth = orgRound(values.width * values.columns, 2)
+                const outputHeight = orgRound(values.height * values.rows, 2)
                 if (outputWidth !== values.outputWidth) setValue("outputWidth", outputWidth)
                 if (outputHeight !== values.outputHeight) setValue("outputHeight", outputHeight)
             } else if (data.label === SIZE_FORM_LABELS.OUTPUT) {
-                const columns = String(orgRound(+values.outputWidth / +values.width))
-                const rows = String(orgRound(+values.outputHeight / +values.height))
+                const columns = orgRound(values.outputWidth / values.width)
+                const rows = orgRound(values.outputHeight / values.height)
                 if (columns !== values.columns) setValue("columns", columns)
                 if (rows !== values.rows) setValue("rows", rows)
             }
         } else {
-            const width = String(orgRound(+values.outputWidth / +values.columns, 2))
-            const height = String(orgRound(+values.outputHeight / +values.rows, 2))
+            const width = orgRound(values.outputWidth / values.columns, 2)
+            const height = orgRound(values.outputHeight / values.rows, 2)
             if (width !== values.width) setValue("width", width)
             if (height !== values.height) setValue("height", height)
         }
@@ -45,10 +43,26 @@ export function SizeFormRow (props: Props) {
                 <Td>{data.label}</Td>
                 {data.item.map(item => (
                     <Td key={item.register}>
-                        <InputGroup>
-                            <Input {...item.inputProps} {...register(item.register)} />
-                            <InputRightAddon>{item.prefix}</InputRightAddon>
-                        </InputGroup>
+                        <Controller
+                            name={item.register}
+                            control={control}
+                            render={({ field: { ref, ...restField } }) => (
+                                <NumberInput {...restField} {...item.inputProps}  >
+                                    <InputGroup>
+                                        <NumberInputField
+                                            onChange={(event) => {
+                                                restField.onChange(parseInt(event.target.value))
+                                                setValue(item.register, parseInt(event.target.value))
+                                            }}
+                                            ref={ref}
+                                            name={restField.name}
+                                            borderRightRadius={0}
+                                        />
+                                        <InputRightAddon>{item.prefix}</InputRightAddon>
+                                    </InputGroup>
+                                </NumberInput>
+                            )}
+                        />
                     </Td>
                 ))}
             </Tr>

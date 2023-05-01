@@ -13,7 +13,7 @@ export default function Forms() {
   const formMethods = useForm<FormContents>({
     defaultValues: {
       ...sizeFormDefault,
-      isFix: true
+      isFixed: true
     }
   });
   const { handleSubmit, register } = formMethods

@@ -16,18 +16,16 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "columns",
         prefix: "列",
         type: SIZE_FORM_TYPE.H,
-        defaultValue: '10',
+        defaultValue: 10,
         inputProps: {
-            type: "number",
             min: 1
         }
     }, {
         register: "rows",
         prefix: "行",
         type: SIZE_FORM_TYPE.V,
-        defaultValue: '10',
+        defaultValue: 10,
         inputProps: {
-            type: "number",
             min: 1
         }
     }]
@@ -37,18 +35,16 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "outputWidth",
         prefix: "px",
         type: SIZE_FORM_TYPE.H,
-        defaultValue: '1600',
+        defaultValue: 1600,
         inputProps: {
-            type: "number",
             min: 1
         }
     }, {
         register: "outputHeight",
         prefix: "px",
         type: SIZE_FORM_TYPE.V,
-        defaultValue: '900',
+        defaultValue: 900,
         inputProps: {
-            type: "number",
             min: 1
         }
     }]
@@ -58,18 +54,16 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         register: "width",
         prefix: "px",
         type: SIZE_FORM_TYPE.H,
-        defaultValue: '160',
+        defaultValue: 160,
         inputProps: {
-            type: "number",
             isDisabled: true
         }
     }, {
         register: "height",
         prefix: "px",
         type: SIZE_FORM_TYPE.V,
-        defaultValue: '90',
+        defaultValue: 90,
         inputProps: {
-            type: "number",
             isDisabled: true
         }
     }]

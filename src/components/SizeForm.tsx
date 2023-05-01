@@ -4,8 +4,6 @@ import { Checkbox, Table, TableContainer, Th, Thead, Tr } from "@chakra-ui/react
 import { useFormContext } from "react-hook-form";
 import { SizeFormRow } from "./SizeFormRow";
 
-const targets = sizeFormItems.map(v => v.register)
-
 export function SizeForm () {
     const { register } = useFormContext<FormContents>()
 
@@ -23,7 +21,7 @@ export function SizeForm () {
                     ))}
                 </Table>
             </TableContainer>
-            <Checkbox {...register("isFix")}>サムネイルのサイズを固定する</Checkbox>
+            <Checkbox {...register("isFixed")}>サムネイルのサイズを固定する</Checkbox>
         </>
     )
 }

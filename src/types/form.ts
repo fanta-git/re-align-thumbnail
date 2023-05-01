@@ -1,19 +1,19 @@
 import { SIZE_FORM_TYPE, SIZE_FORM_LABELS } from "@/consts/form"
-import { InputProps } from "@chakra-ui/react"
+import { InputProps, NumberInputProps } from "@chakra-ui/react"
 import { ValuesObj } from "./util"
 
 export type FormContents = {
     url: string,
-    isFix: boolean
+    isFixed: boolean
 } & SizeFormContents
 
 export type SizeFormContents = {
-    columns: string,
-    rows: string,
-    width: string,
-    height: string,
-    outputWidth: string,
-    outputHeight: string
+    columns: number,
+    rows: number,
+    width: number,
+    height: number,
+    outputWidth: number,
+    outputHeight: number
 }
 
 export type SizeFormLabels = ValuesObj<typeof SIZE_FORM_LABELS>
@@ -26,7 +26,7 @@ export type SizeFormItemData = {
         type: SizeFormType,
         register: keyof SizeFormContents,
         prefix: string,
-        defaultValue: string,
-        inputProps: InputProps,
+        defaultValue: number,
+        inputProps: NumberInputProps,
     }[]
 }
