@@ -1,8 +1,8 @@
-import { sizeFormHeads, sizeFormItemData, sizeFormItems } from "@/consts/form";
+import { sizeFormHeads, sizeFormItemData } from "@/consts/form";
 import { FormContents } from "@/types/form";
-import { Checkbox, Table, TableContainer, Th, Thead, Tr } from "@chakra-ui/react";
+import { Checkbox, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
-import { SizeFormRow } from "./SizeFormRow";
+import { SizeFormCell } from "./SizeFormCell";
 
 export function SizeForm () {
     const { register } = useFormContext<FormContents>()
@@ -17,7 +17,14 @@ export function SizeForm () {
                         </Tr>
                     </Thead>
                     {sizeFormItemData.map((data, i) => (
-                        <SizeFormRow key={i} data={data} />
+                        <Tbody key={i}>
+                            <Tr>
+                                <Td>{data.label}</Td>
+                                {data.item.map((item, i) => (
+                                    <SizeFormCell key={i} item={item} />
+                                ))}
+                            </Tr>
+                        </Tbody>
                     ))}
                 </Table>
             </TableContainer>
