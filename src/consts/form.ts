@@ -1,4 +1,5 @@
-import { SizeFormItemData } from "@/types/form"
+import { SizeFormContents, SizeFormItemData } from "@/types/form"
+import { orgRound } from "@/util/number"
 
 export const sizeFormHeads = ["", "横", "縦"] as const
 export const SIZE_FORM_TYPE = {
@@ -17,6 +18,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         prefix: "列",
         type: SIZE_FORM_TYPE.H,
         defaultValue: 10,
+        adjust: { output: "outputWidth", thumbnail: "width" },
         inputProps: {
             min: 1
         }
@@ -25,6 +27,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         prefix: "行",
         type: SIZE_FORM_TYPE.V,
         defaultValue: 10,
+        adjust: { output: "outputHeight", thumbnail: "height" },
         inputProps: {
             min: 1
         }
@@ -36,6 +39,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         prefix: "px",
         type: SIZE_FORM_TYPE.H,
         defaultValue: 1600,
+        adjust: { output: "columns", thumbnail: "width" },
         inputProps: {
             min: 1
         }
@@ -44,6 +48,7 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         prefix: "px",
         type: SIZE_FORM_TYPE.V,
         defaultValue: 900,
+        adjust: { output: "rows", thumbnail: "height" },
         inputProps: {
             min: 1
         }
@@ -68,5 +73,12 @@ export const sizeFormItemData: SizeFormItemData[] = [{
         }
     }]
 }]
-export const sizeFormItems = sizeFormItemData.flatMap(v => v.item);
-
+export const sizeFormItems = sizeFormItemData.flatMap(v => v.item)
+export const adjusters: Record<keyof SizeFormContents, (values: SizeFormContents) => number> = {
+    outputWidth: values => orgRound(values.columns * values.width, 2),
+    outputHeight: values => orgRound(values.rows * values.height, 2),
+    columns: values => orgRound(values.outputWidth / values.width),
+    rows: values => orgRound(values.outputHeight / values.height),
+    width: values => orgRound(values.outputWidth / values.columns, 2),
+    height: values => orgRound(values.outputHeight / values.rows, 2)
+}

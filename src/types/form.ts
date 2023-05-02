@@ -1,5 +1,5 @@
-import { SIZE_FORM_TYPE, SIZE_FORM_LABELS } from "@/consts/form"
-import { InputProps, NumberInputProps } from "@chakra-ui/react"
+import { SIZE_FORM_LABELS, SIZE_FORM_TYPE } from "@/consts/form"
+import { NumberInputProps } from "@chakra-ui/react"
 import { ValuesObj } from "./util"
 
 export type FormContents = {
@@ -27,6 +27,7 @@ export type SizeFormItemData = {
         register: keyof SizeFormContents,
         prefix: string,
         defaultValue: number,
+        adjust?: Record<"output" | "thumbnail", keyof SizeFormContents>,
         inputProps: NumberInputProps,
     }[]
 }
