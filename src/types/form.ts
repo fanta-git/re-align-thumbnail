@@ -1,5 +1,3 @@
-import { NumberInputProps } from "@chakra-ui/react"
-
 export type SizeFormContents = {
     columns: number,
     rows: number,

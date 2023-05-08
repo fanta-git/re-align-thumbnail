@@ -4,7 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { SizeFormCell } from "./SizeFormCell";
 
 export function SizeForm () {
-    const { register } = useFormContext<FormContents>()
+    const { register, watch } = useFormContext<FormContents>()
+    const [isFixed, width, height] = watch(["isFixed", "width", "height"])
 
     return (
         <>
@@ -24,13 +25,13 @@ export function SizeForm () {
                                 register={"columns"}
                                 prefix={"列"}
                                 adjust={{ output: "outputWidth", thumbnail: "width" }}
-                                inputProps={{ min: 1 }}
+                                inputProps={{ min: 1, step: 1 }}
                             />
                             <SizeFormCell
                                 register={"rows"}
                                 prefix={"行"}
                                 adjust={{ output: "outputHeight", thumbnail: "height" }}
-                                inputProps={{ min: 1 }}
+                                inputProps={{ min: 1, step: 1 }}
                             />
                         </Tr>
                     </Tbody>
@@ -41,13 +42,13 @@ export function SizeForm () {
                                 register={"outputWidth"}
                                 prefix={"px"}
                                 adjust={{ output: "columns", thumbnail: "width" }}
-                                inputProps={{ min: 160 }}
+                                inputProps={{ min: 160, step: isFixed ? width : 10 }}
                             />
                             <SizeFormCell
                             register={"outputHeight"}
                             prefix={"px"}
                             adjust={{ output: "rows", thumbnail: "height" }}
-                            inputProps={{ min: 90 }}
+                            inputProps={{ min: 90, step: isFixed ? height : 10 }}
                         />
                         </Tr>
                     </Tbody>

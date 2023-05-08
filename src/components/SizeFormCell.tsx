@@ -16,11 +16,9 @@ export function SizeFormCell (props: Props) {
     const { register, prefix, adjust, inputProps } = props
     const { control, getValues, setValue } = useFormContext<FormContents>()
     const field = useWatch<SizeFormContents>({ name: register })
-    console.log(props);
 
     useEffect(() => {
         const values = getValues()
-        console.log(values);
         const target = values.isFixed ? adjust.output : adjust.thumbnail
         if (target === undefined) return
         const adjusted = adjusters[target](values)
@@ -33,7 +31,7 @@ export function SizeFormCell (props: Props) {
                 name={register}
                 control={control}
                 render={({ field: { ref, ...restField } }) => (
-                    <NumberInput {...restField} {...inputProps}>
+                    <NumberInput {...restField} {...inputProps} isValidCharacter={s => /\d+/.test(s)}>
                         <InputGroup>
                             <NumberInputField
                                 onChange={e => setValue(register, parseInt(e.target.value))}
