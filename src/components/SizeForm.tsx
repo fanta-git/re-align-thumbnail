@@ -1,4 +1,3 @@
-import { sizeFormHeads, sizeFormItemData } from "@/consts/form";
 import { FormContents } from "@/types/form";
 import { Checkbox, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
@@ -13,19 +12,45 @@ export function SizeForm () {
                 <Table variant='simple'>
                     <Thead>
                         <Tr>
-                            {sizeFormHeads.map((v, i) => (<Th key={i}>{v}</Th>))}
+                            <Th></Th>
+                            <Th>横</Th>
+                            <Th>縦</Th>
                         </Tr>
                     </Thead>
-                    {sizeFormItemData.map((data, i) => (
-                        <Tbody key={i}>
-                            <Tr>
-                                <Td>{data.label}</Td>
-                                {data.item.map((item, i) => (
-                                    <SizeFormCell key={i} item={item} />
-                                ))}
-                            </Tr>
-                        </Tbody>
-                    ))}
+                    <Tbody>
+                        <Tr>
+                            <Td>グリッド数</Td>
+                            <SizeFormCell
+                                register={"columns"}
+                                prefix={"列"}
+                                adjust={{ output: "outputWidth", thumbnail: "width" }}
+                                inputProps={{ min: 1 }}
+                            />
+                            <SizeFormCell
+                                register={"rows"}
+                                prefix={"行"}
+                                adjust={{ output: "outputHeight", thumbnail: "height" }}
+                                inputProps={{ min: 1 }}
+                            />
+                        </Tr>
+                    </Tbody>
+                    <Tbody>
+                        <Tr>
+                            <Td>出力画像</Td>
+                            <SizeFormCell
+                                register={"outputWidth"}
+                                prefix={"px"}
+                                adjust={{ output: "columns", thumbnail: "width" }}
+                                inputProps={{ min: 160 }}
+                            />
+                            <SizeFormCell
+                            register={"outputHeight"}
+                            prefix={"px"}
+                            adjust={{ output: "rows", thumbnail: "height" }}
+                            inputProps={{ min: 90 }}
+                        />
+                        </Tr>
+                    </Tbody>
                 </Table>
             </TableContainer>
             <Checkbox {...register("isFixed")}>サムネイルのサイズを固定する</Checkbox>
