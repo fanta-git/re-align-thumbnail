@@ -1,11 +1,6 @@
-import { SIZE_FORM_LABELS, SIZE_FORM_TYPE } from "@/consts/form"
+import { SIZE_FORM_LABELS } from "@/consts/form"
 import { NumberInputProps } from "@chakra-ui/react"
 import { ValuesObj } from "./util"
-
-export type FormContents = {
-    url: string,
-    isFixed: boolean
-} & SizeFormContents
 
 export type SizeFormContents = {
     columns: number,
@@ -16,16 +11,18 @@ export type SizeFormContents = {
     outputHeight: number
 }
 
-export type SizeFormLabels = ValuesObj<typeof SIZE_FORM_LABELS>
+export type FormContents = {
+    url: string,
+    isFixed: boolean
+} & SizeFormContents
 
-export type SizeFormType = ValuesObj<typeof SIZE_FORM_TYPE>
+export type SizeFormLabels = ValuesObj<typeof SIZE_FORM_LABELS>
 
 export type SizeFormItemData = {
     label: SizeFormLabels,
     item: {
         register: keyof SizeFormContents,
         prefix: string,
-        defaultValue: number,
         adjust?: Record<"output" | "thumbnail", keyof SizeFormContents>,
         inputProps: NumberInputProps,
     }[]
