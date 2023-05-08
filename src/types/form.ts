@@ -23,7 +23,6 @@ export type SizeFormType = ValuesObj<typeof SIZE_FORM_TYPE>
 export type SizeFormItemData = {
     label: SizeFormLabels,
     item: {
-        type: SizeFormType,
         register: keyof SizeFormContents,
         prefix: string,
         defaultValue: number,

@@ -1,6 +1,5 @@
-import { adjusters } from "@/consts/form";
+import adjusters from "@/foundations/adjusters";
 import { FormContents, SizeFormContents, SizeFormItemData } from "@/types/form";
-import { orgRound } from "@/util/number";
 import { InputGroup, InputRightAddon, NumberInput, NumberInputField, Td } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
@@ -19,7 +18,7 @@ export function SizeFormCell (props: Props) {
         const target = values.isFixed ? item.adjust?.output : item.adjust?.thumbnail
         if (target === undefined) return
         const adjusted = adjusters[target](values)
-        if (adjusted !== values[target]) setValue(target, adjusted)
+        if (adjusted !== values[target]) setValue(target, adjusted, { shouldDirty: false })
     }, [item, field, getValues, setValue])
 
     return (

@@ -1,5 +1,4 @@
-import { SizeFormContents, SizeFormItemData } from "@/types/form"
-import { orgRound } from "@/util/number"
+import { SizeFormItemData } from "@/types/form"
 
 export const sizeFormHeads = ["", "横", "縦"] as const
 export const SIZE_FORM_TYPE = {
@@ -16,7 +15,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     item: [{
         register: "columns",
         prefix: "列",
-        type: SIZE_FORM_TYPE.H,
         defaultValue: 10,
         adjust: { output: "outputWidth", thumbnail: "width" },
         inputProps: {
@@ -25,7 +23,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     }, {
         register: "rows",
         prefix: "行",
-        type: SIZE_FORM_TYPE.V,
         defaultValue: 10,
         adjust: { output: "outputHeight", thumbnail: "height" },
         inputProps: {
@@ -37,7 +34,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     item: [{
         register: "outputWidth",
         prefix: "px",
-        type: SIZE_FORM_TYPE.H,
         defaultValue: 1600,
         adjust: { output: "columns", thumbnail: "width" },
         inputProps: {
@@ -46,7 +42,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     }, {
         register: "outputHeight",
         prefix: "px",
-        type: SIZE_FORM_TYPE.V,
         defaultValue: 900,
         adjust: { output: "rows", thumbnail: "height" },
         inputProps: {
@@ -58,7 +53,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     item: [{
         register: "width",
         prefix: "px",
-        type: SIZE_FORM_TYPE.H,
         defaultValue: 160,
         inputProps: {
             isDisabled: true
@@ -66,7 +60,6 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     }, {
         register: "height",
         prefix: "px",
-        type: SIZE_FORM_TYPE.V,
         defaultValue: 90,
         inputProps: {
             isDisabled: true
@@ -74,11 +67,3 @@ export const sizeFormItemData: SizeFormItemData[] = [{
     }]
 }]
 export const sizeFormItems = sizeFormItemData.flatMap(v => v.item)
-export const adjusters: Record<keyof SizeFormContents, (values: SizeFormContents) => number> = {
-    outputWidth: values => orgRound(values.columns * values.width, 2),
-    outputHeight: values => orgRound(values.rows * values.height, 2),
-    columns: values => orgRound(values.outputWidth / values.width),
-    rows: values => orgRound(values.outputHeight / values.height),
-    width: values => orgRound(values.outputWidth / values.columns, 2),
-    height: values => orgRound(values.outputHeight / values.rows, 2)
-}
