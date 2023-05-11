@@ -25,13 +25,13 @@ export function SizeForm () {
                                 register={"columns"}
                                 prefix={"列"}
                                 adjust={{ output: "outputWidth", thumbnail: "width" }}
-                                inputProps={{ min: 1, step: 1 }}
+                                inputProps={{ min: 1, step: 1, precision: 0 }}
                             />
                             <SizeFormCell
                                 register={"rows"}
                                 prefix={"行"}
                                 adjust={{ output: "outputHeight", thumbnail: "height" }}
-                                inputProps={{ min: 1, step: 1 }}
+                                inputProps={{ min: 1, step: 1, precision: 0 }}
                             />
                         </Tr>
                     </Tbody>
@@ -42,13 +42,13 @@ export function SizeForm () {
                                 register={"outputWidth"}
                                 prefix={"px"}
                                 adjust={{ output: "columns", thumbnail: "width" }}
-                                inputProps={{ min: 160, step: isFixed ? width : 10 }}
+                                inputProps={{ min: 160, step: isFixed ? width : 10, precision: 0 }}
                             />
                             <SizeFormCell
                             register={"outputHeight"}
                             prefix={"px"}
                             adjust={{ output: "rows", thumbnail: "height" }}
-                            inputProps={{ min: 90, step: isFixed ? height : 10 }}
+                            inputProps={{ min: 90, step: isFixed ? height : 10, precision: 0 }}
                         />
                         </Tr>
                     </Tbody>

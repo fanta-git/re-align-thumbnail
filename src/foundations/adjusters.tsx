@@ -1,11 +1,10 @@
 import { SizeFormContents } from "@/types/form";
-import { orgCeil, orgFloor } from "@/util/number";
 
 export default {
-    columns: v => orgCeil(v.outputWidth / v.width, 0),
-    rows: v => orgCeil(v.outputHeight / v.height, 0),
-    width: v => orgCeil(v.outputWidth / v.columns, 2),
-    height: v => orgCeil(v.outputHeight / v.rows, 2),
-    outputWidth: v => orgFloor(v.width * v.columns, 0),
-    outputHeight: v => orgFloor(v.height * v.rows, 0)
+    columns: v => Math.round(v.outputWidth / v.width),
+    rows: v => Math.round(v.outputHeight / v.height),
+    width: v => v.outputWidth / v.columns,
+    height: v => v.outputHeight / v.rows,
+    outputWidth: v => Math.round(v.width * v.columns),
+    outputHeight: v => Math.round(v.height * v.rows)
 } satisfies Record<keyof SizeFormContents, (v: SizeFormContents) => number>
