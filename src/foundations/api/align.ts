@@ -13,15 +13,15 @@ type Options = {
 export async function align(thumbnailBases: (ThumbnailBase | undefined)[], options: Options) {
     const { width, height, columns, rows } = options
 
-    const outputWidth = width * columns | 0
-    const outputHeight = height * rows | 0
+    const thumbnailWidth = width / columns
+    const thumbnailHeight = height / rows
 
-    const coordColumns = range(columns).map(v => v * width | 0)
-    const coordRows = range(rows).map(v => v * height | 0)
+    const coordColumns = range(columns).map(v => Math.round(v * thumbnailWidth))
+    const coordRows = range(rows).map(v => Math.round(v * thumbnailHeight))
     const coord = expansion(coordRows, coordColumns)
 
-    const correctedWidths = coordColumns.map((v, i, a) => (a[i + 1] ?? outputWidth) - v)
-    const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? outputHeight) - v)
+    const correctedWidths = coordColumns.map((v, i, a) => (a[i + 1] ?? width) - v)
+    const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? height) - v)
     const corrected = expansion(correctedHeights, correctedWidths)
 
     const buffers = await Promise.all(zip(thumbnailBases, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
@@ -33,8 +33,8 @@ export async function align(thumbnailBases: (ThumbnailBase | undefined)[], optio
 
     return sharp({
         create: {
-            width: outputWidth,
-            height: outputHeight,
+            width,
+            height,
             channels: 3,
             background: { r: 255, g: 255, b: 255 }
         }

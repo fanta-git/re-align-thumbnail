@@ -3,7 +3,7 @@ import { getListBase } from "./getListBase";
 
 export function getImageUrl (data: FormContents | undefined) {
     if (data === undefined) return
-    const { url, width, height, columns, rows } = data
+    const { url, outputWidth: width, outputHeight: height, columns, rows } = data
     const playlist = getListBase(url)
     if (playlist === undefined) return
     const { type, id } = playlist

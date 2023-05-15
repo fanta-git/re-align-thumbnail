@@ -5,7 +5,7 @@ import { SizeFormCell } from "./SizeFormCell";
 
 export function SizeForm () {
     const { register, watch } = useFormContext<FormContents>()
-    const [isFixed, width, height] = watch(["isFixed", "width", "height"])
+    const [isFixed, thumbnailWidth, thumbnailHeight] = watch(["isFixed", "thumbnailWidth", "thumbnailHeight"])
 
     return (
         <>
@@ -24,13 +24,13 @@ export function SizeForm () {
                             <SizeFormCell
                                 register={"columns"}
                                 prefix={"列"}
-                                adjust={{ output: "outputWidth", thumbnail: "width" }}
+                                adjust={{ output: "outputWidth", thumbnail: "thumbnailWidth" }}
                                 inputProps={{ min: 1, step: 1, precision: 0 }}
                             />
                             <SizeFormCell
                                 register={"rows"}
                                 prefix={"行"}
-                                adjust={{ output: "outputHeight", thumbnail: "height" }}
+                                adjust={{ output: "outputHeight", thumbnail: "thumbnailHeight" }}
                                 inputProps={{ min: 1, step: 1, precision: 0 }}
                             />
                         </Tr>
@@ -41,14 +41,14 @@ export function SizeForm () {
                             <SizeFormCell
                                 register={"outputWidth"}
                                 prefix={"px"}
-                                adjust={{ output: "columns", thumbnail: "width" }}
-                                inputProps={{ min: 160, step: isFixed ? width : 10, precision: 0 }}
+                                adjust={{ output: "columns", thumbnail: "thumbnailWidth" }}
+                                inputProps={{ min: 160, step: isFixed ? thumbnailWidth : 10, precision: 0 }}
                             />
                             <SizeFormCell
                             register={"outputHeight"}
                             prefix={"px"}
-                            adjust={{ output: "rows", thumbnail: "height" }}
-                            inputProps={{ min: 90, step: isFixed ? height : 10, precision: 0 }}
+                            adjust={{ output: "rows", thumbnail: "thumbnailHeight" }}
+                            inputProps={{ min: 90, step: isFixed ? thumbnailHeight : 10, precision: 0 }}
                         />
                         </Tr>
                     </Tbody>

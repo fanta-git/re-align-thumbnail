@@ -5,6 +5,6 @@ export const sizeFormDefaults = {
     rows: 10,
     outputWidth: 1600,
     outputHeight: 900,
-    width: 160,
-    height: 90,
+    thumbnailWidth: 160,
+    thumbnailHeight: 90,
 } satisfies SizeFormContents
