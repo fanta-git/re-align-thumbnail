@@ -1,8 +1,7 @@
 export * from './nicovideo'
 export * from './youtube'
 import { SongType } from '@/types/playlist'
-import { groupBy } from '@/util/arrays'
-import { zip } from '@/util/generators'
+import { groupBy, zip } from '@/util/arrays'
 import * as fetchThumbnailItems from '.'
 
 type Song = {

@@ -1,3 +1,4 @@
+import { ThumbnailBase } from "@/types/playlist"
 import axios from "axios"
 
 export async function nicovideo(ids: string[]) {
@@ -16,7 +17,7 @@ export async function nicovideo(ids: string[]) {
         }
     })
 
-    const related = new Map<string, string>(res.data.data.map((v: any) => [v.contentId, v.thumbnailUrl]))
+    const related = new Map<string, ThumbnailBase>(res.data.data.map((v: any) => [v.contentId, { type: 'nicovideo', url: v.thumbnailUrl }]))
 
     return ids.map(v => related.get(v))
 }

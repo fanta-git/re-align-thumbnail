@@ -1,30 +1,42 @@
-import { range, zip } from '@/util/generators'
-import axios from 'axios'
+import { ThumbnailBase } from '@/types/playlist'
+import { expansion, range, zip } from '@/util/arrays'
 import sharp from 'sharp'
+import { getBuffer } from './getBuffer'
 
-export async function align(urls: string[]) {
-    const buffers = urls.map(url => axios({ url, responseType: "arraybuffer" }).then(v => v.data as Buffer))
-    const images = await Promise.all(buffers.map(async (v) =>
-        sharp(await v).resize({
-            height: 90,
-            width: 160,
-        })
-    ))
+type Options = {
+    width: number,
+    height: number,
+    columns: number,
+    rows: number
+}
 
-    const coord = [...range(10)].flatMap(y => [...range(10)].map(x => [x, y] as const))
+export async function align(thumbnailBases: (ThumbnailBase | undefined)[], options: Options) {
+    const { width, height, columns, rows } = options
 
-    const background = sharp({ create: {
-        width: 1600,
-        height: 900,
-        channels: 3,
-        background: { r: 255, g: 255, b: 255 }
-    } })
+    const thumbnailWidth = width / columns
+    const thumbnailHeight = height / rows
 
-    const compositer = await Promise.all([...zip(coord, images)].map(async ([[x, y], image]) => ({
-        input: await image.toBuffer(),
-        top: y * 90,
-        left: x * 160
-    })))
+    const coordColumns = range(columns).map(v => Math.round(v * thumbnailWidth))
+    const coordRows = range(rows).map(v => Math.round(v * thumbnailHeight))
+    const coord = expansion(coordRows, coordColumns)
 
-    return background.composite(compositer)
+    const correctedWidths = coordColumns.map((v, i, a) => (a[i + 1] ?? width) - v)
+    const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? height) - v)
+    const corrected = expansion(correctedHeights, correctedWidths)
+
+    const buffers = await Promise.all(zip(thumbnailBases, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
+
+    const compositer =
+        zip(buffers, coord)
+            .filter(([buffers]) => buffers)
+            .map(([input, [top, left]]) => ({ input, top, left }))
+
+    return sharp({
+        create: {
+            width,
+            height,
+            channels: 3,
+            background: { r: 255, g: 255, b: 255 }
+        }
+    }).composite(compositer)
 }
