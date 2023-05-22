@@ -1,4 +1,3 @@
-import { sizeFormDefaults } from "@/consts/form";
 import adjusters from "@/foundations/adjusters";
 import { FormContents, SizeFormContents } from "@/types/form";
 import { InputGroup, InputRightAddon, NumberInput, NumberInputField, NumberInputProps, Td } from "@chakra-ui/react";
@@ -37,7 +36,7 @@ export function SizeFormCell (props: Props) {
                                 onChange={e => setValue(register, parseInt(e.target.value))}
                                 ref={ref}
                                 name={restField.name}
-                                defaultValue={sizeFormDefaults[register]}
+                                // defaultValue={sizeFormDefaults[register]}
                                 borderRightRadius={0}
                             />
                             <InputRightAddon>{prefix}</InputRightAddon>

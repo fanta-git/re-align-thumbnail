@@ -1,10 +1,11 @@
 import { sizeFormDefaults } from "@/consts/form";
 import { getImageUrl } from "@/foundations/getImageUrl";
-import { imageUrlState, isImageLoadingState } from "@/stores/playlist";
+import { imageUrlState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { SizeForm } from "./SizeForm";
 
 export default function Forms() {
@@ -15,15 +16,19 @@ export default function Forms() {
     }
   });
   const { handleSubmit, register } = formMethods
-  const [isImageLoading, setIsImageLoading] = useRecoilState(isImageLoadingState)
+  const [isImageLoading, setIsImageLoading] = useState<boolean>()
   const setImageUrl = useSetRecoilState(imageUrlState)
 
-  const onSubmit = (data: FormContents) => {
-    const url = getImageUrl(data)
-    if (url === undefined) return
+  const onSubmit = async (data: FormContents) => {
+    try {
+      setIsImageLoading(true)
+      const url = await getImageUrl(data)
+      if (url === undefined) return
 
-    setIsImageLoading(true)
-    setImageUrl(url)
+      setImageUrl(url)
+    } finally {
+      setIsImageLoading(false)
+    }
   }
 
   return (

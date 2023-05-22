@@ -7,14 +7,15 @@ import { KiiteApiList } from "@/types/kiiteapi"
 type SongWithOrder = Song & { order: number }
 
 export async function kiite (listId: string): Promise<Song[] | undefined> {
-    const response = await axios.get<KiiteApiList>(`https://kiite.jp/api/playlist/${listId}`)
+    const response = await axios.get<KiiteApiList>(`/@kiite-api/playlist/${listId}`)
+    console.log(response);
     if (response.status < 200 && 300 <= response.status) return
     const { data } = response
 
     const nicoSongs = data.songs.map((v, i): SongWithOrder => ({
         type: SONG_TYPES.NICO_VIDEO,
         id: v.video_id,
-        thumbnailUrl: v.thumbnail,
+        thumbnailUrl: v.thumbnail.replace('http://nicovideo.cdn.nimg.jp/thumbnails', '/@thumbnail-nv'),
         order: i
     }))
     const youtSongs = extractYoutSong(data.description)
@@ -32,7 +33,7 @@ function extractYoutSong (description: string) {
         .map(([id, order]): SongWithOrder => ({
             type: SONG_TYPES.YOUTUBE,
             id: id!,
-            thumbnailUrl: `https://img.youtube.com/vi/${id}/default.jpg`,
+            thumbnailUrl: `/@thumbnail-yt/${id}`,
             order
         }))
 }

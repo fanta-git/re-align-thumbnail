@@ -1,7 +1,6 @@
-import { Song, ThumbnailBase } from '@/types/playlist'
+import { Song } from '@/types/playlist'
 import { expansion, range, zip } from '@/util/arrays'
-import sharp from 'sharp'
-import { getBuffer } from './getBuffer'
+import { getImage } from '@/util/image'
 
 type Options = {
     width: number,
@@ -24,19 +23,18 @@ export async function align(Song: (Song | undefined)[], options: Options) {
     const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? height) - v)
     const corrected = expansion(correctedHeights, correctedWidths)
 
-    const buffers = await Promise.all(zip(Song, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
+    const images = await Promise.all(zip(Song, corrected).map(([v, [height, width]]) => v && getImage(v.thumbnailUrl)))
 
-    const compositer =
-        zip(buffers, coord)
-            .filter(([buffers]) => buffers)
-            .map(([input, [top, left]]) => ({ input, top, left }))
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const context = canvas.getContext('2d')
+    if (context === null) return
 
-    return sharp({
-        create: {
-            width,
-            height,
-            channels: 3,
-            background: { r: 255, g: 255, b: 255 }
-        }
-    }).composite(compositer)
+    for (const [image, [top, left]] of zip(images, coord)) {
+        if (image === undefined) continue
+        context.drawImage(image, left, top, thumbnailWidth, thumbnailHeight)
+    }
+
+    return canvas.toDataURL('image/png')
 }
