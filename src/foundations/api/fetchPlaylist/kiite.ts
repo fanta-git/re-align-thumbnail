@@ -1,26 +1,22 @@
-import { FailedPlaylistContents, PlaylistContents } from "@/types/cafeapi"
 import axios from "axios"
 import { Song } from "@/types/playlist"
 import { SONG_TYPES } from "@/consts/playlist"
 import { zipAll } from "@/util/arrays"
+import { KiiteApiList } from "@/types/kiiteapi"
+
+type SongWithOrder = Song & { order: number }
 
 export async function kiite (listId: string): Promise<Song[] | undefined> {
-    const params = {
-        list_id: listId
-    }
+    const response = await axios.get<KiiteApiList>(`https://kiite.jp/api/playlist/${listId}`)
+    if (response.status < 200 && 300 <= response.status) return
+    const { data } = response
 
-    const response = await axios.get<PlaylistContents | FailedPlaylistContents>(
-        'https://cafeapi.kiite.jp/api/playlists/contents/detail',
-        { params }
-    )
-    if (response.data.status === 'failed') return
-    const { data } = response;
-
-    const nicoSongs = data.songs.map(v => ({
+    const nicoSongs = data.songs.map((v, i): SongWithOrder => ({
         type: SONG_TYPES.NICO_VIDEO,
         id: v.video_id,
-        order: v.order_num
-    } as const))
+        thumbnailUrl: v.thumbnail,
+        order: i
+    }))
     const youtSongs = extractYoutSong(data.description)
     const songsAll = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
 
@@ -33,9 +29,10 @@ function extractYoutSong (description: string) {
 
     return zipAll(ids, orders)
         .filter(([id, order]) => id !== undefined)
-        .map(([id, order]) => ({
+        .map(([id, order]): SongWithOrder => ({
             type: SONG_TYPES.YOUTUBE,
             id: id!,
+            thumbnailUrl: `https://img.youtube.com/vi/${id}/default.jpg`,
             order
-        }) as const)
+        }))
 }

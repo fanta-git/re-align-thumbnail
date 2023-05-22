@@ -17,7 +17,8 @@ export type SongType = ValuesObj<typeof SONG_TYPES>
 
 export type Song = {
     type: SongType,
-    id: string
+    id: string,
+    thumbnailUrl: string
 }
 
 export type ThumbnailBase = {

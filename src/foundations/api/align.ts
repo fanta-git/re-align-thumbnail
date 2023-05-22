@@ -1,4 +1,4 @@
-import { ThumbnailBase } from '@/types/playlist'
+import { Song, ThumbnailBase } from '@/types/playlist'
 import { expansion, range, zip } from '@/util/arrays'
 import sharp from 'sharp'
 import { getBuffer } from './getBuffer'
@@ -10,7 +10,7 @@ type Options = {
     rows: number
 }
 
-export async function align(thumbnailBases: (ThumbnailBase | undefined)[], options: Options) {
+export async function align(Song: (Song | undefined)[], options: Options) {
     const { width, height, columns, rows } = options
 
     const thumbnailWidth = width / columns
@@ -24,7 +24,7 @@ export async function align(thumbnailBases: (ThumbnailBase | undefined)[], optio
     const correctedHeights = coordRows.map((v, i, a) => (a[i + 1] ?? height) - v)
     const corrected = expansion(correctedHeights, correctedWidths)
 
-    const buffers = await Promise.all(zip(thumbnailBases, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
+    const buffers = await Promise.all(zip(Song, corrected).map(([v, [height, width]]) => getBuffer(v, { width, height })))
 
     const compositer =
         zip(buffers, coord)
