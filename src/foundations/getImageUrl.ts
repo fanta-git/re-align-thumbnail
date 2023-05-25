@@ -1,6 +1,6 @@
 import { FormContents } from "@/types/form";
-import { align } from "./api/align";
-import fetchPlaylist from "./api/fetchPlaylist";
+import { align } from "./align";
+import fetchPlaylist from "./fetchPlaylist";
 import { getListBase } from "./getListBase";
 
 export async function getImageUrl (data: FormContents | undefined) {
