@@ -1,8 +1,14 @@
 export * from './kiite'
-import { PlaylistTypes } from '@/types/playlist'
+import { playlistUrlTypes } from '@/consts/playlistUrlTypes'
 import * as fetchPlaylistItems from '.'
 
-export default async function fetchPlaylist(type: PlaylistTypes, id: string) {
-    const playlist = await fetchPlaylistItems[type](id)
-    return playlist
+export default async function fetchPlaylist(url: string) {
+    for (const { type, regexp } of playlistUrlTypes) {
+        const result = url.match(regexp)
+        if (result) {
+            const id = result[1]
+            const playlist = await fetchPlaylistItems[type](id)
+            return playlist
+        }
+    }
 }

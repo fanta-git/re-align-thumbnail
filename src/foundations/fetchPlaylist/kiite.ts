@@ -8,8 +8,6 @@ type SongWithOrder = Song & { order: number }
 
 export async function kiite (listId: string): Promise<Song[] | undefined> {
     const response = await axios.get<KiiteApiList>(`/@kiite-api/playlist/${listId}`)
-    console.log(response);
-    if (response.status < 200 && 300 <= response.status) return
     const { data } = response
 
     const nicoSongs = data.songs.map((v, i): SongWithOrder => ({
