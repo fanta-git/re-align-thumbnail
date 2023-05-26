@@ -1,5 +1,5 @@
 import { Song } from '@/types/playlist'
-import { expansion, range, zip } from '@/util/arrays'
+import { expansion, range } from '@/util/arrays'
 import { createCanvas } from '@/util/canvas'
 import { getImage } from '@/util/image'
 
@@ -35,5 +35,5 @@ export async function align(songs: (Song | undefined)[], options: Options) {
         }
     }
 
-    return canvas.toDataURL('image/png')
+    return canvas.toDataURL('image/jpeg')
 }
