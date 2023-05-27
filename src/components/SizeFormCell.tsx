@@ -21,7 +21,7 @@ export function SizeFormCell (props: Props) {
         const target = values.isFixed ? adjust.output : adjust.thumbnail
         if (target === undefined) return
         const adjusted = adjusters[target](values)
-        if (adjusted !== values[target]) setValue(target, adjusted, { shouldDirty: false })
+        if (adjusted !== values[target]) setValue(target, adjusted)
     }, [adjust, field, getValues, setValue])
 
     return (
@@ -30,13 +30,16 @@ export function SizeFormCell (props: Props) {
                 name={register}
                 control={control}
                 render={({ field: { ref, ...restField } }) => (
-                    <NumberInput {...restField} {...inputProps} isValidCharacter={s => /\d+/.test(s)}>
+                    <NumberInput
+                        {...restField}
+                        {...inputProps}
+                        isValidCharacter={s => /\d+/.test(s)}
+                        onChange={v => setValue(register, parseInt(v))}
+                    >
                         <InputGroup>
                             <NumberInputField
-                                onChange={e => setValue(register, parseInt(e.target.value))}
                                 ref={ref}
                                 name={restField.name}
-                                // defaultValue={sizeFormDefaults[register]}
                                 borderRightRadius={0}
                             />
                             <InputRightAddon>{prefix}</InputRightAddon>
