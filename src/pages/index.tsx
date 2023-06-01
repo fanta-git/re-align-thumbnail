@@ -1,16 +1,17 @@
+import AlignField from "@/components/AlignField";
 import Forms from "@/components/Forms";
-import useAlign from "@/hooks/useAlign";
+import { FormContents } from "@/types/form";
 import { Container, VStack } from "@chakra-ui/react";
-import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
-  const { aligned, align, isLoading } = useAlign();
+  const [formData, setFormData] = useState<FormContents>()
 
   return (
     <Container w={'100%'}>
       <VStack>
-        <Forms align={align} isLoading={isLoading} />
-        {aligned && <Image width={1600} height={900} alt={""} src={aligned} />}
+        <Forms isLoading={false} setFormData={setFormData} />
+        {formData && <AlignField formData={formData} />}
       </VStack>
     </Container>
   )

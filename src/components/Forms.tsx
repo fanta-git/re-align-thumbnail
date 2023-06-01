@@ -1,16 +1,17 @@
 import { sizeFormDefaults } from "@/consts/form";
 import { FormContents } from "@/types/form";
 import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { SizeForm } from "./SizeForm";
 
 type Props = {
-  align: (data: FormContents) => Promise<void>
   isLoading: boolean
+  setFormData: Dispatch<SetStateAction<FormContents | undefined>>
 }
 
 export default function Forms(props: Props) {
-  const { align, isLoading } = props
+  const { isLoading, setFormData } = props
   const formMethods = useForm<FormContents>({
     defaultValues: {
       ...sizeFormDefaults,
@@ -21,7 +22,7 @@ export default function Forms(props: Props) {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(align)} style={{ width: "100%" }}>
+      <form onSubmit={handleSubmit(setFormData)} style={{ width: "100%" }}>
         <VStack>
           <Box w={"100%"}>
             <FormLabel>KiiteプレイリストのURL</FormLabel>
