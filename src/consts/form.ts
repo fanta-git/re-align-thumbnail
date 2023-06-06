@@ -1,4 +1,4 @@
-import { SizeFormContents } from "@/types/form"
+import { FormContents } from "@/types/form"
 
 export const sizeFormDefaults = {
     columns: 10,
@@ -7,4 +7,6 @@ export const sizeFormDefaults = {
     outputHeight: 900,
     thumbnailWidth: 160,
     thumbnailHeight: 90,
-} satisfies SizeFormContents
+    url: "",
+    isFixed: true
+} satisfies FormContents

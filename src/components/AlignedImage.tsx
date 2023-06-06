@@ -1,14 +1,15 @@
+import { Loadable } from "@/util/Loadable";
 import Image from "next/image";
 
 type Props = {
-  loadImageUrl: () => string | undefined
+  loadableUrl: Loadable<string | undefined>
   width: number
   height: number
 };
 export default function AlignedImage (props: Props) {
-  const { loadImageUrl, width, height } = props
+  const { loadableUrl, width, height } = props
 
-  const url = loadImageUrl()
+  const url = loadableUrl.load()
   if (url == null) return (<>Error!</>)
 
   return <Image src={url} alt={""} width={width} height={height} />

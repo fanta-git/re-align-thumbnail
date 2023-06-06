@@ -1,23 +1,13 @@
-import { sizeFormDefaults } from "@/consts/form";
+import { formContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import { SizeForm } from "./SizeForm";
 
-type Props = {
-  isLoading: boolean
-  setFormData: Dispatch<SetStateAction<FormContents | undefined>>
-}
-
-export default function Forms(props: Props) {
-  const { isLoading, setFormData } = props
-  const formMethods = useForm<FormContents>({
-    defaultValues: {
-      ...sizeFormDefaults,
-      isFixed: true
-    }
-  });
+export default function Forms() {
+  const [formData, setFormData] = useRecoilState(formContentsState)
+  const formMethods = useForm<FormContents>({ defaultValues: formData });
   const { handleSubmit, register } = formMethods
 
   return (
@@ -29,7 +19,7 @@ export default function Forms(props: Props) {
             <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("url")} />
           </Box>
           <SizeForm />
-          <Button type="submit" colorScheme={"cyan"} color={"white"} isLoading={isLoading}>
+          <Button type="submit" colorScheme={"cyan"} color={"white"}>
             生成
           </Button>
         </VStack>

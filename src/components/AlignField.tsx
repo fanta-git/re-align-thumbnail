@@ -1,21 +1,18 @@
 import align from "@/foundations/align";
-import { useLoadable } from "@/hooks/useLoadable";
-import { FormContents } from "@/types/form";
-import { Suspense } from "react";
+import { formContentsState } from "@/stores/playlist";
+import { Loadable } from "@/util/Loadable";
+import { Suspense, useMemo } from "react";
+import { useRecoilValue } from "recoil";
 import AlignedImage from "./AlignedImage";
 
-type Props = {
-  formData: FormContents
-}
-
-export default function AlignField (props: Props) {
-  const { formData } = props
+export default function AlignField () {
+  const formData = useRecoilValue(formContentsState)
+  const loadableUrl = useMemo(() => new Loadable(align(formData)), [formData])
   const { outputWidth, outputHeight } = formData
-  const loadImageUrl = useLoadable(align(formData))
 
   return (
     <Suspense fallback={<>loading...</>}>
-      <AlignedImage loadImageUrl={loadImageUrl} width={outputWidth} height={outputHeight} />
+      <AlignedImage loadableUrl={loadableUrl} width={outputWidth} height={outputHeight} />
     </Suspense>
   )
 }
