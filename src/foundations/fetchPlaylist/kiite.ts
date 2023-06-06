@@ -1,12 +1,12 @@
 import axios from "axios"
-import { Song } from "@/types/playlist"
+import { Playlist, Song } from "@/types/playlist"
 import { SONG_TYPES } from "@/consts/playlist"
 import { zipAll } from "@/util/arrays"
 import { KiiteApiList } from "@/types/kiiteapi"
 
 type SongWithOrder = Song & { order: number }
 
-export async function kiite (listId: string): Promise<Song[] | undefined> {
+export async function kiite (listId: string): Promise<Playlist> {
     const response = await axios.get<KiiteApiList>(`/@kiite-api/playlist/${listId}`)
     const { data } = response
 
@@ -17,9 +17,14 @@ export async function kiite (listId: string): Promise<Song[] | undefined> {
         order: i
     }))
     const youtSongs = extractYoutSong(data.description)
-    const songsAll = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+    const songs = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
 
-    return songsAll
+    return {
+        title: data.list_title,
+        id: data.list_id.toString(),
+        type: 'kiite',
+        songs
+    }
 }
 
 function extractYoutSong (description: string) {

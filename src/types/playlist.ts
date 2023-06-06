@@ -15,6 +15,13 @@ export type ConstPlaylistUrlTypes = {
 
 export type SongType = ValuesObj<typeof SONG_TYPES>
 
+export type Playlist = {
+    type: PlaylistTypes,
+    id: string,
+    title: string,
+    songs: Song[]
+}
+
 export type Song = {
     type: SongType,
     id: string,

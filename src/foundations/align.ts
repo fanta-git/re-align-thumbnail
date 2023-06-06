@@ -7,10 +7,10 @@ import fetchPlaylist from "./fetchPlaylist"
 
 export default async function align (data: FormContents) {
     const { url, outputWidth, outputHeight, columns, rows } = data
-    const songs = await fetchPlaylist(url)
-    if (songs === undefined) return
+    const playlist = await fetchPlaylist(url)
+    if (playlist === undefined) return
 
-    const imagesPromises = songs.map(v => getImage(v.thumbnailUrl))
+    const imagesPromises = playlist.songs.map(v => getImage(v.thumbnailUrl))
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight)
 
