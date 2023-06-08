@@ -1,6 +1,8 @@
 import { formContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
-import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { WatchWithDefault } from "@/types/reactHookForm";
+import { Box, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { SizeForm } from "./SizeForm";
@@ -8,7 +10,17 @@ import { SizeForm } from "./SizeForm";
 export default function Forms() {
   const [formData, setFormData] = useRecoilState(formContentsState)
   const formMethods = useForm<FormContents>({ defaultValues: formData });
-  const { handleSubmit, register } = formMethods
+  const { handleSubmit, register, watch } = formMethods
+
+  useEffect(() => {
+    const { unsubscribe } = (watch as WatchWithDefault<typeof watch>)((fields, { name }) => {
+      if (name === undefined) return
+      setFormData(fields)
+      console.log(name, fields)
+    })
+
+    return unsubscribe
+  }, [watch, setFormData])
 
   return (
     <FormProvider {...formMethods}>
@@ -19,9 +31,6 @@ export default function Forms() {
             <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("url")} />
           </Box>
           <SizeForm />
-          <Button type="submit" colorScheme={"cyan"} color={"white"}>
-            生成
-          </Button>
         </VStack>
       </form>
     </FormProvider>
