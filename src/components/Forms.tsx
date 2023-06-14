@@ -1,3 +1,4 @@
+import updateValues from "@/foundations/updateValues";
 import { formContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { WatchWithDefault } from "@/types/reactHookForm";
@@ -9,14 +10,13 @@ import { SizeForm } from "./SizeForm";
 
 export default function Forms() {
   const [formData, setFormData] = useRecoilState(formContentsState)
-  const formMethods = useForm<FormContents>({ defaultValues: formData });
+  const formMethods = useForm<FormContents>({ values: formData })
   const { handleSubmit, register, watch } = formMethods
 
   useEffect(() => {
     const { unsubscribe } = (watch as WatchWithDefault<typeof watch>)((fields, { name }) => {
-      if (name === undefined) return
-      setFormData(fields)
-      console.log(name, fields)
+      const newData = updateValues(fields, name)
+      if (newData) setFormData(newData)
     })
 
     return unsubscribe

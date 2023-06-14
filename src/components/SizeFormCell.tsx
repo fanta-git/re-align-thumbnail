@@ -1,40 +1,29 @@
-import adjusters from "@/foundations/adjusters";
 import { FormContents, SizeFormContents } from "@/types/form";
 import { InputGroup, InputRightAddon, NumberInput, NumberInputField, NumberInputProps, Td } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 type Props = {
     register: keyof SizeFormContents
     prefix: string
-    adjust: Record<"output" | "thumbnail", keyof SizeFormContents>
     inputProps?: NumberInputProps
 }
 
 export function SizeFormCell (props: Props) {
-    const { register, prefix, adjust, inputProps } = props
-    const { control, getValues, setValue } = useFormContext<FormContents>()
-    const field = useWatch<SizeFormContents>({ name: register })
-
-    useEffect(() => {
-        const values = getValues()
-        const target = values.isFixed ? adjust.output : adjust.thumbnail
-        if (target === undefined) return
-        const adjusted = adjusters[target](values)
-        if (adjusted !== values[target]) setValue(target, adjusted)
-    }, [adjust, field, getValues, setValue])
+    const { register, prefix, inputProps } = props
+    const { control } = useFormContext<FormContents>()
 
     return (
         <Td key={register}>
             <Controller
                 name={register}
                 control={control}
-                render={({ field: { ref, ...restField } }) => (
+                render={({ field: { ref, onChange, ...restField } }) => (
                     <NumberInput
                         {...restField}
                         {...inputProps}
                         isValidCharacter={s => /\d+/.test(s)}
-                        onChange={v => setValue(register, parseInt(v))}
+                        clampValueOnBlur={false}
+                        onChange={(_, v) => onChange(v)}
                     >
                         <InputGroup>
                             <NumberInputField
