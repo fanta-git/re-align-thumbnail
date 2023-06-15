@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import OptionsForm from "./OptionsForm";
-import { SizeForm } from "./SizeForm";
+import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
 
 export default function Forms() {

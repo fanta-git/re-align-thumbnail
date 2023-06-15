@@ -3,11 +3,11 @@ import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/reac
 import { useFormContext, useWatch } from "react-hook-form";
 import { SizeFormCell } from "./SizeFormCell";
 
-export function SizeForm () {
+export default function SizeForm () {
   const { control } = useFormContext<FormContents>()
   const [isFixed, thumbnailWidth, thumbnailHeight] = useWatch({
-  control,
-  name: ["isFixed", "thumbnailWidth", "thumbnailHeight"]
+    control,
+    name: ["isFixed", "thumbnailWidth", "thumbnailHeight"]
   })
 
   return (
