@@ -7,7 +7,7 @@ export default function OptionsForm () {
 
   return (
     <Box width={"100%"}>
-      <Checkbox {...register("isFixed")}>サムネイルのサイズを固定する</Checkbox>
+      <Checkbox {...register("option.isFixed")}>サムネイルのサイズを固定する</Checkbox>
     </Box>
   );
 }

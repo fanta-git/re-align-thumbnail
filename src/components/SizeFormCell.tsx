@@ -1,9 +1,9 @@
-import { FormContents, SizeFormContents } from "@/types/form";
+import { FormContents } from "@/types/form";
 import { InputGroup, InputRightAddon, NumberInput, NumberInputField, NumberInputProps, Td } from "@chakra-ui/react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, FieldPath, useFormContext } from "react-hook-form";
 
 type Props = {
-  register: keyof SizeFormContents
+  register: FieldPath<FormContents> & `size.${string}`
   prefix: string
   inputProps?: NumberInputProps
 }

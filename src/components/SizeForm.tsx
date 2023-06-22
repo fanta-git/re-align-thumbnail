@@ -1,14 +1,23 @@
-import { FormContents } from "@/types/form";
+import updateValues from "@/foundations/updateValues";
+import { FormContents, SizeFormContents } from "@/types/form";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { SizeFormCell } from "./SizeFormCell";
 
 export default function SizeForm () {
-  const { control } = useFormContext<FormContents>()
-  const [isFixed, thumbnailWidth, thumbnailHeight] = useWatch({
-    control,
-    name: ["isFixed", "thumbnailWidth", "thumbnailHeight"]
-  })
+  const { control, setValue } = useFormContext<FormContents>()
+  const [size, isFixed] = useWatch({ name: ["size", "option.isFixed"], control })
+
+  const prevSize = useRef(size)
+
+  useEffect(() => {
+    const changed = (Object.keys(size) as (keyof SizeFormContents)[]).find(v => size[v] !== prevSize.current[v])
+    const updated = updateValues(size, changed, isFixed)
+    if (updated === undefined) return undefined
+    setValue("size", updated)
+    prevSize.current = updated
+  }, [size, isFixed, setValue])
 
   return (
     <TableContainer>
@@ -24,12 +33,12 @@ export default function SizeForm () {
           <Tr>
             <Td>グリッド数</Td>
             <SizeFormCell
-              register={"columns"}
+              register={"size.columns"}
               prefix={"列"}
               inputProps={{ min: 1, step: 1, precision: 0 }}
             />
             <SizeFormCell
-              register={"rows"}
+              register={"size.rows"}
               prefix={"行"}
               inputProps={{ min: 1, step: 1, precision: 0 }}
             />
@@ -39,14 +48,14 @@ export default function SizeForm () {
           <Tr>
             <Td>出力画像</Td>
             <SizeFormCell
-              register={"outputWidth"}
+              register={"size.outputWidth"}
               prefix={"px"}
-              inputProps={{ min: 160, step: isFixed ? thumbnailWidth : 10, precision: 0 }}
+              inputProps={{ min: 160, step: isFixed ? size.thumbnailWidth : 10, precision: 0 }}
             />
             <SizeFormCell
-              register={"outputHeight"}
+              register={"size.outputHeight"}
               prefix={"px"}
-              inputProps={{ min: 90, step: isFixed ? thumbnailHeight : 10, precision: 0 }}
+              inputProps={{ min: 90, step: isFixed ? size.thumbnailHeight : 10, precision: 0 }}
             />
           </Tr>
         </Tbody>

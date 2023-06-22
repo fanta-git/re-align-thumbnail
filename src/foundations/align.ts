@@ -9,7 +9,7 @@ import fetchPlaylist from "./fetchPlaylist"
 const cache = new Map<string, Playlist>()
 
 export default async function align (data: FormContents) {
-    const { url, outputWidth, outputHeight, columns, rows } = data
+    const { list: { url }, size: { outputWidth, outputHeight, columns, rows }} = data
     const playlist = cache.get(url) ?? await fetchPlaylist(url)
     if (playlist === undefined) return
     if (!cache.has(url)) cache.set(url, playlist)

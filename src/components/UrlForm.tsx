@@ -8,7 +8,7 @@ export default function UrlForm () {
   return (
     <Box w={"100%"}>
       <FormLabel>KiiteプレイリストのURL</FormLabel>
-      <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("url")} />
+      <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("list.url")} />
     </Box>
   );
 }

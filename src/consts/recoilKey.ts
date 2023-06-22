@@ -1,3 +1,6 @@
 export const RECOIL_KEYS = {
-    FORM_CONTENTS: "formContents",
+    LIST_FORM_CONTENTS: "listContents",
+    SIZE_FORM_CONTENTS: "sizeContents",
+    OPTION_FORM_CONTENTS: "optionContents",
+    FORM_CONTENTS: "formContents"
 } as const

@@ -1,4 +1,4 @@
-import { FormContents, SizeFormContents } from "@/types/form";
+import { SizeFormContents } from "@/types/form";
 import adjusters from "./adjusters";
 
 type WatchTargets = "columns" | "rows" | "outputWidth" | "outputHeight"
@@ -9,15 +9,13 @@ const targets = {
   outputHeight: isFixed => isFixed ? "rows" : "thumbnailHeight"
 } satisfies Record<WatchTargets, (isFixed: boolean) => keyof SizeFormContents>
 
-export default function updateValues(fields: FormContents, name: keyof FormContents | undefined) {
-    if (name === undefined) return
-    if (name === "columns" || name === "rows" || name === "outputWidth" || name === "outputHeight") {
-        const target = targets[name](fields.isFixed)
-        const adjusted = adjusters[target](fields)
-        if (adjusted !== fields[target]) return {
-            ...fields,
-            [target]: adjusted
-        }
+export default function updateValues(fields: SizeFormContents, name: keyof SizeFormContents | undefined, isFixed: boolean) {
+    if (name === undefined || name === "thumbnailWidth" || name === "thumbnailHeight") return
+    const target = targets[name](isFixed)
+    const adjusted = adjusters[target](fields)
+    if (adjusted === fields[target]) return
+    return {
+        ...fields,
+        [target]: adjusted
     }
-    return fields
 }
