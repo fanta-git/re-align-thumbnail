@@ -1,23 +1,11 @@
-import updateValues from "@/foundations/updateValues";
-import { FormContents, SizeFormContents } from "@/types/form";
+import { FormContents } from "@/types/form";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { SizeFormCell } from "./SizeFormCell";
 
 export default function SizeForm () {
-  const { control, setValue } = useFormContext<FormContents>()
+  const { control } = useFormContext<FormContents>()
   const [size, isFixed] = useWatch({ name: ["size", "option.isFixed"], control })
-
-  const prevSize = useRef(size)
-
-  useEffect(() => {
-    const changed = (Object.keys(size) as (keyof SizeFormContents)[]).find(v => size[v] !== prevSize.current[v])
-    const updated = updateValues(size, changed, isFixed)
-    if (updated === undefined) return undefined
-    setValue("size", updated)
-    prevSize.current = updated
-  }, [size, isFixed, setValue])
 
   return (
     <TableContainer>
