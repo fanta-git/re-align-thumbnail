@@ -1,5 +1,6 @@
 export const RECOIL_KEYS = {
-    IS_IMAGE_LOADING: "isImageLoading",
-    FORM_CONTENTS: "formContents",
-    IMAGE_URL: "imageUrl"
+    LIST_FORM_CONTENTS: "listContents",
+    SIZE_FORM_CONTENTS: "sizeContents",
+    OPTION_FORM_CONTENTS: "optionContents",
+    PLAYLIST_CONTENTS: "playlistContents"
 } as const

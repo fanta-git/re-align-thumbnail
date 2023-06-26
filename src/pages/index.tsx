@@ -1,4 +1,4 @@
-import Aligned from "@/components/Aligned";
+import AlignField from "@/components/AlignField";
 import Forms from "@/components/Forms";
 import { Container, VStack } from "@chakra-ui/react";
 
@@ -7,7 +7,7 @@ export default function Home() {
     <Container w={'100%'}>
       <VStack>
         <Forms />
-        <Aligned />
+        <AlignField />
       </VStack>
     </Container>
   )

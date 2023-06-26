@@ -7,7 +7,16 @@ export type SizeFormContents = {
     outputHeight: number
 }
 
-export type FormContents = {
-    url: string,
+export type ListFormContents = {
+    url: string
+}
+
+export type OptionFormContents = {
     isFixed: boolean
-} & SizeFormContents
+}
+
+export type FormContents = {
+    list: ListFormContents,
+    size: SizeFormContents,
+    option: OptionFormContents
+}

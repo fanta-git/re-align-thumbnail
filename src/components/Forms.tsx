@@ -1,43 +1,63 @@
-import { sizeFormDefaults } from "@/consts/form";
-import { getImageUrl } from "@/foundations/getImageUrl";
-import { imageUrlState, isImageLoadingState } from "@/stores/playlist";
+import updateValues from "@/foundations/updateValues";
+import { listFormContentsState, optionFormContentsState, playlistContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
-import { Box, Button, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { Splited, WatchWithDefault } from "@/types/reactHookForm";
+import { VStack } from "@chakra-ui/react";
+import { startTransition, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { SizeForm } from "./SizeForm";
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE as useRecoilState, useSetRecoilState } from "recoil";
+import OptionsForm from "./OptionsForm";
+import SizeForm from "./SizeForm";
+import UrlForm from "./UrlForm";
+import fetchPlaylist from "@/foundations/fetchPlaylist";
 
 export default function Forms() {
-  const formMethods = useForm<FormContents>({
-    defaultValues: {
-      ...sizeFormDefaults,
-      isFixed: true
-    }
-  });
-  const { handleSubmit, register } = formMethods
-  const [isImageLoading, setIsImageLoading] = useRecoilState(isImageLoadingState)
-  const setImageUrl = useSetRecoilState(imageUrlState)
+  const [list, setList] = useRecoilState(listFormContentsState)
+  const [size, setSize] = useRecoilState(sizeFormContentsState)
+  const [option, setOption] = useRecoilState(optionFormContentsState)
+  const setPlaylist = useSetRecoilState(playlistContentsState)
 
-  const onSubmit = (data: FormContents) => {
-    const url = getImageUrl(data)
-    if (url === undefined) return
+  const formMethods = useForm<FormContents>({ defaultValues: { list, size, option } })
+  const { watch, getValues, setValue } = formMethods
 
-    setIsImageLoading(true)
-    setImageUrl(url)
-  }
+  useEffect(() =>
+    (watch as WatchWithDefault<typeof watch>)(async (data, { name }) => {
+      if (name === undefined) return
+      const [group, item] = name.split(".") as Splited<typeof name>
+      if (item === undefined) return
+
+      if (group === "list") {
+        setList({ ...data.list })
+        const playlist = await fetchPlaylist(data.list.url)
+        if (playlist === undefined) return
+        setPlaylist(playlist)
+      }
+
+      if (group === "size") {
+        const isFixed = getValues("option.isFixed")
+        const updated = updateValues(data.size, item, isFixed)
+        if (updated === undefined) {
+          startTransition(() => {
+            setSize({ ...data.size })
+          })
+        } else {
+          setValue("size", updated)
+        }
+      }
+
+      if (group === "option") {
+        setOption({ ...data.option })
+      }
+    }).unsubscribe
+  , [watch, getValues, setValue, setList, setSize, setOption, setPlaylist])
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+      <form style={{ width: "100%" }}>
         <VStack>
-          <Box w={"100%"}>
-            <FormLabel>KiiteプレイリストのURL</FormLabel>
-            <Input placeholder="https://kiite.jp/playlist/xxxxxxxxxxx" {...register("url")} />
-          </Box>
+          <UrlForm />
           <SizeForm />
-          <Button type="submit" colorScheme={"cyan"} color={"white"} isLoading={isImageLoading}>
-            生成
-          </Button>
+          <OptionsForm />
         </VStack>
       </form>
     </FormProvider>
