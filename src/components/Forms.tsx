@@ -3,9 +3,9 @@ import { listFormContentsState, optionFormContentsState, playlistContentsState, 
 import { FormContents } from "@/types/form";
 import { Splited, WatchWithDefault } from "@/types/reactHookForm";
 import { VStack } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { startTransition, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE as useRecoilState, useSetRecoilState } from "recoil";
 import OptionsForm from "./OptionsForm";
 import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
@@ -37,7 +37,9 @@ export default function Forms() {
         const isFixed = getValues("option.isFixed")
         const updated = updateValues(data.size, item, isFixed)
         if (updated === undefined) {
-          setSize({ ...data.size })
+          startTransition(() => {
+            setSize({ ...data.size })
+          })
         } else {
           setValue("size", updated)
         }
