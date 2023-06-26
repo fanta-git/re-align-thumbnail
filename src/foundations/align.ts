@@ -19,6 +19,7 @@ export default async function align (playlist: Playlist, size: SizeFormContents,
 
         try {
             const image = await imagesPromises[i * columns + j]
+            if (image === undefined) continue
 
             const trimWidth = Math.min(image.height * RATIO_W / RATIO_H | 0, image.width)
             const trimHeight = Math.min(image.width * RATIO_H / RATIO_W | 0, image.height)
