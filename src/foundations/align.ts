@@ -1,19 +1,12 @@
-import { RATIO_W, RATIO_H } from "@/consts/align"
-import { FormContents } from "@/types/form"
+import { RATIO_H, RATIO_W } from "@/consts/align"
+import { OptionFormContents, SizeFormContents } from "@/types/form"
 import { Playlist } from "@/types/playlist"
 import { expansion, range } from "@/util/arrays"
-import { createCanvas, canvas2URL } from "@/util/canvas"
+import { canvas2URL, createCanvas } from "@/util/canvas"
 import { getImage } from "@/util/image"
-import fetchPlaylist from "./fetchPlaylist"
 
-const cache = new Map<string, Playlist>()
-
-export default async function align (data: FormContents) {
-    const { list: { url }, size: { outputWidth, outputHeight, columns, rows }} = data
-    const playlist = cache.get(url) ?? await fetchPlaylist(url)
-    if (playlist === undefined) return
-    if (!cache.has(url)) cache.set(url, playlist)
-
+export default async function align (playlist: Playlist, size: SizeFormContents, option: OptionFormContents) {
+    const { outputWidth, outputHeight, columns, rows } = size
     const imagesPromises = playlist.songs.map(v => getImage(v.thumbnailUrl))
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight)

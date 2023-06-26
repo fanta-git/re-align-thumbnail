@@ -1,6 +1,7 @@
 import { sizeFormDefaults } from "@/consts/form";
-import { FormContents, ListFormContents, OptionFormContents, SizeFormContents } from "@/types/form";
-import { atom, selector } from "recoil";
+import { ListFormContents, OptionFormContents, SizeFormContents } from "@/types/form";
+import { Playlist } from "@/types/playlist";
+import { atom } from "recoil";
 import { RECOIL_KEYS } from "../consts/recoilKey";
 
 export const listFormContentsState = atom<ListFormContents>({
@@ -18,11 +19,7 @@ export const optionFormContentsState = atom<OptionFormContents>({
     default: sizeFormDefaults.option
 })
 
-export const formContentsSelector = selector<FormContents>({
-    key: RECOIL_KEYS.FORM_CONTENTS,
-    get: ({ get }) => ({
-        list: get(listFormContentsState),
-        size: get(sizeFormContentsState),
-        option: get(optionFormContentsState),
-    })
+export const playlistContentsState = atom<Playlist | undefined>({
+    key: RECOIL_KEYS.PLAYLIST_CONTENTS,
+    default: undefined
 })
