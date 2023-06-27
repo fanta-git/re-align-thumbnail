@@ -9,13 +9,10 @@ const targets = {
   outputHeight: isFixed => isFixed ? "rows" : "thumbnailHeight"
 } satisfies Record<WatchTargets, (isFixed: boolean) => keyof SizeFormContents>
 
-export default function updateValues(fields: SizeFormContents, name: keyof SizeFormContents | undefined, isFixed: boolean) {
-    if (name === undefined || name === "thumbnailWidth" || name === "thumbnailHeight") return
+export default function updateValues(fields: SizeFormContents, name: keyof SizeFormContents, isFixed: boolean) {
+    if (name === "thumbnailWidth" || name === "thumbnailHeight") return
     const target = targets[name](isFixed)
     const adjusted = adjusters[target](fields)
     if (adjusted === fields[target]) return
-    return {
-        ...fields,
-        [target]: adjusted
-    }
+    return [target, adjusted] as const
 }
