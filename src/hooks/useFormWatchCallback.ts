@@ -1,6 +1,6 @@
 import fetchPlaylist from "@/foundations/fetchPlaylist";
 import updateValues from "@/foundations/updateValues";
-import { optionFormContentsState, playlistContentsState, sizeFormContentsState } from "@/stores/playlist";
+import { optionFormContentsState, playlistContentsState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Splited, WatchWithDefault } from "@/types/reactHookForm";
 import { startTransition, useCallback } from "react";
@@ -9,9 +9,10 @@ import { useSetRecoilState } from "recoil";
 
 export default function useWatchCallback(formMethods: UseFormReturn<FormContents, any, undefined>) {
     const { watch, getValues, setValue } = formMethods
-    const setSize = useSetRecoilState(sizeFormContentsState)
-    const setOption = useSetRecoilState(optionFormContentsState)
     const setPlaylist = useSetRecoilState(playlistContentsState)
+    const setSize = useSetRecoilState(sizeFormContentsState)
+    const setSetting = useSetRecoilState(settingFormContentsState)
+    const setOption = useSetRecoilState(optionFormContentsState)
 
     type WatchWithDefaultCallback = Parameters<WatchWithDefault<typeof watch>>[0];
 
@@ -27,7 +28,7 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
             }
 
             if (group === "size") {
-                const isFixed = getValues("option.isFixed")
+                const isFixed = getValues("setting.isFixed")
                 const updated = updateValues(data.size, item, isFixed)
                 if (updated === undefined) return
 
@@ -38,9 +39,13 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
                 ))
             }
 
-            if (group === "option") {
-                setOption({ ...data.option })
+            if (group === "setting") {
+                setSetting({ ...data.setting })
             }
+
+            // if (group === "option") {
+            //     setOption({ ...data.option })
+            // }
         }
-    , [getValues, setValue, setSize, setOption, setPlaylist])
+    , [getValues, setValue, setSize, setSetting/* , setOption */, setPlaylist])
 }

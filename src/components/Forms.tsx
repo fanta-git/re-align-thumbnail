@@ -8,6 +8,7 @@ import OptionsForm from "./OptionsForm";
 import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
 import { WatchWithDefault } from "@/types/reactHookForm";
+import SettingForm from "./SettingForm";
 
 export default function Forms() {
   const formMethods = useForm<FormContents>({ defaultValues: sizeFormDefaults })
@@ -25,6 +26,7 @@ export default function Forms() {
         <VStack>
           <UrlForm />
           <SizeForm />
+          <SettingForm />
           <OptionsForm />
         </VStack>
       </form>

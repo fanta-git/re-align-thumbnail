@@ -1,11 +1,11 @@
-import { FormContents } from "@/types/form";
+import { settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import { SizeFormCell } from "./SizeFormCell";
 
 export default function SizeForm () {
-  const { control } = useFormContext<FormContents>()
-  const [size, isFixed] = useWatch({ name: ["size", "option.isFixed"], control })
+  const { thumbnailHeight, thumbnailWidth } = useRecoilValue(sizeFormContentsState)
+  const { isFixed } = useRecoilValue(settingFormContentsState)
 
   return (
     <TableContainer>
@@ -38,12 +38,12 @@ export default function SizeForm () {
             <SizeFormCell
               register={"size.outputWidth"}
               prefix={"px"}
-              inputProps={{ min: 160, step: isFixed ? size.thumbnailWidth : 10, precision: 0 }}
+              inputProps={{ min: 160, step: isFixed ? thumbnailWidth : 10, precision: 0 }}
             />
             <SizeFormCell
               register={"size.outputHeight"}
               prefix={"px"}
-              inputProps={{ min: 90, step: isFixed ? size.thumbnailHeight : 10, precision: 0 }}
+              inputProps={{ min: 90, step: isFixed ? thumbnailHeight : 10, precision: 0 }}
             />
           </Tr>
         </Tbody>

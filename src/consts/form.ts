@@ -12,7 +12,9 @@ export const sizeFormDefaults = {
         thumbnailWidth: 160,
         thumbnailHeight: 90,
     },
-    option: {
+    setting: {
         isFixed: true
+    },
+    option: {
     }
 } satisfies FormContents
