@@ -1,11 +1,10 @@
-import { settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
+import { settingFormContentsState } from "@/stores/playlist";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { SizeFormCell } from "./SizeFormCell";
 
 export default function SizeForm () {
-  const { thumbnailHeight, thumbnailWidth } = useRecoilValue(sizeFormContentsState)
-  const { isFixed } = useRecoilValue(settingFormContentsState)
+  const { thumbnailHeight, thumbnailWidth, isFixed } = useRecoilValue(settingFormContentsState)
 
   return (
     <TableContainer>

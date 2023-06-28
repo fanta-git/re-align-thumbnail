@@ -1,8 +1,6 @@
 export type SizeFormContents = {
     columns: number,
     rows: number,
-    thumbnailWidth: number,
-    thumbnailHeight: number,
     outputWidth: number,
     outputHeight: number
 }
@@ -12,7 +10,9 @@ export type ListFormContents = {
 }
 
 export type SettingFormContents = {
-    isFixed: boolean
+    isFixed: boolean,
+    thumbnailWidth: number,
+    thumbnailHeight: number
 }
 
 export type OptionFormContents = {
