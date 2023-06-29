@@ -1,6 +1,6 @@
 import adjusters from "@/foundations/adjust";
 import fetchPlaylistMaster from "@/foundations/fetchPlaylistMaster";
-import { optionFormContentsState, playlistContentsState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
+import { playlistContentsState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Splited, WatchWithDefault } from "@/types/reactHookForm";
 import { startTransition, useCallback } from "react";
@@ -12,7 +12,6 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
     const setPlaylist = useSetRecoilState(playlistContentsState)
     const setSize = useSetRecoilState(sizeFormContentsState)
     const setSetting = useSetRecoilState(settingFormContentsState)
-    const setOption = useSetRecoilState(optionFormContentsState)
 
     type WatchWithDefaultCallback = Parameters<WatchWithDefault<typeof watch>>[0];
 
@@ -46,11 +45,5 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         if (group === "setting") {
             setSetting({ ...setting })
         }
-
-        if (group === "option") {
-            startTransition(() =>
-                setOption({ ...option })
-            )
-        }
-    }, [setValue, setSize, setSetting, setOption, setPlaylist])
+    }, [setValue, setSize, setSetting, setPlaylist])
 }

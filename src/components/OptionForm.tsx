@@ -3,7 +3,7 @@ import { FormContents } from "@/types/form";
 import { FormLabel, Input, Select, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 
-export default function OptionsForm () {
+export default function OptionForm () {
   const { register } = useFormContext<FormContents>()
 
   return (

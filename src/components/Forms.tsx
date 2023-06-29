@@ -1,19 +1,22 @@
 import { sizeFormDefaults } from "@/consts/form";
 import useWatchCallback from "@/hooks/useFormWatchCallback";
+import useSaveOption from "@/hooks/useSaveOption";
 import { FormContents } from "@/types/form";
-import { VStack } from "@chakra-ui/react";
+import { WatchWithDefault } from "@/types/reactHookForm";
+import { Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import OptionsForm from "./OptionsForm";
+import OptionModal from "./OptionModal";
+import SettingForm from "./SettingForm";
 import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
-import { WatchWithDefault } from "@/types/reactHookForm";
-import SettingForm from "./SettingForm";
 
 export default function Forms() {
   const formMethods = useForm<FormContents>({ defaultValues: sizeFormDefaults })
   const { watch } = formMethods
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const formSubscribe = useWatchCallback(formMethods)
+  const saveOption = useSaveOption(formMethods, onClose)
 
   useEffect(() => {
     const subscribe = (watch as WatchWithDefault<typeof watch>)(formSubscribe)
@@ -27,8 +30,12 @@ export default function Forms() {
           <UrlForm />
           <SizeForm />
           <SettingForm />
-          <OptionsForm />
+          <HStack width="100%">
+            <Button size={"sm"} onClick={onOpen}>オプション設定</Button>
+          </HStack>
         </VStack>
+
+        <OptionModal isOpen={isOpen} saveOption={saveOption} />
       </form>
     </FormProvider>
   )
