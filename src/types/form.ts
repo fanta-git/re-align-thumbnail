@@ -1,3 +1,6 @@
+import { IMAGE_MIMETYPE } from "@/consts/image"
+import { Values } from "./util"
+
 export type SizeFormContents = {
     columns: number,
     rows: number,
@@ -16,7 +19,8 @@ export type SettingFormContents = {
 }
 
 export type OptionFormContents = {
-    background: string
+    background: string,
+    fileType: Values<typeof IMAGE_MIMETYPE>
 }
 
 export type FormContents = {

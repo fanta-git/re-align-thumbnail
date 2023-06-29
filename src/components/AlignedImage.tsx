@@ -1,5 +1,4 @@
 import { Loadable } from "@/util/Loadable";
-import Image from "next/image";
 import { useEffect } from "react";
 
 type Props = {
@@ -16,5 +15,6 @@ export default function AlignedImage (props: Props) {
     if (url) URL.revokeObjectURL(url)
   }, [url])
 
-  return <Image src={url} alt={""} width={width} height={height} />
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={url} alt={""} width={width} height={height} />
 }

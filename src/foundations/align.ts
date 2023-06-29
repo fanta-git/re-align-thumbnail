@@ -35,6 +35,6 @@ export default async function align (playlist: Playlist, size: SizeFormContents,
         }
     }
 
-    const outputUrl = await canvas2URL(canvas, 'image/jpeg')
+    const outputUrl = await canvas2URL(canvas, `image/${option.fileType}`)
     return outputUrl
 }
