@@ -1,12 +1,15 @@
-import axios from "axios"
-import { Playlist, Song } from "@/types/playlist"
 import { SONG_TYPES } from "@/consts/playlist"
-import { zipAll } from "@/util/arrays"
 import { KiiteApiList } from "@/types/kiiteapi"
+import { Playlist, Song } from "@/types/playlist"
+import axios from "axios"
+import getRelatedSongs from "../getRelatedSongs"
 
 type SongWithOrder = Song & { order: number }
 
-export async function kiite (listId: string): Promise<Playlist> {
+export async function kiite (url: string): Promise<Playlist | undefined> {
+    const result = url.match(/https:\/\/kiite\.jp\/playlist\/(\w{10})/)
+    if (result === null) return
+    const [, listId] = result
     const response = await axios.get<KiiteApiList>(`/@kiite-api/playlist/${listId}`)
     const { data } = response
 
@@ -16,27 +19,14 @@ export async function kiite (listId: string): Promise<Playlist> {
         thumbnailUrl: v.thumbnail.replace('http://nicovideo.cdn.nimg.jp/thumbnails', '/@thumbnail-nv'),
         order: i
     }))
-    const youtSongs = extractYoutSong(data.description)
-    const songs = [...nicoSongs, ...youtSongs].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+    const relatedSongs = getRelatedSongs(data.description)
+    const songs = [...nicoSongs, ...relatedSongs].sort((a, b) => a.order - b.order)
 
     return {
-        title: data.list_title,
-        id: data.list_id.toString(),
         type: 'kiite',
+        id: data.list_id.toString(),
+        title: data.list_title,
+        description: data.description,
         songs
     }
-}
-
-function extractYoutSong (description: string) {
-    const ids = description.match(/(?<=https:\/\/www\.youtube\.com\/watch\?v=)\w+/g) ?? []
-    const orders = description.match(/(?<=^>>).*$/mg)?.at(-1)?.match(/-?\d+(\.\d+)?/g)?.map(Number) ?? []
-
-    return zipAll(ids, orders)
-        .filter(([id, order]) => id !== undefined)
-        .map(([id, order]): SongWithOrder => ({
-            type: SONG_TYPES.YOUTUBE,
-            id: id!,
-            thumbnailUrl: `/@thumbnail-yt/${id}`,
-            order
-        }))
 }

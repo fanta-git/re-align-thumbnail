@@ -10,8 +10,9 @@ export type PlaylistBase = {
 
 export type ConstPlaylistUrlTypes = {
     type: PlaylistTypes,
-    regexp: RegExp
-}[]
+    regexp: RegExp,
+    fetch: (listId: string) => Promise<Playlist>
+}
 
 export type SongType = ValuesObj<typeof SONG_TYPES>
 
@@ -19,6 +20,7 @@ export type Playlist = {
     type: PlaylistTypes,
     id: string,
     title: string,
+    description?: string,
     songs: Song[]
 }
 

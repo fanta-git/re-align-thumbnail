@@ -1,5 +1,5 @@
 import adjusters from "@/foundations/adjust";
-import fetchPlaylist from "@/foundations/fetchPlaylist";
+import fetchPlaylistMaster from "@/foundations/fetchPlaylistMaster";
 import { optionFormContentsState, playlistContentsState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Splited, WatchWithDefault } from "@/types/reactHookForm";
@@ -22,7 +22,7 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         if (item === undefined) return
 
         if (group === "list") {
-            const playlist = await fetchPlaylist(list.url)
+            const playlist = await fetchPlaylistMaster(list.url)
             if (playlist === undefined) return
             setPlaylist(playlist)
         }
