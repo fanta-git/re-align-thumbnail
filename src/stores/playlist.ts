@@ -4,9 +4,9 @@ import { Playlist } from "@/types/playlist";
 import { atom } from "recoil";
 import { RECOIL_KEYS } from "../consts/recoilKey";
 
-export const playlistContentsState = atom<Playlist | undefined>({
-    key: RECOIL_KEYS.PLAYLIST_CONTENTS,
-    default: undefined
+export const playlistsContentsState = atom<Playlist[]>({
+    key: RECOIL_KEYS.PLAYLISTS_CONTENTS,
+    default: []
 })
 
 export const sizeFormContentsState = atom<SizeFormContents>({

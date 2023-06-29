@@ -2,7 +2,7 @@ import { Loadable } from "@/util/Loadable";
 import { useEffect } from "react";
 
 type Props = {
-  loadableUrl: Loadable<string>
+  loadableUrl: Loadable<string | undefined>
   width: number
   height: number
 }
@@ -14,6 +14,8 @@ export default function AlignedImage (props: Props) {
   useEffect(() => () => {
     if (url) URL.revokeObjectURL(url)
   }, [url])
+
+  if  (url === undefined) return <>Error!</>
 
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={url} alt={""} width={width} height={height} />

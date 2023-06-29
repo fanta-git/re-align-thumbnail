@@ -5,9 +5,10 @@ import { expansion, range } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
 import { getImage } from "@/util/image"
 
-export default async function align (playlist: Playlist, size: SizeFormContents, option: OptionFormContents) {
+export default async function align (playlists: Playlist[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    const imagesPromises = playlist.songs.map(v => getImage(v.thumbnailUrl))
+    if (playlists.length === 0) return
+    const imagesPromises = playlists.flatMap(p => p.songs.map(v => getImage(v.thumbnailUrl)))
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 

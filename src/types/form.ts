@@ -24,7 +24,7 @@ export type OptionFormContents = {
 }
 
 export type FormContents = {
-    list: ListFormContents,
+    lists: ListFormContents[],
     size: SizeFormContents,
     setting: SettingFormContents,
     option: OptionFormContents

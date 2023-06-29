@@ -2,7 +2,7 @@ import { useRef } from "react"
 
 export default function useHold<T>(func: () => T, keys: any[]) {
     const currentKeys = useRef<any[]>()
-    const currentResult = useRef<T>()
+    const currentResult = useRef<T>(func())
 
     if (currentKeys.current === undefined || currentKeys.current.some((v, i) => v !== keys[i])) {
         currentKeys.current = keys
