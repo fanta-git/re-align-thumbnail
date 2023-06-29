@@ -1,8 +1,10 @@
-export const createCanvas = (width: number, height: number) => {
+export const createCanvas = (width: number, height: number, background: string = '#000000') => {
     const canvas = document.createElement('canvas')
     canvas.width = width
     canvas.height = height
     const context = canvas.getContext('2d')!
+    context.fillStyle = background
+    context.fillRect(0, 0, width, height)
 
     return { canvas, context }
 };

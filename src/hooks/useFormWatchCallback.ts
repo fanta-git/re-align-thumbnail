@@ -47,8 +47,10 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
             setSetting({ ...setting })
         }
 
-        // if (group === "option") {
-        //     setOption({ ...option })
-        // }
-    }, [setValue, setSize, setSetting/* , setOption */, setPlaylist])
+        if (group === "option") {
+            startTransition(() =>
+                setOption({ ...option })
+            )
+        }
+    }, [setValue, setSize, setSetting, setOption, setPlaylist])
 }

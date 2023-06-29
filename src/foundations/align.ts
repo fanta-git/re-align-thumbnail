@@ -9,7 +9,7 @@ export default async function align (playlist: Playlist, size: SizeFormContents,
     const { outputWidth, outputHeight, columns, rows } = size
     const imagesPromises = playlist.songs.map(v => getImage(v.thumbnailUrl))
 
-    const { canvas, context } = createCanvas(outputWidth, outputHeight)
+    const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
     for (const [i, j] of expansion(range(rows), range(columns))) {
         const x = Math.round(j * outputWidth / columns)

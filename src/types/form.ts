@@ -16,6 +16,7 @@ export type SettingFormContents = {
 }
 
 export type OptionFormContents = {
+    background: string
 }
 
 export type FormContents = {

@@ -16,5 +16,6 @@ export const sizeFormDefaults = {
         isFixed: true
     },
     option: {
+        background: "#000000"
     }
 } satisfies FormContents
