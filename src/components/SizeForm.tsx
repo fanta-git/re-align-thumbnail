@@ -8,7 +8,7 @@ export default function SizeForm () {
 
   return (
     <TableContainer>
-      <Table variant='simple'>
+      <Table variant='simple' minW={"500px"}>
         <Thead>
           <Tr>
             <Th></Th>

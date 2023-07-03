@@ -17,11 +17,7 @@ export default function AlignField () {
 
   return (
     <Suspense fallback={<>loading...</>}>
-      <AlignedImage
-        loadableUrl={loadableUrl}
-        width={size.outputWidth}
-        height={size.outputHeight}
-      />
+      <AlignedImage loadableUrl={loadableUrl} />
     </Suspense>
   )
 }

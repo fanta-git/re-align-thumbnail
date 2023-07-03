@@ -1,14 +1,13 @@
 import { Loadable } from "@/util/Loadable";
+import { Image } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 type Props = {
   loadableUrl: Loadable<string | undefined>
-  width: number
-  height: number
 }
 
 export default function AlignedImage (props: Props) {
-  const { loadableUrl, width, height } = props
+  const { loadableUrl } = props
   const url = loadableUrl.load()
 
   useEffect(() => () => {
@@ -17,6 +16,5 @@ export default function AlignedImage (props: Props) {
 
   if  (url === undefined) return <>Error!</>
 
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt={""} width={width} height={height} />
+  return <Image src={url} alt={""} />
 }

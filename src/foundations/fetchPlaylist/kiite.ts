@@ -17,7 +17,7 @@ export async function kiite (url: string): Promise<Playlist | undefined> {
         type: SONG_TYPES.NICO_VIDEO,
         id: v.video_id,
         thumbnailUrl: v.thumbnail.replace('http://nicovideo.cdn.nimg.jp/thumbnails', '/@thumbnail-nv'),
-        order: i
+        order: i + 1
     }))
     const relatedSongs = getRelatedSongs(data.description)
     const songs = [...nicoSongs, ...relatedSongs].sort((a, b) => a.order - b.order)

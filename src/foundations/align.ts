@@ -8,7 +8,7 @@ import { getImage } from "@/util/image"
 export default async function align (playlists: Playlist[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
     if (playlists.length === 0) return
-    const imagesPromises = playlists.flatMap(p => p.songs.map(v => getImage(v.thumbnailUrl)))
+    const imagesPromises = playlists.flatMap(p => p.songs).map(v => getImage(v.thumbnailUrl))
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
