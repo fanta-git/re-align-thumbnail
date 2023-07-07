@@ -1,14 +1,20 @@
 import { RATIO_H, RATIO_W } from "@/consts/align"
 import { OptionFormContents, SizeFormContents } from "@/types/form"
-import { Playlist } from "@/types/playlist"
+import { PlaylistBase } from "@/types/playlist"
 import { expansion, range } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
 import { getImage } from "@/util/image"
+import fetchPlaylistMaster from "./fetchPlaylistMaster"
 
-export default async function align (playlists: Playlist[], size: SizeFormContents, option: OptionFormContents) {
+export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    if (playlists.length === 0) return
-    const imagesPromises = playlists.flatMap(p => p.songs).map(v => getImage(v.thumbnailUrl))
+
+    const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
+    const imagesPromises = playlists
+        .flatMap(p => p?.songs ?? [])
+        .map(v => getImage(v.thumbnailUrl))
+
+    if (imagesPromises.length === 0) return
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 

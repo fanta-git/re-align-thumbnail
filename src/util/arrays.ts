@@ -2,6 +2,11 @@ export function has<T extends any>(arr: readonly T[], item: any): item is T {
     return arr.includes(item)
 }
 
+export function isEqual<T>(arr1: T[], arr2: unknown[]) {
+    for (const [val1, val2] of zipAll(arr1, arr2)) if (val1 !== val2) return false
+    return true
+}
+
 export function groupBy<K, V>(array: readonly V[], getKey: (cur: V, idx: number, src: readonly V[]) => K): [K, V[]][] {
     return Array.from(
         array.reduce((map, cur, idx, src) => {
@@ -34,4 +39,8 @@ export function expansion<T extends readonly any[]>(...targets:  { [P in keyof T
 
 export function createObject<T extends string | number | symbol, U>(keys: readonly T[], values: readonly U[]) {
     return Object.fromEntries(zip(keys, values)) as Record<T, U>
+}
+
+export function nonNullable<T>(val: T): val is NonNullable<T> {
+    return val != null
 }

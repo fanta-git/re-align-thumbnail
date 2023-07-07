@@ -1,15 +1,17 @@
 import adjusters from "@/foundations/adjust";
-import fetchPlaylistMaster from "@/foundations/fetchPlaylistMaster";
-import { playlistsContentsState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
+import getPlaylistBase from "@/foundations/getPlaylistBase";
+import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
-import { Splited, WatchWithDefault } from "@/types/reactHookForm";
+import { WatchWithDefault } from "@/types/reactHookForm";
+import { Split } from "@/types/util";
+import { isEqual, nonNullable } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
 export default function useWatchCallback(formMethods: UseFormReturn<FormContents, any, undefined>) {
     const { watch, setValue } = formMethods
-    const setPlaylists = useSetRecoilState(playlistsContentsState)
+    const setPlaylistBases = useSetRecoilState(playlistBasesState)
     const setSize = useSetRecoilState(sizeFormContentsState)
     const setSetting = useSetRecoilState(settingFormContentsState)
 
@@ -17,21 +19,14 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
 
     return useCallback<WatchWithDefaultCallback>(async ({ lists, size, setting }, { name, type }) => {
         if (name === undefined) return
-        const [group, item] = name.split(".") as Splited<typeof name>
+        const [group, item] = name.split(".") as Split<typeof name, ".">
 
         if (group === "lists") {
-            if (item === undefined) {
-                setPlaylists(v => v.slice(0, lists.length))
-            } else {
-                const index = Number(item)
-                const playlist = await fetchPlaylistMaster(lists[index].url)
-                if (playlist === undefined) return
-                setPlaylists(v => {
-                    const playlists = [...v]
-                    playlists[index] = playlist
-                    return playlists
-                })
-            }
+            const playlistBases = lists
+                .map(v => getPlaylistBase(v.url))
+                .filter(nonNullable)
+
+            setPlaylistBases(v => isEqual(v, playlistBases) ? v : playlistBases)
         }
 
         if (group === "size") {
@@ -54,5 +49,5 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         if (group === "setting") {
             setSetting({ ...setting })
         }
-    }, [setValue, setSize, setSetting, setPlaylists])
+    }, [setValue, setSize, setSetting, setPlaylistBases])
 }
