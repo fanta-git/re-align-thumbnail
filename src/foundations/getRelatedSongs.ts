@@ -15,7 +15,7 @@ export default function getRelatedSongs (description: string) {
         .map(([url, order]): SongWithOrder => ({
             type: SONG_TYPES.YOUTUBE,
             url,
-            thumbnailUrls: parseThumbnailUrl(SONG_TYPES.YOUTUBE, url),
+            thumbnail: parseThumbnailUrl(SONG_TYPES.YOUTUBE, url),
             order: order ?? Infinity
         }))
 }

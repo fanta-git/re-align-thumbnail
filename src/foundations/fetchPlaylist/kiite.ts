@@ -17,7 +17,7 @@ const kiite = {
         const nicoSongs = data.songs.map((v, i): SongWithOrder => ({
             type: SONG_TYPES.NICO_VIDEO,
             url: v.video_url,
-            thumbnailUrls: parseThumbnailUrl(SONG_TYPES.NICO_VIDEO, v.thumbnail),
+            thumbnail: parseThumbnailUrl(SONG_TYPES.NICO_VIDEO, v.thumbnail),
             order: i + 1
         }))
         const relatedSongs = getRelatedSongs(data.description)

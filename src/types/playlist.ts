@@ -1,4 +1,4 @@
-import { SONG_TYPES, PLAYLIST_TYPES } from "@/consts/playlist"
+import { PLAYLIST_TYPES, SONG_TYPES } from "@/consts/playlist"
 import { Values, ValuesObj } from "./util"
 
 export type PlaylistTypes = Values<typeof PLAYLIST_TYPES>
@@ -24,12 +24,5 @@ export type Playlist = {
 export type Song = {
     type: SongType,
     url: string,
-    thumbnailUrls: ThumbnailUrls
-}
-
-export type ThumbnailUrls = {
-    S: string
-} | {
-    S: string,
-    M: string
+    thumbnail: Promise<HTMLImageElement | undefined>
 }

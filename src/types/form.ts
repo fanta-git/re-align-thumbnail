@@ -20,8 +20,7 @@ export type SettingFormContents = {
 
 export type OptionFormContents = {
     background: string,
-    fileType: Values<typeof IMAGE_MIMETYPE>,
-    isBigThumbnail: boolean
+    fileType: Values<typeof IMAGE_MIMETYPE>
 }
 
 export type FormContents = {
