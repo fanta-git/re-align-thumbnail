@@ -1,20 +1,21 @@
 import { SONG_TYPES } from "@/consts/playlist"
 import { Song } from "@/types/playlist"
 import { zipAll } from "@/util/arrays"
+import { parseThumbnailUrl } from "./parseThumbnailUrl"
 
 type SongWithOrder = Song & { order: number }
 
 export default function getRelatedSongs (description: string) {
-    const ids = Array.from(description.matchAll(/https:\/\/www\.youtube\.com\/watch\?v=(\w+)/g), ([, id]) => id)
+    const urls = Array.from(description.matchAll(/https:\/\/www\.youtube\.com\/watch\?v=\w+/g), ([url]) => url)
     const ordersStr = Array.from(description.matchAll(/^>>(.*)/mg), ([, str]) => str).at(-1)
     const orders = ordersStr ? ordersStr.trim().split(/\s+/).map(Number) : []
 
-    return zipAll(ids, orders)
-        .filter(([id, order]) => id !== undefined)
-        .map(([id, order]): SongWithOrder => ({
+    return zipAll(urls, orders)
+        .filter(([url, order]) => url !== undefined)
+        .map(([url, order]): SongWithOrder => ({
             type: SONG_TYPES.YOUTUBE,
-            id: id!,
-            thumbnailUrl: `/@thumbnail-yt/${id}`,
+            url,
+            thumbnailUrls: parseThumbnailUrl(SONG_TYPES.YOUTUBE, url),
             order: order ?? Infinity
         }))
 }

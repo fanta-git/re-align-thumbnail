@@ -23,6 +23,13 @@ export type Playlist = {
 
 export type Song = {
     type: SongType,
-    id: string,
-    thumbnailUrl: string
+    url: string,
+    thumbnailUrls: ThumbnailUrls
+}
+
+export type ThumbnailUrls = {
+    S: string
+} | {
+    S: string,
+    M: string
 }

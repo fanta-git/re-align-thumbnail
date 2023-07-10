@@ -1,8 +1,9 @@
 import { SONG_TYPES } from "@/consts/playlist"
 import { KiiteApiList } from "@/types/kiiteapi"
-import { ConstPlaylistUrlTypes, Playlist, Song } from "@/types/playlist"
+import { ConstPlaylistUrlTypes, Song } from "@/types/playlist"
 import axios from "axios"
 import getRelatedSongs from "../getRelatedSongs"
+import { parseThumbnailUrl } from "../parseThumbnailUrl"
 
 type SongWithOrder = Song & { order: number }
 
@@ -15,8 +16,8 @@ const kiite = {
 
         const nicoSongs = data.songs.map((v, i): SongWithOrder => ({
             type: SONG_TYPES.NICO_VIDEO,
-            id: v.video_id,
-            thumbnailUrl: v.thumbnail.replace('http://nicovideo.cdn.nimg.jp/thumbnails', '/@thumbnail-nv'),
+            url: v.video_url,
+            thumbnailUrls: parseThumbnailUrl(SONG_TYPES.NICO_VIDEO, v.thumbnail),
             order: i + 1
         }))
         const relatedSongs = getRelatedSongs(data.description)
