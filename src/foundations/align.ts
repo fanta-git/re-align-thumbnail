@@ -12,7 +12,12 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
     const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
     const imagesPromises = playlists
         .flatMap(p => p?.songs ?? [])
-        .map(v => getImage(v.thumbnailUrls.S))
+        .map(v => {
+            const url = option.isBigThumbnail && "M" in v.thumbnailUrls
+                ? v.thumbnailUrls.M
+                : v.thumbnailUrls.S
+            return getImage(url)
+        })
 
     if (imagesPromises.length === 0) return
 

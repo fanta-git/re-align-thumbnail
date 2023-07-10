@@ -15,6 +15,7 @@ export const sizeFormDefaults = {
     },
     option: {
         background: "#000000",
-        fileType: "jpeg"
+        fileType: "jpeg",
+        isBigThumbnail: false
     }
 } satisfies FormContents

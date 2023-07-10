@@ -1,6 +1,6 @@
 import { IMAGE_MIMETYPE } from "@/consts/image";
 import { FormContents } from "@/types/form";
-import { FormLabel, Input, Select, Stack } from "@chakra-ui/react";
+import { Box, Checkbox, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 
 export default function OptionForm () {
@@ -20,6 +20,10 @@ export default function OptionForm () {
           )}
         </Select>
       </FormLabel>
+      <Box>
+        <Checkbox {...register("option.isBigThumbnail")}>サムネイルの画質を上げる</Checkbox>
+        <Box fontSize="3xs">そこそこ1枚あたりの大きさが大きくないと画質は変化しません</Box>
+      </Box>
     </Stack>
   );
 }
