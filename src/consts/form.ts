@@ -1,6 +1,6 @@
 import { FormContents } from "@/types/form"
 
-export const sizeFormDefaults = {
+export const formContentsDefaults = {
     lists: [{ url: "" }],
     size: {
         columns: 10,

@@ -3,18 +3,14 @@ import { Image } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 type Props = {
-  loadableUrl: Loadable<string | undefined>
+  loadableUrl: Loadable<string>
 }
 
 export default function AlignedImage (props: Props) {
   const { loadableUrl } = props
   const url = loadableUrl.load()
 
-  useEffect(() => () => {
-    if (url) URL.revokeObjectURL(url)
-  }, [url])
-
-  if  (url === undefined) return <>Error!</>
+  useEffect(() => () => URL.revokeObjectURL(url), [url])
 
   return <Image src={url} alt={""} />
 }

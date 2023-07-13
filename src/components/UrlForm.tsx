@@ -1,4 +1,4 @@
-import { sizeFormDefaults } from "@/consts/form";
+import { formContentsDefaults } from "@/consts/form";
 import { FormContents } from "@/types/form";
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { ButtonGroup, FormLabel, HStack, IconButton, Input, Spacer, VStack } from "@chakra-ui/react";
@@ -9,7 +9,7 @@ export default function UrlForm () {
   const { register, control } = useFormContext<FormContents>()
   const { fields, append, remove } = useFieldArray({ control, name: "lists" })
   const removeForm = useCallback(() => remove(-1), [remove])
-  const appendForm = useCallback(() => append(sizeFormDefaults.lists[0]), [append])
+  const appendForm = useCallback(() => append(formContentsDefaults.lists[0]), [append])
   const isRemoveDisabled = fields.length <= 1
 
   return (

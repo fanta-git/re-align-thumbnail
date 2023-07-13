@@ -1,4 +1,4 @@
-import { sizeFormDefaults } from "@/consts/form";
+import { formContentsDefaults } from "@/consts/form";
 import useWatchCallback from "@/hooks/useFormWatchCallback";
 import useSaveOption from "@/hooks/useSaveOption";
 import { FormContents } from "@/types/form";
@@ -12,7 +12,7 @@ import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
 
 export default function Forms() {
-  const formMethods = useForm<FormContents>({ defaultValues: sizeFormDefaults })
+  const formMethods = useForm<FormContents>({ defaultValues: formContentsDefaults })
   const { watch } = formMethods
   const { isOpen, onOpen, onClose } = useDisclosure()
   const formSubscribe = useWatchCallback(formMethods)

@@ -1,11 +1,7 @@
-import { settingFormContentsState } from "@/stores/playlist";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
 import { SizeFormCell } from "./SizeFormCell";
 
 export default function SizeForm () {
-  const { thumbnailHeight, thumbnailWidth, isFixed } = useRecoilValue(settingFormContentsState)
-
   return (
     <TableContainer>
       <Table variant='simple' minW={"500px"}>
@@ -20,14 +16,12 @@ export default function SizeForm () {
           <Tr>
             <Td>グリッド数</Td>
             <SizeFormCell
-              register={"size.columns"}
+              register={"columns"}
               prefix={"列"}
-              inputProps={{ min: 1, step: 1, precision: 0 }}
             />
             <SizeFormCell
-              register={"size.rows"}
+              register={"rows"}
               prefix={"行"}
-              inputProps={{ min: 1, step: 1, precision: 0 }}
             />
           </Tr>
         </Tbody>
@@ -35,14 +29,12 @@ export default function SizeForm () {
           <Tr>
             <Td>出力画像</Td>
             <SizeFormCell
-              register={"size.outputWidth"}
+              register={"outputWidth"}
               prefix={"px"}
-              inputProps={{ min: 160, step: isFixed ? thumbnailWidth : 10, precision: 0 }}
             />
             <SizeFormCell
-              register={"size.outputHeight"}
+              register={"outputHeight"}
               prefix={"px"}
-              inputProps={{ min: 90, step: isFixed ? thumbnailHeight : 10, precision: 0 }}
             />
           </Tr>
         </Tbody>

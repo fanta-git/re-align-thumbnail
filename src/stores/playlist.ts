@@ -1,4 +1,4 @@
-import { sizeFormDefaults } from "@/consts/form";
+import { formContentsDefaults } from "@/consts/form";
 import { OptionFormContents, SettingFormContents, SizeFormContents } from "@/types/form";
 import { PlaylistBase } from "@/types/playlist";
 import { atom } from "recoil";
@@ -11,15 +11,15 @@ export const playlistBasesState = atom<PlaylistBase[]>({
 
 export const sizeFormContentsState = atom<SizeFormContents>({
     key: RECOIL_KEYS.SIZE_FORM_CONTENTS,
-    default: sizeFormDefaults.size
+    default: formContentsDefaults.size
 })
 
 export const settingFormContentsState = atom<SettingFormContents>({
     key: RECOIL_KEYS.SETTING_FORM_CONTENTS,
-    default: sizeFormDefaults.setting
+    default: formContentsDefaults.setting
 })
 
 export const optionFormContentsState = atom<OptionFormContents>({
     key: RECOIL_KEYS.OPTION_FORM_CONTENTS,
-    default: sizeFormDefaults.option
+    default: formContentsDefaults.option
 })

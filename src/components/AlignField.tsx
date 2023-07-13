@@ -3,6 +3,7 @@ import useHold from "@/hooks/useHold";
 import { optionFormContentsState, playlistBasesState, sizeFormContentsState } from "@/stores/playlist";
 import { Loadable } from "@/util/Loadable";
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE as useRecoilValue } from "recoil";
 import AlignedImage from "./AlignedImage";
 
@@ -16,8 +17,10 @@ export default function AlignField () {
   , [playlistBases, size, option])
 
   return (
-    <Suspense fallback={<>loading...</>}>
-      <AlignedImage loadableUrl={loadableUrl} />
-    </Suspense>
+    <ErrorBoundary fallback={<>Error!!!</>} resetKeys={[loadableUrl]}>
+      <Suspense fallback={<>loading...</>}>
+        <AlignedImage loadableUrl={loadableUrl} />
+      </Suspense>
+    </ErrorBoundary>
   )
 }
