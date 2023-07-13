@@ -1,5 +1,5 @@
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { SizeFormCell } from "./SizeFormCell";
+import { SizeFormInput } from "./SizeFormInput";
 
 export default function SizeForm () {
   return (
@@ -15,27 +15,15 @@ export default function SizeForm () {
         <Tbody>
           <Tr>
             <Td>グリッド数</Td>
-            <SizeFormCell
-              register={"columns"}
-              prefix={"列"}
-            />
-            <SizeFormCell
-              register={"rows"}
-              prefix={"行"}
-            />
+            <Td><SizeFormInput register={"columns"} prefix={"列"} /></Td>
+            <Td><SizeFormInput register={"rows"} prefix={"行"} /></Td>
           </Tr>
         </Tbody>
         <Tbody>
           <Tr>
             <Td>出力画像</Td>
-            <SizeFormCell
-              register={"outputWidth"}
-              prefix={"px"}
-            />
-            <SizeFormCell
-              register={"outputHeight"}
-              prefix={"px"}
-            />
+            <Td><SizeFormInput register={"outputWidth"} prefix={"px"} /></Td>
+            <Td><SizeFormInput register={"outputHeight"} prefix={"px"} /></Td>
           </Tr>
         </Tbody>
       </Table>
