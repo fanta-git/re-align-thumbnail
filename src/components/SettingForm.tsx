@@ -6,8 +6,8 @@ export default function SettingForm () {
   const { register } = useFormContext<FormContents>()
 
   return (
-    <Box width={"100%"}>
-      <Checkbox {...register("setting.isFixed")}>サムネイルのサイズを固定する</Checkbox>
+    <Box w={"100%"}>
+      <Checkbox {...register("setting.isFixed")}>サムネイルサイズを固定</Checkbox>
     </Box>
   );
 }

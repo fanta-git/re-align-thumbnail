@@ -7,7 +7,7 @@ export default function OptionForm () {
   const { register } = useFormContext<FormContents>()
 
   return (
-    <Stack spacing={3} width={"100%"}>
+    <Stack spacing={3} w={"100%"}>
       <FormLabel>
         背景色
         <Input type="color" {...register("option.background")} />

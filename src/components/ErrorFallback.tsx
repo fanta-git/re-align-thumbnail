@@ -7,7 +7,7 @@ export default function ErrorFallback (props: FallbackProps) {
   const formattedError = getError(error)
 
   return (
-    <Card width={"100%"} backgroundColor={"red.100"}>
+    <Card w={"100%"} backgroundColor={"red.100"}>
       <CardHeader>
         <Heading size='md'>
           {formattedError.name}

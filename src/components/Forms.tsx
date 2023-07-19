@@ -27,7 +27,7 @@ export default function Forms() {
           <UrlForm />
           <SizeForm />
           <SettingForm />
-          <HStack width="100%">
+          <HStack w={"100%"}>
             <OptionModalButton formMethods={formMethods} />
           </HStack>
         </VStack>
