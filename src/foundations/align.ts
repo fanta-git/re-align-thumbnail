@@ -7,11 +7,11 @@ import fetchPlaylistMaster from "./fetchPlaylistMaster"
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) throw new Error("不正な入力値です")
+    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
     const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
     const songs = playlists.flatMap(p => p?.songs ?? [])
-    if (songs.length === 0) throw Error("表示する楽曲が存在しません")
+    if (songs.length === 0) return
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
