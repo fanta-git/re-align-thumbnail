@@ -24,8 +24,8 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
             setPlaylistBases(v => {
                 if (item === undefined) return Array.from({ ...v, length: lists.length })
                 const i = Number(item)
-                const cuurentBase = getPlaylistBase(lists[i].url)
-                if (v[i] !== cuurentBase) return v.with(i, cuurentBase)
+                const currentBase = getPlaylistBase(lists[i].url)
+                if (v[i] !== currentBase) return Array.from({ ...v, [i]: currentBase, length: v.length })
                 return v
             })
         }
