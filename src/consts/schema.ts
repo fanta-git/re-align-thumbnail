@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const mylistQuerySchema = z.object({
-    id: z.preprocess(
-        Number,
-        z.number()
-    )
+    id: z.string().regex(/\d+/)
 })
 
 export const mylistRssSchema = z.object({

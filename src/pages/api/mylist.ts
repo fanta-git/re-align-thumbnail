@@ -14,14 +14,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     })
     const parsed = await parser.parseString(axiosRes.data)
         .then(mylistRssSchema.parse)
-    const [, playlistId] = parsed.link.match(/\/mylist\/(\d+)/) ?? []
-    if (playlistId === undefined) throw new Error("Errorあるよ（笑）")
 
     const result: PlaylistApiRes = {
         type: "nicovideo",
         title: parsed.title.replace(/‐ニコニコ動画$/, ""),
         description: parsed.description,
-        id: playlistId,
+        id: id,
         songs: parsed.items.map(v => ({
             type: "nicovideo",
             url: v.link.replace(/\?.*/, ""),
