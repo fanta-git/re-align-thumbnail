@@ -5,7 +5,7 @@ import { getImage } from "@/util/image";
 export async function parseThumbnailUrl(type: SongType, url: string): Promise<HTMLImageElement | undefined> {
     switch (type) {
         case SONG_TYPES.NICO_VIDEO: {
-            const matched = url.match(/http:\/\/nicovideo\.cdn\.nimg\.jp\/thumbnails\/\d+\/(\d+)(?:\.(\d+))?/)
+            const matched = url.match(/https?:\/\/nicovideo\.cdn\.nimg\.jp\/thumbnails\/\d+\/(\d+)(?:\.(\d+))?/)
             if (matched === null) return
             const [, id, key] = matched
             return getImage(key === undefined

@@ -24,6 +24,18 @@ export type Playlist = {
     songs: Song[]
 }
 
+export type PlaylistApiRes = {
+    type: PlaylistTypes,
+    id: string,
+    title: string,
+    description?: string,
+    songs: {
+        type: SongType,
+        url: string,
+        thumbnailUrl: string
+    }[]
+}
+
 export type Song = {
     type: SongType,
     url: string,
