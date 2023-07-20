@@ -1,50 +1,29 @@
-import { FormContents } from "@/types/form";
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { useFormContext, useWatch } from "react-hook-form";
-import { SizeFormCell } from "./SizeFormCell";
+import { SizeFormInput } from "./SizeFormInput";
 
 export default function SizeForm () {
-  const { control } = useFormContext<FormContents>()
-  const [size, isFixed] = useWatch({ name: ["size", "option.isFixed"], control })
-
   return (
     <TableContainer>
-      <Table variant='simple'>
+      <Table variant='simple' minW={"sm"}>
         <Thead>
           <Tr>
-            <Th></Th>
+            <Th display={["none", "none", "table-cell"]}></Th>
             <Th>横</Th>
             <Th>縦</Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td>グリッド数</Td>
-            <SizeFormCell
-              register={"size.columns"}
-              prefix={"列"}
-              inputProps={{ min: 1, step: 1, precision: 0 }}
-            />
-            <SizeFormCell
-              register={"size.rows"}
-              prefix={"行"}
-              inputProps={{ min: 1, step: 1, precision: 0 }}
-            />
+            <Td display={["none", "none", "table-cell"]}>グリッド数</Td>
+            <Td><SizeFormInput register={"columns"} prefix={"列"} /></Td>
+            <Td><SizeFormInput register={"rows"} prefix={"行"} /></Td>
           </Tr>
         </Tbody>
         <Tbody>
           <Tr>
-            <Td>出力画像</Td>
-            <SizeFormCell
-              register={"size.outputWidth"}
-              prefix={"px"}
-              inputProps={{ min: 160, step: isFixed ? size.thumbnailWidth : 10, precision: 0 }}
-            />
-            <SizeFormCell
-              register={"size.outputHeight"}
-              prefix={"px"}
-              inputProps={{ min: 90, step: isFixed ? size.thumbnailHeight : 10, precision: 0 }}
-            />
+            <Td display={["none", "none", "table-cell"]}>出力画像</Td>
+            <Td><SizeFormInput register={"outputWidth"} prefix={"px"} /></Td>
+            <Td><SizeFormInput register={"outputHeight"} prefix={"px"} /></Td>
           </Tr>
         </Tbody>
       </Table>

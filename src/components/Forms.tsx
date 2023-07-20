@@ -1,55 +1,24 @@
-import updateValues from "@/foundations/updateValues";
-import { listFormContentsState, optionFormContentsState, playlistContentsState, sizeFormContentsState } from "@/stores/playlist";
+import { formContentsDefaults } from "@/consts/form";
+import useWatchCallback from "@/hooks/useFormWatchCallback";
 import { FormContents } from "@/types/form";
-import { Splited, WatchWithDefault } from "@/types/reactHookForm";
-import { VStack } from "@chakra-ui/react";
-import { startTransition, useEffect } from "react";
+import { WatchWithDefault } from "@/types/reactHookForm";
+import { HStack, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE as useRecoilState, useSetRecoilState } from "recoil";
-import OptionsForm from "./OptionsForm";
+import OptionModalButton from "./OptionModalButton";
+import SettingForm from "./SettingForm";
 import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
-import fetchPlaylist from "@/foundations/fetchPlaylist";
 
 export default function Forms() {
-  const [list, setList] = useRecoilState(listFormContentsState)
-  const [size, setSize] = useRecoilState(sizeFormContentsState)
-  const [option, setOption] = useRecoilState(optionFormContentsState)
-  const setPlaylist = useSetRecoilState(playlistContentsState)
+  const formMethods = useForm<FormContents>({ defaultValues: formContentsDefaults })
+  const { watch } = formMethods
+  const formSubscribe = useWatchCallback(formMethods)
 
-  const formMethods = useForm<FormContents>({ defaultValues: { list, size, option } })
-  const { watch, getValues, setValue } = formMethods
-
-  useEffect(() =>
-    (watch as WatchWithDefault<typeof watch>)(async (data, { name }) => {
-      if (name === undefined) return
-      const [group, item] = name.split(".") as Splited<typeof name>
-      if (item === undefined) return
-
-      if (group === "list") {
-        setList({ ...data.list })
-        const playlist = await fetchPlaylist(data.list.url)
-        if (playlist === undefined) return
-        setPlaylist(playlist)
-      }
-
-      if (group === "size") {
-        const isFixed = getValues("option.isFixed")
-        const updated = updateValues(data.size, item, isFixed)
-        if (updated === undefined) {
-          startTransition(() => {
-            setSize({ ...data.size })
-          })
-        } else {
-          setValue("size", updated)
-        }
-      }
-
-      if (group === "option") {
-        setOption({ ...data.option })
-      }
-    }).unsubscribe
-  , [watch, getValues, setValue, setList, setSize, setOption, setPlaylist])
+  useEffect(() => {
+    const subscribe = (watch as WatchWithDefault<typeof watch>)(formSubscribe)
+    return subscribe.unsubscribe
+  }, [watch, formSubscribe])
 
   return (
     <FormProvider {...formMethods}>
@@ -57,7 +26,10 @@ export default function Forms() {
         <VStack>
           <UrlForm />
           <SizeForm />
-          <OptionsForm />
+          <SettingForm />
+          <HStack w={"100%"}>
+            <OptionModalButton formMethods={formMethods} />
+          </HStack>
         </VStack>
       </form>
     </FormProvider>

@@ -1,8 +1,9 @@
+import { IMAGE_MIMETYPE } from "@/consts/image"
+import { Values } from "./util"
+
 export type SizeFormContents = {
     columns: number,
     rows: number,
-    thumbnailWidth: number,
-    thumbnailHeight: number,
     outputWidth: number,
     outputHeight: number
 }
@@ -11,12 +12,20 @@ export type ListFormContents = {
     url: string
 }
 
+export type SettingFormContents = {
+    isFixed: boolean,
+    thumbnailWidth: number,
+    thumbnailHeight: number
+}
+
 export type OptionFormContents = {
-    isFixed: boolean
+    background: string,
+    fileType: Values<typeof IMAGE_MIMETYPE>
 }
 
 export type FormContents = {
-    list: ListFormContents,
+    lists: ListFormContents[],
     size: SizeFormContents,
+    setting: SettingFormContents,
     option: OptionFormContents
 }

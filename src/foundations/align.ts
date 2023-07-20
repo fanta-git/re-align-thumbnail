@@ -1,15 +1,19 @@
 import { RATIO_H, RATIO_W } from "@/consts/align"
 import { OptionFormContents, SizeFormContents } from "@/types/form"
-import { Playlist } from "@/types/playlist"
+import { PlaylistBase } from "@/types/playlist"
 import { expansion, range } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
-import { getImage } from "@/util/image"
+import fetchPlaylistMaster from "./fetchPlaylistMaster"
 
-export default async function align (playlist: Playlist, size: SizeFormContents, option: OptionFormContents) {
+export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    const imagesPromises = playlist.songs.map(v => getImage(v.thumbnailUrl))
+    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
-    const { canvas, context } = createCanvas(outputWidth, outputHeight)
+    const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
+    const songs = playlists.flatMap(p => p?.songs ?? [])
+    if (songs.length === 0) return
+
+    const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
     for (const [i, j] of expansion(range(rows), range(columns))) {
         const x = Math.round(j * outputWidth / columns)
@@ -18,7 +22,7 @@ export default async function align (playlist: Playlist, size: SizeFormContents,
         const tnHeight = Math.round((i + 1) * outputHeight / rows) - y
 
         try {
-            const image = await imagesPromises[i * columns + j]
+            const image = await songs[i * columns + j].thumbnail
             if (image === undefined) continue
 
             const trimWidth = Math.min(image.height * RATIO_W / RATIO_H | 0, image.width)
@@ -35,6 +39,6 @@ export default async function align (playlist: Playlist, size: SizeFormContents,
         }
     }
 
-    const outputUrl = await canvas2URL(canvas, 'image/jpeg')
+    const outputUrl = await canvas2URL(canvas, `image/${option.fileType}`)
     return outputUrl
 }
