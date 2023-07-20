@@ -3,7 +3,10 @@ import { Values, ValuesObj } from "./util"
 
 export type PlaylistTypes = Values<typeof PLAYLIST_TYPES>
 
-export type PlaylistBase = `${PlaylistTypes}-${string}`
+export type PlaylistBase = {
+    type: PlaylistTypes,
+    id: string
+}
 
 export type ConstPlaylistUrlTypes = {
     type: PlaylistTypes,

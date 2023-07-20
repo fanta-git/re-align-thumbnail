@@ -1,10 +1,10 @@
+import { optionFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
-import OptionsForm from "./OptionForm";
-import { optionFormContentsState } from "@/stores/playlist";
-import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
+import OptionsForm from "./OptionForm";
 
 type Props = {
   formMethods: UseFormReturn<FormContents, any, undefined>
@@ -18,7 +18,9 @@ export default function OptionModalButton (props: Props) {
 
   const saveOption = useCallback(() => {
       const option = getValues("option")
-      setOption({ ...option })
+      startTransition(() =>
+        setOption({ ...option })
+      )
       onClose()
   }, [getValues, onClose, setOption])
 

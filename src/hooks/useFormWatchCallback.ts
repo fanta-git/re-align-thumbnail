@@ -4,7 +4,6 @@ import { playlistBasesState, settingFormContentsState, sizeFormContentsState } f
 import { FormContents } from "@/types/form";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
-import { isEqual, nonNullable } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -22,11 +21,13 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         const [group, item] = name.split(".") as Split<typeof name, ".">
 
         if (group === "lists") {
-            const playlistBases = lists
-                .map(v => getPlaylistBase(v.url))
-                .filter(nonNullable)
-
-            setPlaylistBases(v => isEqual(v, playlistBases) ? v : playlistBases)
+            setPlaylistBases(v => {
+                if (item === undefined) return Array.from({ ...v, length: lists.length })
+                const i = Number(item)
+                const cuurentBase = getPlaylistBase(lists[i].url)
+                if (v[i] !== cuurentBase) return v.with(i, cuurentBase)
+                return v
+            })
         }
 
         if (group === "size") {

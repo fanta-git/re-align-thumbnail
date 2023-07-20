@@ -22,6 +22,7 @@ export default function UrlForm () {
           <IconButton aria-label="append-form" onClick={appendForm} icon={<AddIcon />} />
         </ButtonGroup>
       </HStack>
+
       <VStack spacing={1} w="full">
         {fields.map((field, index) => (
           <Input
@@ -32,5 +33,5 @@ export default function UrlForm () {
         ))}
       </VStack>
     </VStack>
-  );
+  )
 }
