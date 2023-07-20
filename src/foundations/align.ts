@@ -4,14 +4,18 @@ import { PlaylistBase } from "@/types/playlist"
 import { expansion, range } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
 import fetchPlaylistMaster from "./fetchPlaylistMaster"
+import { parseThumbnailUrl } from "./parseThumbnailUrl"
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
     if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
     const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
-    const songs = playlists.flatMap(p => p?.songs ?? [])
-    if (songs.length === 0) return
+    const thumbnails = playlists
+        .flatMap(p => p?.songs ?? [])
+        .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
+
+    if (thumbnails.length === 0) return
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
@@ -22,7 +26,7 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
         const tnHeight = Math.round((i + 1) * outputHeight / rows) - y
 
         try {
-            const image = await songs[i * columns + j].thumbnail
+            const image = await thumbnails[i * columns + j]
             if (image === undefined) continue
 
             const trimWidth = Math.min(image.height * RATIO_W / RATIO_H | 0, image.width)

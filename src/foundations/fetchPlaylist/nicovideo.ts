@@ -1,23 +1,33 @@
-import { ConstPlaylistUrlTypes, PlaylistApiRes } from "@/types/playlist";
+import { mylistRssSchema } from "@/consts/schema";
+import { FetchPlaylist } from "@/types/playlist";
 import axios from "axios";
-import { parseThumbnailUrl } from "../parseThumbnailUrl";
+import Parser from "rss-parser";
 
-const nicovideo = {
-    type: "nicovideo",
-    regexp: /https:\/\/(?:www\.nicovideo\.jp\/(?:my\/|user\/\d+\/)?|sp\.nicovideo\.jp\/(?:my\/)?)mylist\/(\d+)/,
-    fetch: async (listId) => {
-        const result = await axios.get<PlaylistApiRes>(`/api/mylist?id=${listId}`)
-
-        return {
-            ...result.data,
-            songs: result.data.songs.map(({ type, url, thumbnailUrl }) => ({
-                type,
-                url,
-                thumbnail: parseThumbnailUrl(type, thumbnailUrl)
-            }))
+const nicovideo: FetchPlaylist = async (listId) => {
+    const axiosRes = await axios.get<string>(`https://www.nicovideo.jp/mylist/${listId}?rss=2.0`)
+    const parser = new Parser({
+        customFields: {
+            item: ["description", "media:thumbnail"]
         }
+    })
+    const parsed = await parser
+        .parseString(axiosRes.data)
+        .then(mylistRssSchema.parse)
+
+    const [, title = ""] = parsed.title.match(/^マイリスト (.*)‐ニコニコ動画$/) ?? []
+
+    return {
+        type: "nicovideo",
+        title,
+        description: parsed.description,
+        id: listId,
+        songs: parsed.items.map(v => ({
+            type: "nicovideo",
+            url: v.link.replace(/\?.*/, ""),
+            thumbnailUrl: v["media:thumbnail"].$.url
+        }))
     }
-} satisfies ConstPlaylistUrlTypes
+}
 
 export { nicovideo };
 

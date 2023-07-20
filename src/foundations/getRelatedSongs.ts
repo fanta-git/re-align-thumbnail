@@ -1,7 +1,7 @@
 import { SONG_TYPES } from "@/consts/playlist"
 import { Song } from "@/types/playlist"
 import { zipAll } from "@/util/arrays"
-import { parseThumbnailUrl } from "./parseThumbnailUrl"
+import { getYoutubeThumbnailUrl } from "@/util/image"
 
 type SongWithOrder = Song & { order: number }
 
@@ -15,7 +15,7 @@ export default function getRelatedSongs (description: string) {
         .map(([url, order]): SongWithOrder => ({
             type: SONG_TYPES.YOUTUBE,
             url,
-            thumbnail: parseThumbnailUrl(SONG_TYPES.YOUTUBE, url),
+            thumbnailUrl: getYoutubeThumbnailUrl(url) ?? "",
             order: order ?? Infinity
         }))
 }

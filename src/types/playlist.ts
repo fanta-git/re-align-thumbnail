@@ -11,8 +11,9 @@ export type PlaylistBase = {
 export type ConstPlaylistUrlTypes = {
     type: PlaylistTypes,
     regexp: RegExp,
-    fetch: (listId: string) => Promise<Playlist>
 }
+
+export type FetchPlaylist = (listId: string) => Promise<Playlist>
 
 export type SongType = ValuesObj<typeof SONG_TYPES>
 
@@ -24,20 +25,8 @@ export type Playlist = {
     songs: Song[]
 }
 
-export type PlaylistApiRes = {
-    type: PlaylistTypes,
-    id: string,
-    title: string,
-    description?: string,
-    songs: {
-        type: SongType,
-        url: string,
-        thumbnailUrl: string
-    }[]
-}
-
 export type Song = {
     type: SongType,
     url: string,
-    thumbnail: Promise<HTMLImageElement | undefined>
+    thumbnailUrl: string
 }

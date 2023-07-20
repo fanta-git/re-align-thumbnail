@@ -6,10 +6,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/@kiite-api/:path*',
-        destination: 'https://kiite.jp/api/:path*',
-      },
-      {
         source: '/@thumbnail/youtube/:id/S',
         destination: 'https://img.youtube.com/vi/:id/default.jpg',
       },

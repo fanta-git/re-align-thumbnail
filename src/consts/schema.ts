@@ -1,6 +1,8 @@
 import { z } from "zod";
+import { PLAYLIST_TYPES } from "./playlist";
 
 export const mylistQuerySchema = z.object({
+    type: z.enum(PLAYLIST_TYPES),
     id: z.string().regex(/\d+/)
 })
 
