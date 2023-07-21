@@ -1,6 +1,6 @@
 import { ConstPlaylistUrlTypes } from "@/types/playlist"
 
-export const PLAYLIST_TYPES = ['kiite', 'nicovideo'] as const
+export const PLAYLIST_TYPES = ['kiite', 'nicovideo', 'youtube'] as const
 export const SONG_TYPES = {
     NICO_VIDEO: 'nicovideo',
     YOUTUBE: 'youtube'
@@ -14,5 +14,9 @@ export const PLAYLIST_TYPE_CHECKERS = [
     {
         type: "nicovideo",
         regexp: /https:\/\/(?:www\.nicovideo\.jp\/(?:my\/|user\/\d+\/)?|sp\.nicovideo\.jp\/(?:my\/)?)mylist\/(\d+)/
+    },
+    {
+        type: "youtube",
+        regexp: /https:\/\/(?:www\.)?youtube\.com\/playlist\?list=(\w+)/
     }
 ] satisfies ConstPlaylistUrlTypes[]
