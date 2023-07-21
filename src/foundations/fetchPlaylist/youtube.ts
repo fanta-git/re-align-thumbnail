@@ -15,20 +15,31 @@ const youtube: FetchPlaylist = async (listId) => {
 
     const [playlist] = playlists.items
 
-    const { data: playlistItems } = await axios.get<YoutubeApiPlaylistItems>("https://www.googleapis.com/youtube/v3/playlistItems", {
-        params: {
-            key,
-            playlistId: listId,
-            part: "snippet"
-        }
-    })
+    const items: YoutubeApiPlaylistItems["items"] = []
+    let nextPageToken = ''
+
+    do {
+        const { data: playlistItems } = await axios.get<YoutubeApiPlaylistItems>("https://www.googleapis.com/youtube/v3/playlistItems", {
+            params: {
+                key,
+                playlistId: listId,
+                maxResults: 50,
+                pageToken: nextPageToken,
+                part: "snippet"
+            }
+        })
+
+        items.push(...playlistItems.items)
+        nextPageToken = playlistItems.nextPageToken ?? ''
+        break;
+    } while (nextPageToken)
 
     return {
         type: "youtube",
         title: playlist.snippet.title,
         description: playlist.snippet.description,
         id: listId,
-        songs: playlistItems.items.map(v => ({
+        songs: items.map(v => ({
             type: "youtube",
             url: `https://youtu.be/${v.snippet.resourceId.videoId}`,
             thumbnailUrl: `https://img.youtube.com/vi/${v.snippet.resourceId.videoId}/default.jpg`

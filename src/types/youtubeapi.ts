@@ -1,6 +1,8 @@
 export type YoutubeApiPlaylistItems = {
     kind: string;
     etag: string;
+    nextPageToken?: string,
+    prevPageToken?: string,
     items: {
         kind: string;
         etag: string;
@@ -16,6 +18,8 @@ export type YoutubeApiPlaylistItems = {
 export type YoutubeApiPlaylists = {
     kind: string;
     etag: string;
+    nextPageToken?: string,
+    prevPageToken?: string,
     items: {
         kind: string;
         etag: string;
