@@ -42,7 +42,7 @@ const youtube: FetchPlaylist = async (listId) => {
         songs: items.map(v => ({
             type: "youtube",
             url: `https://youtu.be/${v.snippet.resourceId.videoId}`,
-            thumbnailUrl: `https://img.youtube.com/vi/${v.snippet.resourceId.videoId}/default.jpg`
+            thumbnailUrl: v.snippet.thumbnails.default.url
         }))
     }
 }
