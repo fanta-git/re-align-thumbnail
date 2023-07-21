@@ -17,6 +17,6 @@ export const PLAYLIST_TYPE_CHECKERS = [
     },
     {
         type: "youtube",
-        regexp: /https:\/\/(?:www\.)?youtube\.com\/playlist\?list=(\w+)/
+        regexp: /https:\/\/(?:www\.)?youtube\.com\/playlist\?list=([-\w]+)/
     }
 ] satisfies ConstPlaylistUrlTypes[]

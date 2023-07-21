@@ -17,7 +17,7 @@ export const getImage = async (url: string) => new Promise<HTMLImageElement>((re
 })
 
 export const getYoutubeThumbnailUrl = (videoUrl: string) => {
-    const [, id] = videoUrl.match(/https:\/\/www\.youtube\.com\/watch\?v=(\w+)/) ?? []
+    const [, id] = videoUrl.match(/https:\/\/www\.youtube\.com\/watch\?v=([-\w]+)/) ?? []
     if (id === undefined) return
 
     return `https://img.youtube.com/vi/${id}/default.jpg`
