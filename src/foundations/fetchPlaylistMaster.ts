@@ -1,17 +1,17 @@
 import { Playlist, PlaylistBase } from "@/types/playlist"
-import * as playlistFetchers from "./fetchPlaylist"
+import axios from "axios"
 
 const cache = new Map<string, Promise<Playlist | undefined>>()
 
 export default function fetchPlaylistMaster(playlistBase: PlaylistBase) {
     const { type, id } = playlistBase
-    const { fetch } = playlistFetchers[type]
+    const url = `/api/playlist?type=${type}&id=${id}`
 
-    if (cache.has(id)) {
-        return cache.get(id)!
+    if (cache.has(url)) {
+        return cache.get(url)!
     } else {
-        const playlistPromise = fetch(id)
-        cache.set(id, playlistPromise)
+        const playlistPromise = axios.get<Playlist>(url).then(v => v.data)
+        cache.set(url, playlistPromise)
         return playlistPromise
     }
 }

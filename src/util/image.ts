@@ -1,3 +1,6 @@
+import { SONG_TYPES } from "@/consts/playlist"
+import { SongType } from "@/types/playlist"
+
 const cache = new Map<string, HTMLImageElement>()
 
 export const getImage = async (url: string) => new Promise<HTMLImageElement>((resolve, reject) => {
@@ -15,3 +18,11 @@ export const getImage = async (url: string) => new Promise<HTMLImageElement>((re
     image.addEventListener('error', e => reject(e))
     image.src = url
 })
+
+export const getThumbnailUrl = (type: SongType, id: string) => {
+    switch (type) {
+        case SONG_TYPES.YOUTUBE: {
+            return `https://img.youtube.com/vi/${id}/default.jpg`
+        }
+    }
+}

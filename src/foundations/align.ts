@@ -1,30 +1,34 @@
 import { RATIO_H, RATIO_W } from "@/consts/align"
 import { OptionFormContents, SizeFormContents } from "@/types/form"
 import { PlaylistBase } from "@/types/playlist"
-import { expansion, range } from "@/util/arrays"
+import { expansion, range, zip } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
 import fetchPlaylistMaster from "./fetchPlaylistMaster"
+import { parseThumbnailUrl } from "./parseThumbnailUrl"
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
     if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
     const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
-    const songs = playlists.flatMap(p => p?.songs ?? [])
-    if (songs.length === 0) return
+    const thumbnails = playlists
+        .flatMap(p => p?.songs ?? [])
+        .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
+
+    if (thumbnails.length === 0) return
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
-    for (const [i, j] of expansion(range(rows), range(columns))) {
+    for (const [[i, j], imagePromise] of zip(expansion(range(rows), range(columns)), thumbnails)) {
+        const image = await imagePromise
+        if (image === undefined) continue
+
         const x = Math.round(j * outputWidth / columns)
         const y = Math.round(i * outputHeight / rows)
         const tnWidth = Math.round((j + 1) * outputWidth / columns) - x
         const tnHeight = Math.round((i + 1) * outputHeight / rows) - y
 
         try {
-            const image = await songs[i * columns + j].thumbnail
-            if (image === undefined) continue
-
             const trimWidth = Math.min(image.height * RATIO_W / RATIO_H | 0, image.width)
             const trimHeight = Math.min(image.width * RATIO_H / RATIO_W | 0, image.height)
 

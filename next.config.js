@@ -6,10 +6,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/@kiite-api/:path*',
-        destination: 'https://kiite.jp/api/:path*',
-      },
-      {
         source: '/@thumbnail/youtube/:id/S',
         destination: 'https://img.youtube.com/vi/:id/default.jpg',
       },
@@ -24,7 +20,19 @@ const nextConfig = {
       {
         source: '/@thumbnail/nicovideo/:ids*/M',
         destination: 'http://nicovideo.cdn.nimg.jp/thumbnails/:ids*.M',
-      }
+      },
+      {
+        source: '/@thumbnail/soundcloud/:name',
+        destination: 'https://i1.sndcdn.com/:name',
+      },
+      {
+        source: '/@thumbnail/bandcamp/:name',
+        destination: 'https://f4.bcbits.com/img/:name',
+      },
+      {
+        source: '/@thumbnail/vimeo/:name',
+        destination: 'http://i.vimeocdn.com/video/:name',
+      },
     ];
   },
 }

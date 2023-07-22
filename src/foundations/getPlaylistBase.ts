@@ -1,8 +1,8 @@
+import { PLAYLIST_TYPE_CHECKERS } from "@/consts/playlist"
 import { PlaylistBase } from "@/types/playlist"
-import * as playlistFetchers from "./fetchPlaylist"
 
 export default function getPlaylistBase(url: string): PlaylistBase | undefined {
-    for (const { type, regexp } of Object.values(playlistFetchers)) {
+    for (const { type, regexp } of PLAYLIST_TYPE_CHECKERS) {
         const result = url.match(regexp)
         if (result) {
             const [, id] = result
