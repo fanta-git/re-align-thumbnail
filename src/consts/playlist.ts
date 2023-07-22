@@ -3,7 +3,10 @@ import { ConstPlaylistUrlTypes, SongType, SongTypeChecker } from "@/types/playli
 export const PLAYLIST_TYPES = ['kiite', 'nicovideo', 'youtube', 'vocadb'] as const
 export const SONG_TYPES = {
     NICO_VIDEO: 'nicovideo',
-    YOUTUBE: 'youtube'
+    YOUTUBE: 'youtube',
+    SOUND_CLOUD: 'soundcloud',
+    BANDCAMP: "bandcamp",
+    VIMEO: 'vimeo'
 } as const
 
 export const PLAYLIST_TYPE_CHECKERS = [
@@ -37,6 +40,9 @@ export const SONG_TYPE_CHECKERS = [
 ] satisfies SongTypeChecker[]
 
 export const VOCADB_SERVICE_RELATIONS = [
-    { service: "Youtube", type: "youtube" },
-    { service: "NicoNicoDouga", type: "nicovideo" }
+    { service: "Youtube", type: SONG_TYPES.YOUTUBE },
+    { service: "NicoNicoDouga", type: SONG_TYPES.NICO_VIDEO },
+    { service: "SoundCloud", type: SONG_TYPES.SOUND_CLOUD },
+    { service: "Bandcamp", type: SONG_TYPES.BANDCAMP },
+    { service: "Vimeo", type: SONG_TYPES.VIMEO }
 ] satisfies { service: string, type: SongType }[]
