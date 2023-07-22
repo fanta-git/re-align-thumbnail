@@ -30,3 +30,8 @@ export type Song = {
     url: string,
     thumbnailUrl: string
 }
+
+export type SongTypeChecker = {
+    type: SongType,
+    regexp: RegExp
+}
