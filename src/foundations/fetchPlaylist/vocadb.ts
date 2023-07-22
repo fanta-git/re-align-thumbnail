@@ -5,7 +5,7 @@ import { nonNullable } from "@/util/arrays";
 import axios from "axios";
 
 const vocadb: FetchPlaylist = async (listId) => {
-    const { data: playlistSongs } = await axios.get<VocadbApiSonglistSongs>(`https://vocadb.net/api/songLists/${listId}/songs`, {
+    const { data } = await axios.get<VocadbApiSonglistSongs>(`https://vocadb.net/api/songLists/${listId}/songs`, {
         params: {
             childVoicebanks: false,
             start: 0,
@@ -20,7 +20,7 @@ const vocadb: FetchPlaylist = async (listId) => {
         id: listId,
         title: "VocaDB",
         description: "",
-        songs: playlistSongs.items.map(v => {
+        songs: data.items.map(v => {
             for (const { service, type } of VOCADB_SERVICE_RELATIONS) {
                 const pv = v.song.pvs.find(v => v.service === service && v.pvType === "Original")
                 if (pv) return {

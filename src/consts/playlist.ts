@@ -39,6 +39,37 @@ export const SONG_TYPE_CHECKERS = [
     }
 ] satisfies SongTypeChecker[]
 
+export const THUMBNAIL_TYPE_CHECKERS = [
+    {
+        type: SONG_TYPES.NICO_VIDEO,
+        regexp: /https?:\/\/nicovideo\.cdn\.nimg\.jp\/thumbnails\/\d+\/(\d+)(?:\.(\d+))?/
+    },
+    {
+        type: SONG_TYPES.NICO_VIDEO,
+        regexp: /https?:\/\/tn-skr1\.smilevideo\.jp\/smile\?i=(\d+)/
+    },
+    {
+        type: SONG_TYPES.YOUTUBE,
+        regexp: /https?:\/\/img\.youtube\.com\/vi\/([-\w]+)/
+    },
+    {
+        type: SONG_TYPES.YOUTUBE,
+        regexp: /https?:\/\/i1?\.ytimg\.com\/vi\/([-\w]+)/
+    },
+    {
+        type: SONG_TYPES.SOUND_CLOUD,
+        regexp: /https?:\/\/i1\.sndcdn\.com\/([-.\w]+)/
+    },
+    {
+        type: SONG_TYPES.BANDCAMP,
+        regexp: /https?:\/\/f4\.bcbits\.com\/img\/([-.\w]+)/
+    },
+    {
+        type: SONG_TYPES.VIMEO,
+        regexp: /https?:\/\/i\.vimeocdn\.com\/video\/([-.\w]+)/
+    },
+] satisfies SongTypeChecker[]
+
 export const VOCADB_SERVICE_RELATIONS = [
     { service: "Youtube", type: SONG_TYPES.YOUTUBE },
     { service: "NicoNicoDouga", type: SONG_TYPES.NICO_VIDEO },
