@@ -2,13 +2,12 @@ import { SONG_TYPE_CHECKERS } from "@/consts/playlist"
 import { Song } from "@/types/playlist"
 import { zipAll } from "@/util/arrays"
 import { getThumbnailUrl } from "@/util/image"
+import matchByChekers from "./matchByChekers"
 
 export default function insertRelatedSongs (songs: Song[], description: string): Song[] {
     const ordersMap = new Map<Song, number>(songs.map((song, i) => [song, i + 1]))
 
-    const relateds = SONG_TYPE_CHECKERS
-        .flatMap(({ type, regexp }) => [...description.matchAll(regexp)].map(match => ({ match, type })))
-        .sort((a, b) => (a.match.index ?? Infinity) - (b.match.index ?? Infinity))
+    const relateds = matchByChekers(description, SONG_TYPE_CHECKERS)
         .map(({ match: [url, id], type }): Song => ({
             type,
             url,

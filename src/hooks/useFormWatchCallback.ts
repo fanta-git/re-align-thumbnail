@@ -1,10 +1,12 @@
+import { PLAYLIST_TYPE_CHECKERS } from "@/consts/playlist";
 import adjusters from "@/foundations/adjust";
-import getPlaylistBase from "@/foundations/getPlaylistBase";
+import matchByChekers from "@/foundations/matchByChekers";
 import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
+import { PlaylistBase } from "@/types/playlist";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
-import { nonNullable, zipAll } from "@/util/arrays";
+import { zipAll } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -22,7 +24,8 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         const [group, item] = name.split(".") as Split<typeof name, ".">
 
         if (group === "list") {
-            const bases = list.urls.split("\n").map(getPlaylistBase).filter(nonNullable)
+            const bases = matchByChekers(list.urls, PLAYLIST_TYPE_CHECKERS)
+                .map(({ type, match: [, id] }): PlaylistBase => ({ type, id }))
 
             setPlaylistBases(v =>
                 zipAll(v, bases).every(([a, b]) => a?.type === b?.type && a?.id === b?.id)
