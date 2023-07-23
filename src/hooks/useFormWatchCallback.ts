@@ -1,9 +1,12 @@
+import { PLAYLIST_TYPE_CHECKERS } from "@/consts/playlist";
 import adjusters from "@/foundations/adjust";
-import getPlaylistBase from "@/foundations/getPlaylistBase";
+import matchByChekers from "@/foundations/matchByChekers";
 import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
+import { PlaylistBase } from "@/types/playlist";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
+import { zipAll } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -16,18 +19,19 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
 
     type WatchWithDefaultCallback = Parameters<WatchWithDefault<typeof watch>>[0];
 
-    return useCallback<WatchWithDefaultCallback>(async ({ lists, size, setting }, { name, type }) => {
+    return useCallback<WatchWithDefaultCallback>(async ({ list, size, setting }, { name, type }) => {
         if (name === undefined) return
         const [group, item] = name.split(".") as Split<typeof name, ".">
 
-        if (group === "lists") {
-            setPlaylistBases(v => {
-                if (item === undefined) return Array.from({ ...v, length: lists.length })
-                const i = Number(item)
-                const currentBase = getPlaylistBase(lists[i].url)
-                if (v[i] !== currentBase) return Array.from({ ...v, [i]: currentBase, length: v.length })
-                return v
-            })
+        if (group === "list") {
+            const bases = matchByChekers(list.urls, PLAYLIST_TYPE_CHECKERS)
+                .map(({ type, match: [, id] }): PlaylistBase => ({ type, id }))
+
+            setPlaylistBases(v =>
+                zipAll(v, bases).every(([a, b]) => a?.type === b?.type && a?.id === b?.id)
+                    ? v
+                    : bases
+            )
         }
 
         if (group === "size") {

@@ -8,9 +8,9 @@ export type PlaylistBase = {
     id: string
 }
 
-export type ConstPlaylistUrlTypes = {
-    type: PlaylistTypes,
-    regexp: RegExp,
+export type Checker<T> = {
+    type: T,
+    regexp: RegExp
 }
 
 export type FetchPlaylist = (listId: string) => Promise<Playlist>
@@ -29,9 +29,4 @@ export type Song = {
     type: SongType,
     url: string,
     thumbnailUrl: string
-}
-
-export type SongTypeChecker = {
-    type: SongType,
-    regexp: RegExp
 }

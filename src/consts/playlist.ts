@@ -1,4 +1,4 @@
-import { ConstPlaylistUrlTypes, SongType, SongTypeChecker } from "@/types/playlist"
+import { Checker, PlaylistTypes, SongType } from "@/types/playlist"
 
 export const PLAYLIST_TYPES = ['kiite', 'nicovideo', 'youtube', 'vocadb'] as const
 export const SONG_TYPES = {
@@ -12,21 +12,21 @@ export const SONG_TYPES = {
 export const PLAYLIST_TYPE_CHECKERS = [
     {
         type: "kiite",
-        regexp: /https:\/\/kiite\.jp\/playlist\/(\w{10})/
+        regexp: /https:\/\/kiite\.jp\/playlist\/(\w{10})/g
     },
     {
         type: "nicovideo",
-        regexp: /https:\/\/(?:www\.nicovideo\.jp\/(?:my\/|user\/\d+\/)?|sp\.nicovideo\.jp\/(?:my\/)?)mylist\/(\d+)/
+        regexp: /https:\/\/(?:www\.nicovideo\.jp\/(?:my\/|user\/\d+\/)?|sp\.nicovideo\.jp\/(?:my\/)?)mylist\/(\d+)/g
     },
     {
         type: "youtube",
-        regexp: /https:\/\/(?:www\.|m\.)?youtube\.com\/playlist[/?](?:.*&)?list=([-\w]+)/
+        regexp: /https:\/\/(?:www\.|m\.)?youtube\.com\/playlist[/?](?:.*&)?list=([-\w]+)/g
     },
     {
         type: "vocadb",
-        regexp: /https:\/\/vocadb\.net\/L\/(\d+)/
+        regexp: /https:\/\/vocadb\.net\/L\/(\d+)/g
     }
-] satisfies ConstPlaylistUrlTypes[]
+] satisfies Checker<PlaylistTypes>[]
 
 export const SONG_TYPE_CHECKERS = [
     {
@@ -37,7 +37,7 @@ export const SONG_TYPE_CHECKERS = [
         type: SONG_TYPES.YOUTUBE,
         regexp: /https:\/\/youtu\.be\/([-\w]+)/g
     }
-] satisfies SongTypeChecker[]
+] satisfies Checker<SongType>[]
 
 export const THUMBNAIL_TYPE_CHECKERS = [
     {
@@ -68,7 +68,7 @@ export const THUMBNAIL_TYPE_CHECKERS = [
         type: SONG_TYPES.VIMEO,
         regexp: /https?:\/\/i\.vimeocdn\.com\/video\/([-.\w]+)/
     },
-] satisfies SongTypeChecker[]
+] satisfies Checker<SongType>[]
 
 export const VOCADB_SERVICE_RELATIONS = [
     { service: "Youtube", type: SONG_TYPES.YOUTUBE },
