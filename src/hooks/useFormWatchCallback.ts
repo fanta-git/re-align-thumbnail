@@ -4,6 +4,7 @@ import { playlistBasesState, settingFormContentsState, sizeFormContentsState } f
 import { FormContents } from "@/types/form";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
+import { nonNullable, zipAll } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -16,18 +17,18 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
 
     type WatchWithDefaultCallback = Parameters<WatchWithDefault<typeof watch>>[0];
 
-    return useCallback<WatchWithDefaultCallback>(async ({ lists, size, setting }, { name, type }) => {
+    return useCallback<WatchWithDefaultCallback>(async ({ list, size, setting }, { name, type }) => {
         if (name === undefined) return
         const [group, item] = name.split(".") as Split<typeof name, ".">
 
-        if (group === "lists") {
-            setPlaylistBases(v => {
-                if (item === undefined) return Array.from({ ...v, length: lists.length })
-                const i = Number(item)
-                const currentBase = getPlaylistBase(lists[i].url)
-                if (v[i] !== currentBase) return Array.from({ ...v, [i]: currentBase, length: v.length })
-                return v
-            })
+        if (group === "list") {
+            const bases = list.urls.split("\n").map(getPlaylistBase).filter(nonNullable)
+
+            setPlaylistBases(v =>
+                zipAll(v, bases).every(([a, b]) => a?.type === b?.type && a?.id === b?.id)
+                    ? v
+                    : bases
+            )
         }
 
         if (group === "size") {

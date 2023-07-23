@@ -9,7 +9,7 @@ export type SizeFormContents = {
 }
 
 export type ListFormContents = {
-    url: string
+    urls: string
 }
 
 export type SettingFormContents = {
@@ -24,7 +24,7 @@ export type OptionFormContents = {
 }
 
 export type FormContents = {
-    lists: ListFormContents[],
+    list: ListFormContents,
     size: SizeFormContents,
     setting: SettingFormContents,
     option: OptionFormContents

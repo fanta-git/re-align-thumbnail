@@ -1,7 +1,7 @@
 import { FormContents } from "@/types/form"
 
 export const formContentsDefaults = {
-    lists: [{ url: "" }],
+    list: { urls: "" },
     size: {
         columns: 10,
         rows: 10,
