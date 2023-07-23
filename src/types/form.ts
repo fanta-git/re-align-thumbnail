@@ -29,3 +29,8 @@ export type FormContents = {
     setting: SettingFormContents,
     option: OptionFormContents
 }
+
+export type SizeFormPreset = {
+    name: string,
+    size: SizeFormContents
+}

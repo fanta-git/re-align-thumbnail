@@ -2,6 +2,7 @@ import { IMAGE_MIMETYPE } from "@/consts/image";
 import { FormContents } from "@/types/form";
 import { FormLabel, Input, Select, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
+import PresetButtons from "./PresetButtons";
 
 export default function OptionForm () {
   const { register } = useFormContext<FormContents>()
@@ -19,6 +20,10 @@ export default function OptionForm () {
             <option key={i} value={v}>{v}</option>
           )}
         </Select>
+      </FormLabel>
+      <FormLabel>
+        プリセット<br/>
+        <PresetButtons />
       </FormLabel>
     </Stack>
   );
