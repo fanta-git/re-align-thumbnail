@@ -14,7 +14,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return res.status(200).json(result)
     } catch (e) {
         if (axios.isAxiosError(e)) {
-            return res.status(e.response?.status ?? 500).json({ error: e.toJSON() })
+            const axiosError = e.toJSON() as any
+            const error = {
+                code: axiosError.code,
+                message: axiosError.message,
+                name: axiosError.name,
+                stack: axiosError.stack,
+                status: axiosError.status
+            }
+            return res.status(e.response?.status ?? 500).json({ error })
         }
     }
 }
