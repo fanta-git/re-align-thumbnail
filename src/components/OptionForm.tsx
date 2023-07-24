@@ -10,6 +10,10 @@ export default function OptionForm () {
   return (
     <Stack spacing={3} w={"100%"}>
       <FormLabel>
+        サイズのプリセット<br/>
+        <PresetButtons />
+      </FormLabel>
+      <FormLabel>
         背景色
         <Input type="color" {...register("option.background")} />
       </FormLabel>
@@ -20,10 +24,6 @@ export default function OptionForm () {
             <option key={i} value={v}>{v}</option>
           )}
         </Select>
-      </FormLabel>
-      <FormLabel>
-        プリセット<br/>
-        <PresetButtons />
       </FormLabel>
     </Stack>
   );

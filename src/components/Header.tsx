@@ -1,7 +1,7 @@
-import { Box, Container, HStack, Heading, Icon, Spacer, Center, Link } from "@chakra-ui/react";
+import { REPOSITORY_URL } from "@/consts/page";
+import { Box, Center, Container, HStack, Heading, Icon, Link, Spacer } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { IconType } from "react-icons";
-import { IoLogoGithub, IoMdHelpCircleOutline } from 'react-icons/io';
+import { IoLogoGithub } from 'react-icons/io';
 
 export default function Header() {
   return (
@@ -16,29 +16,16 @@ export default function Header() {
             </NextLink>
           </Box>
           <Spacer />
-          <Link as={NextLink} href={"/"} _hover={{ color: "brand.400" }}>
-            <LabelOrIcon label={"使い方"} icon={IoMdHelpCircleOutline} />
-          </Link>
-          <Link as={NextLink} href={"/"} _hover={{ color: "brand.400" }}>
-            <LabelOrIcon label={"GitHub"} icon={IoLogoGithub} />
+          <Link as={NextLink} href={REPOSITORY_URL} _hover={{ color: "brand.400" }}>
+            <Center display={["block", "none"]} h={8}>
+              <Icon as={IoLogoGithub} boxSize={"full"} />
+            </Center>
+            <Box display={["none", "block"]} fontWeight={"bold"}>
+              GitHub
+            </Box>
           </Link>
         </HStack>
       </Container>
     </Box>
-  )
-}
-
-function LabelOrIcon(props: { icon: IconType, label: string }) {
-  const { icon, label } = props
-
-  return (
-    <>
-      <Center display={["block", "none"]}>
-        <Icon as={icon} boxSize={8} />
-      </Center>
-      <Box display={["none", "block"]} fontWeight={"bold"}>
-        {label}
-      </Box>
-    </>
   )
 }
