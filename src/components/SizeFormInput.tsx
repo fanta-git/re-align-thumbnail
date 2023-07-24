@@ -33,6 +33,7 @@ export function SizeFormInput (props: Props) {
               ref={ref}
               name={restField.name}
               borderRightRadius={0}
+              paddingRight={0}
             />
             <InputRightAddon>{prefix}</InputRightAddon>
           </InputGroup>
