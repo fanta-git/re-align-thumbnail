@@ -5,7 +5,8 @@ export type PlaylistTypes = Values<typeof PLAYLIST_TYPES>
 
 export type PlaylistBase = {
     type: PlaylistTypes,
-    id: string
+    id: string,
+    fetching: Promise<Playlist | undefined>
 }
 
 export type Checker<T> = {

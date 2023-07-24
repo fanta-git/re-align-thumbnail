@@ -19,10 +19,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 code: axiosError.code,
                 message: axiosError.message,
                 name: axiosError.name,
-                stack: axiosError.stack,
                 status: axiosError.status
             }
-            return res.status(e.response?.status ?? 500).json({ error })
+            return res.status(e?.status ?? 500).json({ error })
         }
+
+        console.error(e);
+        return res.status(500).json({ error: {
+            message: "不明なエラー"
+        }})
     }
 }

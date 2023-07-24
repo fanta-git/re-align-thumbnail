@@ -1,10 +1,9 @@
-import { Playlist, PlaylistBase } from "@/types/playlist"
+import { Playlist, PlaylistTypes } from "@/types/playlist"
 import axios from "axios"
 
 const cache = new Map<string, Promise<Playlist | undefined>>()
 
-export default function fetchPlaylistMaster(playlistBase: PlaylistBase) {
-    const { type, id } = playlistBase
+export default function fetchPlaylistMaster(type: PlaylistTypes, id: string) {
     const url = `/api/playlist?type=${type}&id=${id}`
 
     if (cache.has(url)) {

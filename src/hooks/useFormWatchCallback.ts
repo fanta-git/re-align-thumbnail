@@ -1,8 +1,9 @@
 import adjusters from "@/foundations/adjust";
+import fetchPlaylistMaster from "@/foundations/fetchPlaylistMaster";
 import matchByChekers from "@/foundations/matchByChekers";
 import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
-import { Checker, PlaylistBase, PlaylistTypes } from "@/types/playlist";
+import { Checker, PlaylistTypes } from "@/types/playlist";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
 import { zipAll } from "@/util/arrays";
@@ -24,12 +25,12 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
 
         if (group === "list") {
             const bases = matchByChekers(list.urls, PLAYLIST_TYPE_CHECKERS)
-                .map(({ type, match: [, id] }): PlaylistBase => ({ type, id }))
+                .map(({ type, match: [, id] }) => ({ type, id }))
 
             setPlaylistBases(v =>
                 zipAll(v, bases).every(([a, b]) => a?.type === b?.type && a?.id === b?.id)
                     ? v
-                    : bases
+                    : bases.map(v => ({ ...v, fetching: fetchPlaylistMaster(v.type, v.id)}))
             )
         }
 
