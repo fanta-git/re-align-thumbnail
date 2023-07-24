@@ -1,5 +1,4 @@
-import { VOCADB_SERVICE_RELATIONS } from "@/consts/playlist";
-import { FetchPlaylist } from "@/types/playlist";
+import { FetchPlaylist, SongType } from "@/types/playlist";
 import { VocadbApiSonglistSongs } from "@/types/vocadbapi";
 import { nonNullable } from "@/util/arrays";
 import axios from "axios";
@@ -32,6 +31,14 @@ const vocadb: FetchPlaylist = async (listId) => {
         }).filter(nonNullable)
     }
 }
+
+export const VOCADB_SERVICE_RELATIONS = [
+    { service: "Youtube", type: "youtube" },
+    { service: "NicoNicoDouga", type: "nicovideo" },
+    { service: "SoundCloud", type: "soundcloud" },
+    { service: "Bandcamp", type: "bandcamp" },
+    { service: "Vimeo", type: "vimeo" }
+] satisfies { service: string, type: SongType }[]
 
 export { vocadb };
 

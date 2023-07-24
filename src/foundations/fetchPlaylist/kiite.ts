@@ -1,4 +1,3 @@
-import { SONG_TYPES } from "@/consts/playlist"
 import { KiiteApiList } from "@/types/kiiteapi"
 import { FetchPlaylist } from "@/types/playlist"
 import axios from "axios"
@@ -12,7 +11,7 @@ const kiite: FetchPlaylist = async (listId) => {
         title: data.list_title,
         description: data.description,
         songs: data.songs.map(v => ({
-            type: SONG_TYPES.NICO_VIDEO,
+            type: "nicovideo",
             url: v.video_url,
             thumbnailUrl: v.thumbnail
         }))

@@ -1,9 +1,8 @@
-import { PLAYLIST_TYPE_CHECKERS } from "@/consts/playlist";
 import adjusters from "@/foundations/adjust";
 import matchByChekers from "@/foundations/matchByChekers";
 import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
-import { PlaylistBase } from "@/types/playlist";
+import { Checker, PlaylistBase, PlaylistTypes } from "@/types/playlist";
 import { WatchWithDefault } from "@/types/reactHookForm";
 import { Split } from "@/types/util";
 import { zipAll } from "@/util/arrays";
@@ -56,3 +55,22 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         }
     }, [setValue, setSize, setSetting, setPlaylistBases])
 }
+
+export const PLAYLIST_TYPE_CHECKERS = [
+    {
+        type: "kiite",
+        regexp: /https:\/\/kiite\.jp\/playlist\/(\w{10})/g
+    },
+    {
+        type: "nicovideo",
+        regexp: /https:\/\/(?:www\.nicovideo\.jp\/(?:my\/|user\/\d+\/)?|sp\.nicovideo\.jp\/(?:my\/)?)mylist\/(\d+)/g
+    },
+    {
+        type: "youtube",
+        regexp: /https:\/\/(?:www\.|m\.)?youtube\.com\/playlist[/?](?:.*&)?list=([-\w]+)/g
+    },
+    {
+        type: "vocadb",
+        regexp: /https:\/\/vocadb\.net\/L\/(\d+)/g
+    }
+] satisfies Checker<PlaylistTypes>[]
