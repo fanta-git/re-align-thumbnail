@@ -9,7 +9,9 @@ export default function fetchPlaylistMaster(type: PlaylistTypes, id: string) {
     if (cache.has(url)) {
         return cache.get(url)!
     } else {
-        const playlistPromise = axios.get<Playlist>(url).then(v => v.data)
+        const playlistPromise = axios.get<Playlist>(url)
+            .then(v => v.data)
+            .catch(e => undefined)
         cache.set(url, playlistPromise)
         return playlistPromise
     }

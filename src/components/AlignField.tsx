@@ -7,7 +7,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE as useRecoilValue } from "recoil";
 import AlignedImage from "./AlignedImage";
 import ErrorFallback from "./ErrorFallback";
-import { nonNullable } from "@/util/arrays";
 
 export default function AlignField () {
   const playlistBases = useRecoilValue(playlistBasesState)
@@ -15,7 +14,7 @@ export default function AlignField () {
   const option = useRecoilValue(optionFormContentsState)
 
   const loadableUrl = useHold(
-    () => new Loadable(align(playlistBases.filter(nonNullable), size, option))
+    () => new Loadable(align(playlistBases, size, option))
   , [playlistBases, size, option])
 
   return (

@@ -11,7 +11,7 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
     const { outputWidth, outputHeight, columns, rows } = size
     if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
-    const playlists = await Promise.all(playlistBases.map(v => v.fetching))
+    const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
         .flatMap(p => p?.songs ?? [])
         .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
