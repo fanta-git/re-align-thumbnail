@@ -1,7 +1,7 @@
 import { Box, Container, HStack, Heading, Icon, Spacer, Center, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { IconType } from "react-icons";
-import { IoLogoGithub, IoMdHelpCircleOutline } from 'react-icons/Io';
+import { IoLogoGithub, IoMdHelpCircleOutline } from 'react-icons/io';
 
 export default function Header() {
   return (
