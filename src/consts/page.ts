@@ -1,1 +1,5 @@
+export const TITLE = "Re:AlignThumbnail"
+export const DESCRIPTION = "複数の動画のサムネイルを並べて一枚の画像にまとめるWebアプリ"
+export const SITE_URL = "https://re-align-thumbnail.vercel.app/"
+export const IMG_URL = "https://re-align-thumbnail.vercel.app/favicons/android-chrome-512x512.png"
 export const REPOSITORY_URL = "https://github.com/fanta-git/re-align-thumbnail"

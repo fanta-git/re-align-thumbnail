@@ -1,25 +1,18 @@
+import { DESCRIPTION, IMG_URL, SITE_URL, TITLE } from "@/consts/page";
 import Head from "next/head";
-
-const title = "Re:AlignThumbnail"
-const description = "複数の動画のサムネイルを並べて一枚の画像にまとめるWebアプリ"
-const url = "https://re-align-thumbnail.vercel.app/"
-const imgUrl = "/favicons/android-chrome-512x512.png"
 
 export default function HeadMeta () {
   return (
     <Head>
-      <title>{title}</title>
+      <title>{TITLE}</title>
 
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
+      <meta property="og:title" content={TITLE} />
+      <meta property="og:description" content={DESCRIPTION} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
-      <meta property="og:image" content={imgUrl} />
-      <meta property="og:site_name" content={title} />
+      <meta property="og:url" content={SITE_URL} />
+      <meta property="og:image" content={IMG_URL} />
+      <meta property="og:site_name" content={TITLE} />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={imgUrl} />
     </Head>
   )
 }
