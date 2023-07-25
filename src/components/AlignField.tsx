@@ -7,6 +7,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE as useRecoilValue } from "recoil";
 import AlignedImage from "./AlignedImage";
 import ErrorFallback from "./ErrorFallback";
+import Loading from "./Loading";
 
 export default function AlignField () {
   const playlistBases = useRecoilValue(playlistBasesState)
@@ -19,7 +20,7 @@ export default function AlignField () {
 
   return (
     <ErrorBoundary fallbackRender={ErrorFallback} resetKeys={[loadableUrl]}>
-      <Suspense fallback={<>loading...</>}>
+      <Suspense fallback={<Loading />} >
         <AlignedImage loadableUrl={loadableUrl} />
       </Suspense>
     </ErrorBoundary>
