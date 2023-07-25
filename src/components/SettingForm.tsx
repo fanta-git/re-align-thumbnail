@@ -7,7 +7,7 @@ export default function SettingForm () {
 
   return (
     <Box w={"100%"}>
-      <Checkbox {...register("setting.isFixed")}>サムネイルサイズを固定</Checkbox>
+      <Checkbox {...register("setting.isFixed")}>グリッド数と出力サイズの連動</Checkbox>
     </Box>
   );
 }

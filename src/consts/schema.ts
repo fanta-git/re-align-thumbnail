@@ -19,3 +19,13 @@ export const mylistRssSchema = z.object({
         })
     }).array()
 })
+
+export const kiitePlaylistApiMinSchema = z.object({
+    list_title: z.string(),
+    list_id: z.number(),
+    description: z.string(),
+    songs: z.object({
+        thumbnail: z.string(),
+        video_url: z.string(),
+    }).array()
+})

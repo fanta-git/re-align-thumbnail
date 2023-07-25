@@ -1,10 +1,15 @@
-import { SONG_TYPES } from "@/consts/playlist"
-import { KiiteApiList } from "@/types/kiiteapi"
+import { kiitePlaylistApiMinSchema } from "@/consts/schema"
 import { FetchPlaylist } from "@/types/playlist"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 const kiite: FetchPlaylist = async (listId) => {
-    const { data } = await axios.get<KiiteApiList>(`https://kiite.jp/api/playlist/${listId}`)
+    const response = await axios.get<unknown>(`https://kiite.jp/api/playlist/${listId}`)
+    const parse = kiitePlaylistApiMinSchema.safeParse(response.data)
+    if (!parse.success) throw Object.assign(
+        new AxiosError("Request failed with status code 404", "ERR_BAD_REQUEST"),
+        { status: 404 }
+    )
+    const { data } = parse
 
     return {
         type: 'kiite',
@@ -12,7 +17,7 @@ const kiite: FetchPlaylist = async (listId) => {
         title: data.list_title,
         description: data.description,
         songs: data.songs.map(v => ({
-            type: SONG_TYPES.NICO_VIDEO,
+            type: "nicovideo",
             url: v.video_url,
             thumbnailUrl: v.thumbnail
         }))

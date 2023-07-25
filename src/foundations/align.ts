@@ -1,16 +1,17 @@
-import { RATIO_H, RATIO_W } from "@/consts/align"
 import { OptionFormContents, SizeFormContents } from "@/types/form"
 import { PlaylistBase } from "@/types/playlist"
 import { expansion, range, zip } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
-import fetchPlaylistMaster from "./fetchPlaylistMaster"
 import { parseThumbnailUrl } from "./parseThumbnailUrl"
+
+const RATIO_W = 16
+const RATIO_H = 9
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
     if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
 
-    const playlists = await Promise.all(playlistBases.map(fetchPlaylistMaster))
+    const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
         .flatMap(p => p?.songs ?? [])
         .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
