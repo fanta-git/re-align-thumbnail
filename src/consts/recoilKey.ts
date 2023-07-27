@@ -3,4 +3,5 @@ export const RECOIL_KEYS = {
     SIZE_FORM_CONTENTS: "sizeContents",
     SETTING_FORM_CONTENTS: "settingContents",
     OPTION_FORM_CONTENTS: "optionContents",
+    THUMBNAIL_SIZES: "thumbnailsSizes",
 } as const

@@ -1,31 +1,31 @@
-import { SizeFormContents, SettingFormContents } from "@/types/form";
+import { SizeFormContents, SettingFormContents, ThumbnailSizes } from "@/types/form";
 
 type Result = {
     target: keyof SizeFormContents,
     value: number
 }
 
-export default function adjust(changed: keyof SizeFormContents, size: SizeFormContents, setting: SettingFormContents): Result {
+export default function adjust(changed: keyof SizeFormContents, size: SizeFormContents, thumbnailSizes: ThumbnailSizes): Result {
     switch (changed) {
         case "columns":
             return {
                 target: "outputWidth",
-                value: Math.round(setting.thumbnailWidth * size.columns)
+                value: Math.round(thumbnailSizes.thumbnailWidth * size.columns)
             }
         case "rows":
             return {
                 target: "outputHeight",
-                value: Math.round(setting.thumbnailHeight * size.rows)
+                value: Math.round(thumbnailSizes.thumbnailHeight * size.rows)
             }
         case "outputWidth":
             return {
                 target: "columns",
-                value: Math.round(size.outputWidth / setting.thumbnailWidth)
+                value: Math.round(size.outputWidth / thumbnailSizes.thumbnailWidth)
             }
         case "outputHeight":
             return {
                 target: "rows",
-                value: Math.round(size.outputHeight / setting.thumbnailHeight)
+                value: Math.round(size.outputHeight / thumbnailSizes.thumbnailHeight)
             }
     }
 }

@@ -1,7 +1,7 @@
 import adjusters from "@/foundations/adjust";
 import fetchPlaylistMaster from "@/foundations/fetchPlaylistMaster";
 import matchByChekers from "@/foundations/matchByChekers";
-import { playlistBasesState, settingFormContentsState, sizeFormContentsState } from "@/stores/playlist";
+import { playlistBasesState, settingFormContentsState, sizeFormContentsState, thumbnailSizesState } from "@/stores/playlist";
 import { FormContents } from "@/types/form";
 import { Checker, PlaylistTypes } from "@/types/playlist";
 import { WatchWithDefault } from "@/types/reactHookForm";
@@ -9,13 +9,15 @@ import { Split } from "@/types/util";
 import { zipAll } from "@/util/arrays";
 import { startTransition, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilCallback, useSetRecoilState } from "recoil";
 
 export default function useWatchCallback(formMethods: UseFormReturn<FormContents, any, undefined>) {
     const { watch, setValue } = formMethods
     const setPlaylistBases = useSetRecoilState(playlistBasesState)
     const setSize = useSetRecoilState(sizeFormContentsState)
     const setSetting = useSetRecoilState(settingFormContentsState)
+    const setThumbnailSizes = useSetRecoilState(thumbnailSizesState)
+    const getThumbnailSizes = useRecoilCallback(({ snapshot }) => () => snapshot.getPromise(thumbnailSizesState))
 
     type WatchWithDefaultCallback = Parameters<WatchWithDefault<typeof watch>>[0];
 
@@ -36,12 +38,12 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
 
         if (group === "size") {
             if (item === undefined || type !== "change") return
+            const thumbnailSizes = await getThumbnailSizes()
             if (setting.isFixed) {
-                const { target, value } = adjusters(item, size, setting)
+                const { target, value } = adjusters(item, size, thumbnailSizes)
                 setValue(`size.${target}`, value)
             } else {
-                setSetting({
-                    ...setting,
+                setThumbnailSizes({
                     thumbnailWidth: size.outputWidth / size.columns,
                     thumbnailHeight: size.outputHeight / size.rows,
                 })
@@ -54,7 +56,7 @@ export default function useWatchCallback(formMethods: UseFormReturn<FormContents
         if (group === "setting") {
             setSetting({ ...setting })
         }
-    }, [setValue, setSize, setSetting, setPlaylistBases])
+    }, [setPlaylistBases, getThumbnailSizes, setValue, setThumbnailSizes, setSize, setSetting])
 }
 
 export const PLAYLIST_TYPE_CHECKERS = [

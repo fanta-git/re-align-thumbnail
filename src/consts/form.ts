@@ -1,4 +1,4 @@
-import { FormContents, SizeFormPreset } from "@/types/form"
+import { FormContents, SizeFormPreset, ThumbnailSizes } from "@/types/form"
 
 export const formContentsDefaults = {
     list: { urls: "" },
@@ -9,8 +9,6 @@ export const formContentsDefaults = {
         outputHeight: 900
     },
     setting: {
-        thumbnailWidth: 160,
-        thumbnailHeight: 90,
         isFixed: true
     },
     option: {
@@ -18,6 +16,11 @@ export const formContentsDefaults = {
         fileType: "jpeg"
     }
 } satisfies FormContents
+
+export const ThumbnailSizesDefault = {
+    thumbnailWidth: formContentsDefaults.size.outputWidth / formContentsDefaults.size.columns,
+    thumbnailHeight:  formContentsDefaults.size.outputHeight / formContentsDefaults.size.rows,
+} satisfies ThumbnailSizes
 
 export const SIZEFORM_PRESETS = [
     {
