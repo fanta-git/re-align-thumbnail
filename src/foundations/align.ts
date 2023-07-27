@@ -9,14 +9,12 @@ const RATIO_H = 9
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return
+    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return ""
 
     const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
         .flatMap(p => p?.songs ?? [])
         .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
-
-    if (thumbnails.length === 0) return
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
