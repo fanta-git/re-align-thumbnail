@@ -8,7 +8,7 @@ const vocadb: FetchPlaylist = async (listId) => {
         params: {
             childVoicebanks: false,
             start: 0,
-            maxResults: 100,
+            maxResults: 1e5,
             getTotalCount: false,
             fields: "PVs"
         }
