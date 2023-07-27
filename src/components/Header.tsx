@@ -6,12 +6,12 @@ export default function Header() {
   return (
     <Box color={"brand.50"} bgColor={"brand.900"}>
       <Container maxW="container.lg">
-        <HStack spacing={[5, 10]} h={14}>
-          <Link as={NextLink} href="/">
-            <Heading as='h1' fontSize="2xl" cursor="pointer">
+        <HStack h={14}>
+          <Heading as='h1' fontSize="2xl" cursor="pointer">
+            <Link as={NextLink} href="/" _hover={{ textDecoration: "none" }}>
               Re:AlignThumbnail
-            </Heading>
-          </Link>
+            </Link>
+          </Heading>
           <Spacer />
           <Link as={NextLink} href={REPOSITORY_URL} _hover={{ color: "brand.400" }}>
             GitHub
