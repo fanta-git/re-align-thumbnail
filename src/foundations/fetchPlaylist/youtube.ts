@@ -31,7 +31,7 @@ const youtube: FetchPlaylist = async (listId) => {
 
         items.push(...playlistItems.items)
         nextPageToken = playlistItems.nextPageToken ?? ''
-        break;
+        if (items.length >= 1000) break
     } while (nextPageToken)
 
     return {
