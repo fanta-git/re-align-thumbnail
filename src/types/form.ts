@@ -13,9 +13,7 @@ export type ListFormContents = {
 }
 
 export type SettingFormContents = {
-    isFixed: boolean,
-    thumbnailWidth: number,
-    thumbnailHeight: number
+    isFixed: boolean
 }
 
 export type OptionFormContents = {
@@ -28,6 +26,11 @@ export type FormContents = {
     size: SizeFormContents,
     setting: SettingFormContents,
     option: OptionFormContents
+}
+
+export type ThumbnailSizes = {
+    thumbnailWidth: number,
+    thumbnailHeight: number
 }
 
 export type SizeFormPreset = {
