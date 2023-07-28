@@ -1,48 +1,30 @@
 import { FetchPlaylist } from "@/types/playlist";
-import { YoutubeApiPlaylistItems, YoutubeApiPlaylists } from "@/types/youtubeapi";
+import { YoutubeApiPlaylistItems } from "@/types/youtubeapi";
 import axios from "axios";
 
 
-const youtube: FetchPlaylist = async (listId) => {
+const youtube: FetchPlaylist = async (listId, pageToken) => {
     const key = process.env.YOUTUBE_API_KEY
-    const { data: playlists } = await axios.get<YoutubeApiPlaylists>("https://www.googleapis.com/youtube/v3/playlists", {
+
+    const { data } = await axios.get<YoutubeApiPlaylistItems>("https://www.googleapis.com/youtube/v3/playlistItems", {
         params: {
             key,
-            id: listId,
+            playlistId: listId,
+            maxResults: 50,
+            pageToken,
             part: "snippet"
         }
     })
 
-    const [playlist] = playlists.items
-
-    const items: YoutubeApiPlaylistItems["items"] = []
-    let nextPageToken = ''
-
-    do {
-        const { data: playlistItems } = await axios.get<YoutubeApiPlaylistItems>("https://www.googleapis.com/youtube/v3/playlistItems", {
-            params: {
-                key,
-                playlistId: listId,
-                maxResults: 50,
-                pageToken: nextPageToken,
-                part: "snippet"
-            }
-        })
-
-        items.push(...playlistItems.items)
-        nextPageToken = playlistItems.nextPageToken ?? ''
-        if (items.length >= 1000) break
-    } while (nextPageToken)
-
     return {
         type: "youtube",
-        title: playlist.snippet.title,
-        description: playlist.snippet.description,
+        title: "YouTube",
         id: listId,
-        songs: items.map(v => ({
+        pageToken: data.nextPageToken,
+        songs: data.items.map(v => ({
             type: "youtube",
             url: `https://youtu.be/${v.snippet.resourceId.videoId}`,
-            thumbnailUrl: v.snippet.thumbnails.default.url
+            thumbnailUrl: v.snippet.thumbnails.default?.url ?? ""
         }))
     }
 }
