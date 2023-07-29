@@ -3,22 +3,25 @@ import { VocadbApiSonglistSongs } from "@/types/vocadbapi";
 import { nonNullable } from "@/util/arrays";
 import axios from "axios";
 
-const vocadb: FetchPlaylist = async (listId) => {
+const vocadb: FetchPlaylist = async (listId, nextPage) => {
     const { data } = await axios.get<VocadbApiSonglistSongs>(`https://vocadb.net/api/songLists/${listId}/songs`, {
         params: {
             childVoicebanks: false,
-            start: 0,
-            maxResults: 1e4,
-            getTotalCount: false,
+            start: nextPage,
+            maxResults: 100,
+            getTotalCount: true,
             fields: "PVs"
         }
     })
+
+    const lastOrder = data.items.at(-1)?.order ?? Infinity
 
     return {
         type: "vocadb",
         id: listId,
         title: "VocaDB",
         description: "",
+        pageToken: lastOrder < data.totalCount ? String(lastOrder) : undefined,
         songs: data.items.map(v => {
             for (const { service, type } of VOCADB_SERVICE_RELATIONS) {
                 const pv = v.song.pvs.find(v => v.service === service && v.pvType === "Original")

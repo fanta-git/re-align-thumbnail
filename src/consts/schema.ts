@@ -4,7 +4,7 @@ import { PLAYLIST_TYPES } from "./playlist";
 export const mylistQuerySchema = z.object({
     type: z.enum(PLAYLIST_TYPES),
     id: z.string(),
-    pageToken: z.string().optional()
+    nextPage: z.string().optional()
 })
 
 export const mylistRssSchema = z.object({

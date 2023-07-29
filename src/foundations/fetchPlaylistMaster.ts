@@ -16,19 +16,19 @@ export default async function fetchPlaylistMaster(type: PlaylistTypes, id: strin
 }
 
 const fetchPlaylist = async (type: PlaylistTypes, id: string): Promise<Playlist | undefined> => {
-    let pageToken: string | undefined
+    let nextPage: string | undefined
     const songs: Song[] = []
 
     try {
         while (true) {
             const { data } = await axios.get<Playlist>("/api/playlist", {
-                params: { type, id, pageToken }
+                params: { type, id, nextPage }
             })
 
             songs.push(...data.songs)
-            pageToken = data.pageToken
+            nextPage = data.pageToken
 
-            if (!pageToken) return { ...data, songs }
+            if (!nextPage || songs.length >= 1e3) return { ...data, songs }
         }
     } catch (e) {
         return undefined

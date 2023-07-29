@@ -3,7 +3,7 @@ import { YoutubeApiPlaylistItems } from "@/types/youtubeapi";
 import axios from "axios";
 
 
-const youtube: FetchPlaylist = async (listId, pageToken) => {
+const youtube: FetchPlaylist = async (listId, nextPage) => {
     const key = process.env.YOUTUBE_API_KEY
 
     const { data } = await axios.get<YoutubeApiPlaylistItems>("https://www.googleapis.com/youtube/v3/playlistItems", {
@@ -11,7 +11,7 @@ const youtube: FetchPlaylist = async (listId, pageToken) => {
             key,
             playlistId: listId,
             maxResults: 50,
-            pageToken,
+            pageToken: nextPage,
             part: "snippet"
         }
     })
