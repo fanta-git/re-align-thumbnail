@@ -19,15 +19,15 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
     for (const [[i, j], imagePromise] of zip(expansion(range(rows), range(columns)), thumbnails)) {
-        const image = await imagePromise
-        if (image === undefined) continue
-
-        const x = Math.round(j * outputWidth / columns)
-        const y = Math.round(i * outputHeight / rows)
-        const tnWidth = Math.round((j + 1) * outputWidth / columns) - x
-        const tnHeight = Math.round((i + 1) * outputHeight / rows) - y
-
         try {
+            const image = await imagePromise
+            if (image === undefined) continue
+
+            const x = Math.round(j * outputWidth / columns)
+            const y = Math.round(i * outputHeight / rows)
+            const tnWidth = Math.round((j + 1) * outputWidth / columns) - x
+            const tnHeight = Math.round((i + 1) * outputHeight / rows) - y
+
             const trimWidth = Math.min(image.height * RATIO_W / RATIO_H | 0, image.width)
             const trimHeight = Math.min(image.width * RATIO_H / RATIO_W | 0, image.height)
 
