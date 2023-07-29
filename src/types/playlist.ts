@@ -14,7 +14,7 @@ export type Checker<T> = {
     regexp: RegExp
 }
 
-export type FetchPlaylist = (listId: string, pageToken?: string) => Promise<Playlist>
+export type FetchPlaylist = (listId: string, nextPage?: string) => Promise<Playlist>
 
 export type SongType = Values<typeof SONG_TYPES>
 

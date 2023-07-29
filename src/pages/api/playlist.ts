@@ -6,9 +6,9 @@ import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Playlist | { error: any }>) {
-    const { type, id, pageToken } = mylistQuerySchema.parse(req.query)
+    const { type, id, nextPage } = mylistQuerySchema.parse(req.query)
     try {
-        const result = await playlistFetchers[type](id, pageToken)
+        const result = await playlistFetchers[type](id, nextPage)
         if (result.description && type !== "youtube") {
             result.songs = insertRelatedSongs(result.songs, result.description)
         }
