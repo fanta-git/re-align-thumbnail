@@ -1,16 +1,16 @@
 import { Checker, Song, SongType } from "@/types/playlist"
 import { zipAll } from "@/util/arrays"
-import { getThumbnailUrl } from "@/util/image"
 import matchByChekers from "./matchByChekers"
 
 export default function insertRelatedSongs (songs: Song[], description: string): Song[] {
     const ordersMap = new Map<Song, number>(songs.map((song, i) => [song, i + 1]))
 
     const relateds = matchByChekers(description, SONG_TYPE_CHECKERS)
-        .map(({ match: [url, id], type }): Song => ({
-            type,
-            url,
-            thumbnailUrl: getThumbnailUrl(type, id) ?? ""
+        .map(({ match: [, id] }): Song => ({
+            thumbnailUrls: [
+                `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
+                `https://img.youtube.com/vi/${id}/default.jpg`
+            ]
         }))
     const ordersStr = Array.from(description.matchAll(/^>>(.*)/mg), ([, str]) => str).at(-1)
     const orders = ordersStr ? ordersStr.trim().split(/\s+/).map(Number) : []

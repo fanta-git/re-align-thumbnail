@@ -6,20 +6,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/@thumbnail/youtube/:id/S',
-        destination: 'https://img.youtube.com/vi/:id/default.jpg',
+        source: '/@thumbnail/youtube/:ids*',
+        destination: 'https://img.youtube.com/vi/:ids*',
       },
       {
-        source: '/@thumbnail/youtube/:id/M',
-        destination: 'https://img.youtube.com/vi/:id/mqdefault.jpg',
-      },
-      {
-        source: '/@thumbnail/nicovideo/:ids*/S',
+        source: '/@thumbnail/nicovideo/:ids*',
         destination: 'http://nicovideo.cdn.nimg.jp/thumbnails/:ids*',
-      },
-      {
-        source: '/@thumbnail/nicovideo/:ids*/M',
-        destination: 'http://nicovideo.cdn.nimg.jp/thumbnails/:ids*.M',
       },
       {
         source: '/@thumbnail/soundcloud/:name',

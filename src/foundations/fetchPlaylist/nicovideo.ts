@@ -2,6 +2,7 @@ import { mylistRssSchema } from "@/consts/schema";
 import { FetchPlaylist } from "@/types/playlist";
 import axios from "axios";
 import Parser from "rss-parser";
+import formatThumbnailUrl from "../formatThumbnailUrl";
 
 const nicovideo: FetchPlaylist = async (listId) => {
     const axiosRes = await axios.get<string>(`https://www.nicovideo.jp/mylist/${listId}?rss=2.0`)
@@ -22,9 +23,7 @@ const nicovideo: FetchPlaylist = async (listId) => {
         description: parsed.description,
         id: listId,
         songs: parsed.items.map(v => ({
-            type: "nicovideo",
-            url: v.link.replace(/\?.*/, ""),
-            thumbnailUrl: v["media:thumbnail"].$.url
+            thumbnailUrls: formatThumbnailUrl(v["media:thumbnail"].$.url)
         }))
     }
 }

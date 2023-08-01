@@ -1,5 +1,6 @@
 import { FetchPlaylist } from "@/types/playlist";
 import { YoutubeApiPlaylistItems } from "@/types/youtubeapi";
+import { nonNullable } from "@/util/arrays";
 import axios from "axios";
 
 
@@ -24,7 +25,10 @@ const youtube: FetchPlaylist = async (listId, nextPage) => {
         songs: data.items.map(v => ({
             type: "youtube",
             url: `https://youtu.be/${v.snippet.resourceId.videoId}`,
-            thumbnailUrl: v.snippet.thumbnails.default?.url ?? ""
+            thumbnailUrls: [
+                v.snippet.thumbnails.standard?.url,
+                v.snippet.thumbnails.default?.url,
+            ].filter(nonNullable)
         }))
     }
 }

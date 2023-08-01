@@ -28,7 +28,5 @@ export type Playlist = {
 }
 
 export type Song = {
-    type: SongType,
-    url: string,
-    thumbnailUrl: string
+    thumbnailUrls: string[]
 }
