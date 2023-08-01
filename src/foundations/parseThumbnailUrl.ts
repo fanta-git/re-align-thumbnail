@@ -1,30 +1,17 @@
 import { Checker, SongType } from "@/types/playlist";
 import { getImage } from "@/util/image";
 
-export async function parseThumbnailUrl(type: SongType, url: string): Promise<HTMLImageElement | undefined> {
-    for (const checker of THUMBNAIL_TYPE_CHECKERS) {
-        if (type !== checker.type) continue
+export async function parseThumbnailUrl(urls: string[]): Promise<HTMLImageElement | undefined> {
+    for (const url of urls) {
+        try {
+            for (const { type, regexp } of THUMBNAIL_TYPE_CHECKERS) {
+                const [, name] = url.match(regexp) ?? []
+                if (name === undefined) continue
 
-        const [, id, key] = url.match(checker.regexp) ?? []
-        if (id === undefined) continue
-
-        switch (type) {
-            case "nicovideo": {
-                const thumbnailUrl = key === undefined
-                    ? `/@thumbnail/nicovideo/${id}/${id}/S`
-                    : `/@thumbnail/nicovideo/${id}/${id}.${key}/M`
-
-                return getImage(thumbnailUrl)
+                return await getImage(`/@thumbnail/${type}/${name}`)
             }
-            case "youtube": {
-                const m = await getImage(`/@thumbnail/youtube/${id}/M`)
-                return m.width === 120 && m.height === 90
-                    ? getImage(`/@thumbnail/youtube/${id}/S`)
-                    : m
-            }
-            default: {
-                return getImage(`/@thumbnail/${type}/${id}`)
-            }
+        } catch (e) {
+            console.error(e)
         }
     }
 }
@@ -32,19 +19,11 @@ export async function parseThumbnailUrl(type: SongType, url: string): Promise<HT
 export const THUMBNAIL_TYPE_CHECKERS = [
     {
         type: "nicovideo",
-        regexp: /https?:\/\/nicovideo\.cdn\.nimg\.jp\/thumbnails\/\d+\/(\d+)(?:\.(\d+))?/
-    },
-    {
-        type: "nicovideo",
-        regexp: /https?:\/\/tn-skr1\.smilevideo\.jp\/smile\?i=(\d+)/
+        regexp: /https?:\/\/nicovideo\.cdn\.nimg\.jp\/thumbnails\/(\d+\/[\w.]+)/
     },
     {
         type: "youtube",
-        regexp: /https?:\/\/img\.youtube\.com\/vi\/([-\w]+)/
-    },
-    {
-        type: "youtube",
-        regexp: /https?:\/\/i1?\.ytimg\.com\/vi\/([-\w]+)/
+        regexp: /https?:\/\/img\.youtube\.com\/vi\/([-\w]+\/[.\w]+)/
     },
     {
         type: "soundcloud",

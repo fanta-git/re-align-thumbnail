@@ -14,7 +14,7 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
     const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
         .flatMap(p => p?.songs ?? [])
-        .map(v => parseThumbnailUrl(v.type, v.thumbnailUrl))
+        .map(v => parseThumbnailUrl(v.thumbnailUrls))
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 
