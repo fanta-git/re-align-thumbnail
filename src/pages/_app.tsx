@@ -10,13 +10,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <HeadMeta />
-      <Analytics />
       <ChakraProvider theme={theme}>
         <RecoilRoot>
           <Header />
           <Component {...pageProps} />
         </RecoilRoot>
       </ChakraProvider>
+      <Analytics />
     </>
   );
 }
