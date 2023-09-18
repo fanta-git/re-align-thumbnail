@@ -26,6 +26,10 @@ export const THUMBNAIL_TYPE_CHECKERS = [
         regexp: /https?:\/\/img\.youtube\.com\/vi\/([-\w]+\/[.\w]+)/
     },
     {
+        type: "youtube",
+        regexp: /https?:\/\/i\.ytimg\.com\/vi\/([-\w]+\/[.\w]+)/
+    },
+    {
         type: "soundcloud",
         regexp: /https?:\/\/i1\.sndcdn\.com\/([-.\w]+)/
     },
