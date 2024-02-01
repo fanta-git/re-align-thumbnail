@@ -3,16 +3,18 @@ import { Image } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 type Props = {
-  loadableUrl: Loadable<string>
+  loadableFile: Loadable<File | null>
 }
 
 export default function AlignedImage (props: Props) {
-  const { loadableUrl } = props
-  const url = loadableUrl.load()
+  const { loadableFile } = props
+  const file = loadableFile.load()
+  const url = file ? URL.createObjectURL(file) : ""
 
   useEffect(() => (
     () => URL.revokeObjectURL(url)
   ), [url])
 
-  return <Image src={url} alt={""} />
+  if (!file) return null
+  return <Image src={url} alt={file.name} />
 }

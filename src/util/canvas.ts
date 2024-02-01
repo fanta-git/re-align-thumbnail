@@ -9,9 +9,10 @@ export const createCanvas = (width: number, height: number, background: string =
     return { canvas, context }
 };
 
-export const canvas2URL = async (canvas: HTMLCanvasElement, type?: string, quality?: number) => {
+export const canvas2File = async (canvas: HTMLCanvasElement, type?: string, quality?: number) => {
     const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, type, quality))
     if (blob === null) throw Error("canvasの画像化に失敗しました")
-    const url = URL.createObjectURL(blob)
-    return url
+    const expansion = blob.type.split("/").pop() ?? "png"
+    const file = new File([blob], `sample.${expansion}`, { type: blob.type })
+    return file
 }

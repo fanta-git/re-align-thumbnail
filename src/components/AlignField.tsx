@@ -13,18 +13,18 @@ export default function AlignField () {
   const size = useRecoilValue(sizeFormContentsState)
   const option = useRecoilValue(optionFormContentsState)
 
-  const [loadableUrl, setLoadableUrl] = useState<Loadable<string>>(
-    () => new Loadable(Promise.resolve(""))
+  const [loadableFile, setLoadableFile] = useState<Loadable<File | null>>(
+    () => new Loadable(Promise.resolve(null))
   )
 
   useEffect(() => (
-    setLoadableUrl(new Loadable(align(playlistBases, size, option)))
+    setLoadableFile(new Loadable(align(playlistBases, size, option)))
   ), [playlistBases, size, option])
 
   return (
-    <ErrorBoundary fallbackRender={ErrorFallback} resetKeys={[loadableUrl]}>
+    <ErrorBoundary fallbackRender={ErrorFallback} resetKeys={[loadableFile]}>
       <Suspense fallback={<Loading />} >
-        <AlignedImage loadableUrl={loadableUrl} />
+        <AlignedImage loadableFile={loadableFile} />
       </Suspense>
     </ErrorBoundary>
   )

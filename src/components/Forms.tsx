@@ -2,13 +2,14 @@ import { formContentsDefaults } from "@/consts/form";
 import useWatchCallback from "@/hooks/useFormWatchCallback";
 import { FormContents } from "@/types/form";
 import { WatchWithDefault } from "@/types/reactHookForm";
-import { HStack, VStack } from "@chakra-ui/react";
+import { HStack, Spacer, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import OptionModalButton from "./OptionModalButton";
 import SettingForm from "./SettingForm";
 import SizeForm from "./SizeForm";
 import UrlForm from "./UrlForm";
+import ShareButton from "./ShareButton";
 
 export default function Forms() {
   const formMethods = useForm<FormContents>({ defaultValues: formContentsDefaults })
@@ -29,6 +30,8 @@ export default function Forms() {
           <SettingForm />
           <HStack w={"100%"}>
             <OptionModalButton formMethods={formMethods} />
+            <Spacer />
+            <ShareButton />
           </HStack>
         </VStack>
       </form>

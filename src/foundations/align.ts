@@ -1,7 +1,7 @@
 import { OptionFormContents, SizeFormContents } from "@/types/form"
 import { PlaylistBase } from "@/types/playlist"
 import { expansion, range, zip } from "@/util/arrays"
-import { canvas2URL, createCanvas } from "@/util/canvas"
+import { canvas2File, createCanvas } from "@/util/canvas"
 import { parseThumbnailUrl } from "./parseThumbnailUrl"
 
 const RATIO_W = 16
@@ -9,7 +9,7 @@ const RATIO_H = 9
 
 export default async function align (playlistBases: PlaylistBase[], size: SizeFormContents, option: OptionFormContents) {
     const { outputWidth, outputHeight, columns, rows } = size
-    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return ""
+    if ([outputWidth, outputHeight, columns, rows].some(v => v <= 0)) return null
 
     const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
@@ -42,6 +42,6 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
         }
     }
 
-    const outputUrl = await canvas2URL(canvas, `image/${option.fileType}`)
-    return outputUrl
+    const file = await canvas2File(canvas, `image/${option.fileType}`)
+    return file
 }
