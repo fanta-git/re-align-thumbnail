@@ -4,4 +4,5 @@ export const RECOIL_KEYS = {
     SETTING_FORM_CONTENTS: "settingContents",
     OPTION_FORM_CONTENTS: "optionContents",
     THUMBNAIL_SIZES: "thumbnailsSizes",
+    ALIGNED_IMAGE_FILE: "alignedImageFile",
 } as const

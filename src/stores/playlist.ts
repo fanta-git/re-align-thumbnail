@@ -28,3 +28,8 @@ export const thumbnailSizesState = atom<ThumbnailSizes>({
     key: RECOIL_KEYS.THUMBNAIL_SIZES,
     default: ThumbnailSizesDefault
 })
+
+export const alignedImageFileState = atom<File | null>({
+    key: RECOIL_KEYS.ALIGNED_IMAGE_FILE,
+    default: null
+})
