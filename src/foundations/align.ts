@@ -2,6 +2,7 @@ import { OptionFormContents, SizeFormContents } from "@/types/form"
 import { PlaylistBase } from "@/types/playlist"
 import { expansion, range, zip } from "@/util/arrays"
 import { canvas2URL, createCanvas } from "@/util/canvas"
+import { fetchThumbnailFromThumbinfo } from "./fetchThumbnailFromThumbinfo"
 import { parseThumbnailUrl } from "./parseThumbnailUrl"
 
 const RATIO_W = 16
@@ -14,7 +15,11 @@ export default async function align (playlistBases: PlaylistBase[], size: SizeFo
     const playlists = await Promise.all(playlistBases.map(v => v?.fetching))
     const thumbnails = playlists
         .flatMap(p => p?.songs ?? [])
-        .map(v => parseThumbnailUrl(v.thumbnailUrls))
+        .map(async v => {
+            const thumbnail = await parseThumbnailUrl(v.thumbnailUrls)
+            if (thumbnail) return thumbnail
+            if (v.fallbackThumbInfoId) return fetchThumbnailFromThumbinfo(v.fallbackThumbInfoId)
+        })
 
     const { canvas, context } = createCanvas(outputWidth, outputHeight, option.background)
 

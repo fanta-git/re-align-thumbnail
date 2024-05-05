@@ -18,7 +18,8 @@ const kiite: FetchPlaylist = async (listId) => {
         title: data.list_title,
         description: data.description,
         songs: data.songs.map(v => ({
-            thumbnailUrls: formatThumbnailUrl(v.thumbnail)
+            thumbnailUrls: formatThumbnailUrl(v.thumbnail),
+            fallbackThumbInfoId: v.video_id
         }))
     }
 }

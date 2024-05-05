@@ -28,5 +28,6 @@ export type Playlist = {
 }
 
 export type Song = {
-    thumbnailUrls: string[]
+    thumbnailUrls: string[],
+    fallbackThumbInfoId?: string
 }
