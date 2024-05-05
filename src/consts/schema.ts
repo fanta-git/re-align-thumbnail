@@ -7,6 +7,10 @@ export const mylistQuerySchema = z.object({
     nextPage: z.string().optional()
 })
 
+export const nicoThumbinfoQuerySchema = z.object({
+    id: z.string()
+})
+
 export const mylistRssSchema = z.object({
     title: z.string(),
     description: z.string(),
@@ -21,6 +25,14 @@ export const mylistRssSchema = z.object({
     }).array()
 })
 
+export const thumbinfoXmlSchema = z.object({
+    nicovideo_thumb_response: z.object({
+        thumb: z.object({
+            thumbnail_url: z.string()
+        })
+    })
+})
+
 export const kiitePlaylistApiMinSchema = z.object({
     list_title: z.string(),
     list_id: z.number(),
@@ -28,5 +40,6 @@ export const kiitePlaylistApiMinSchema = z.object({
     songs: z.object({
         thumbnail: z.string(),
         video_url: z.string(),
+        video_id: z.string()
     }).array()
 })
