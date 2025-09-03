@@ -24,9 +24,6 @@ export default function Forms() {
     <FormProvider {...formMethods}>
       <form style={{ width: "100%" }}>
         <VStack>
-          <p style={{ color: 'red' }}>
-            現在、ニコニコ動画の仕様変更によりマイリストからの読み込みが利用できません
-          </p>
           <UrlForm />
           <SizeForm />
           <SettingForm />
