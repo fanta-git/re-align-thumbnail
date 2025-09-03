@@ -43,3 +43,24 @@ export const kiitePlaylistApiMinSchema = z.object({
         video_id: z.string()
     }).array()
 })
+
+export const nvapiMylistMinSchema = z.object({
+    data: z.object({
+        mylist: z.object({
+            id: z.number(),
+            name: z.string(),
+            description: z.string(),
+            items: z.object({
+                watchId: z.string(),
+                video: z.object({
+                    thumbnail: z.object({
+                        url: z.string(),
+                        largeUrl: z.string().nullable(),
+                        middleUrl: z.string().nullable()
+                    })
+                })
+            }).array(),
+            totalItemCount: z.number()
+        })
+    })
+})

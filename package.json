@@ -29,11 +29,13 @@
     "react-hook-form": "^7.51.3",
     "react-textarea-autosize": "^8.5.3",
     "recoil": "^0.7.7",
-    "rss-parser": "^3.13.0",
     "typescript": "5.4.5",
     "zod": "^3.23.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.7"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
